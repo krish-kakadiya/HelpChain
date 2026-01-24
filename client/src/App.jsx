@@ -1,9 +1,10 @@
 import './App.css'
+import LoginRegister from './pages/Auth/Auth'
 function App() {
 
   return (
     <>
-      <h1>Hello, "KK"</h1>
+      <LoginRegister />
     </>
   )
 }
