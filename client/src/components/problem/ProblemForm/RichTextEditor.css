@@ -1,0 +1,514 @@
+/* RichTextEditor.css */
+
+.rte-container {
+  border: 2px solid #d6d9dc;
+  border-radius: 4px;
+  background: #fff;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', 'Arial', sans-serif;
+}
+
+.rte-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 12px;
+  background: #f8f9f9;
+  border-bottom: 1px solid #d6d9dc;
+  align-items: center;
+}
+
+.rte-group {
+  display: flex;
+  gap: 4px;
+}
+
+.rte-btn {
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #3c4146;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  font-weight: 600;
+}
+
+.rte-btn:hover {
+  background: #e4e6e8;
+}
+
+.rte-btn:active {
+  background: #d6d9dc;
+}
+
+.rte-btn-active {
+  background: #e1ecf4 !important;
+  color: #0a95ff !important;
+  border-color: #0a95ff !important;
+}
+
+.rte-btn svg {
+  display: block;
+}
+
+.rte-icon-bold {
+  font-weight: 700;
+}
+
+.rte-icon-italic {
+  font-style: italic;
+  font-family: Georgia, serif;
+}
+
+.rte-icon-underline {
+  text-decoration: underline;
+}
+
+.rte-icon-strike {
+  text-decoration: line-through;
+}
+
+.rte-code-icon {
+  font-family: 'Courier New', monospace;
+  font-size: 15px;
+}
+
+.rte-divider {
+  width: 1px;
+  height: 24px;
+  background: #d6d9dc;
+  margin: 0 2px;
+}
+
+/* Dropdown Styles */
+.rte-dropdown {
+  position: relative;
+}
+
+.rte-btn-dropdown {
+  min-width: auto;
+  padding: 6px 8px 6px 12px;
+  gap: 6px;
+}
+
+.rte-btn-text {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.rte-dropdown-arrow {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.rte-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  background: #fff;
+  border: 1px solid #d6d9dc;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 180px;
+  z-index: 100;
+  padding: 4px 0;
+}
+
+.rte-dropdown-item {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  color: #3c4146;
+  transition: background 0.15s ease;
+  display: block;
+}
+
+.rte-dropdown-item:hover {
+  background: #f8f9f9;
+}
+
+.rte-dropdown-item span {
+  display: block;
+}
+
+.rte-normal {
+  font-size: 14px;
+}
+
+.rte-h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.rte-h2 {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.rte-h3 {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.rte-dropdown-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 99;
+}
+
+/* Editor Styles */
+.rte-editor {
+  min-height: 300px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding: 16px 20px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', 'Arial', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #232629;
+  outline: none;
+}
+
+.rte-editor:empty:before {
+  content: 'Type your question body here...';
+  color: #9199a1;
+  pointer-events: none;
+}
+
+/* Content Styles */
+.rte-editor h1 {
+  font-size: 27px;
+  font-weight: 600;
+  margin: 24px 0 16px 0;
+  color: #232629;
+  line-height: 1.3;
+}
+
+.rte-editor h2 {
+  font-size: 21px;
+  font-weight: 600;
+  margin: 20px 0 12px 0;
+  color: #232629;
+  line-height: 1.3;
+}
+
+.rte-editor h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 16px 0 12px 0;
+  color: #232629;
+  line-height: 1.3;
+}
+
+.rte-editor p {
+  margin: 0 0 12px 0;
+  line-height: 1.6;
+}
+
+.rte-editor strong {
+  font-weight: 600;
+}
+
+.rte-editor pre {
+  background: #f6f6f6;
+  padding: 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+  margin: 12px 0;
+  border: 1px solid #e3e6e8;
+}
+
+.rte-editor pre code {
+  background: transparent;
+  padding: 0;
+  color: #232629;
+  font-size: 13px;
+  display: block;
+  line-height: 1.5;
+  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+}
+
+.rte-editor ul,
+.rte-editor ol {
+  margin: 0 0 12px 0;
+  padding-left: 30px;
+}
+
+.rte-editor ul {
+  list-style-type: disc;
+}
+
+.rte-editor ol {
+  list-style-type: decimal;
+}
+
+.rte-editor li {
+  margin: 4px 0;
+  line-height: 1.6;
+}
+
+.rte-editor a {
+  color: #0a95ff;
+  text-decoration: none;
+}
+
+.rte-editor a:hover {
+  text-decoration: underline;
+}
+
+.rte-editor img.editor-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 3px;
+  margin: 12px 0;
+  border: 1px solid #d6d9dc;
+}
+
+.rte-editor table.editor-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0;
+  border: 1px solid #d6d9dc;
+  font-size: 14px;
+}
+
+.rte-editor table.editor-table th,
+.rte-editor table.editor-table td {
+  border: 1px solid #d6d9dc;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.rte-editor table.editor-table th {
+  background: #f8f9f9;
+  font-weight: 600;
+  color: #3c4146;
+}
+
+.rte-editor table.editor-table td {
+  background: #fff;
+}
+
+.rte-editor hr {
+  border: none;
+  border-top: 1px solid #d6d9dc;
+  margin: 20px 0;
+}
+
+/* Modal Styles */
+.rte-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.15s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.rte-modal {
+  background: #fff;
+  border-radius: 6px;
+  width: 90%;
+  max-width: 480px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.2s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.rte-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e3e6e8;
+}
+
+.rte-modal-header h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  color: #232629;
+}
+
+.rte-modal-close {
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #6a737c;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+.rte-modal-close:hover {
+  background: #f8f9f9;
+  color: #232629;
+}
+
+.rte-modal-body {
+  padding: 20px;
+}
+
+.rte-modal-field {
+  margin-bottom: 16px;
+}
+
+.rte-modal-field:last-child {
+  margin-bottom: 0;
+}
+
+.rte-modal-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #232629;
+}
+
+.rte-modal-field input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #babfc4;
+  border-radius: 3px;
+  font-size: 14px;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.rte-modal-field input:focus {
+  outline: none;
+  border-color: #6cbbff;
+  box-shadow: 0 0 0 4px rgba(0, 149, 255, 0.15);
+}
+
+.rte-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 20px;
+  background: #f8f9f9;
+  border-top: 1px solid #e3e6e8;
+  border-radius: 0 0 6px 6px;
+}
+
+.rte-modal-btn {
+  padding: 8px 16px;
+  border-radius: 3px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+  font-family: inherit;
+}
+
+.rte-modal-btn-cancel {
+  background: #fff;
+  color: #3c4146;
+  border-color: #babfc4;
+}
+
+.rte-modal-btn-cancel:hover {
+  background: #f8f9f9;
+}
+
+.rte-modal-btn-primary {
+  background: #0a95ff;
+  color: #fff;
+  border-color: #0a95ff;
+}
+
+.rte-modal-btn-primary:hover {
+  background: #0074cc;
+  border-color: #0074cc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .rte-toolbar {
+    gap: 4px;
+    padding: 8px;
+  }
+  
+  .rte-btn {
+    min-width: 28px;
+    height: 28px;
+    padding: 4px 8px;
+  }
+  
+  .rte-btn-dropdown {
+    padding: 4px 6px 4px 10px;
+  }
+  
+  .rte-editor {
+    min-height: 250px;
+    padding: 12px 16px;
+  }
+  
+  .rte-modal {
+    max-width: 95%;
+  }
+}
+
+/* Scrollbar */
+.rte-editor::-webkit-scrollbar {
+  width: 10px;
+}
+
+.rte-editor::-webkit-scrollbar-track {
+  background: #f8f9f9;
+}
+
+.rte-editor::-webkit-scrollbar-thumb {
+  background: #babfc4;
+  border-radius: 5px;
+}
+
+.rte-editor::-webkit-scrollbar-thumb:hover {
+  background: #9199a1;
+}
