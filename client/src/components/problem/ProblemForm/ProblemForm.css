@@ -1,0 +1,145 @@
+/* Base Layout */
+.hc-page-layout {
+    display: flex;
+    justify-content: center;
+    background-color: #f1f2f3;
+    min-height: 100vh;
+    padding: 50px 20px;
+    font-family: Arial, sans-serif;
+}
+
+.hc-form-card {
+    width: 100%;
+    max-width: 800px;
+    background: #ffffff;
+    border: 1px solid #e3e6e8;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.hc-main-title {
+    font-size: 26px;
+    margin-bottom: 25px;
+    color: #232629;
+}
+
+.hc-input-group {
+    margin-bottom: 25px;
+}
+
+.hc-label {
+    display: block;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.hc-req { color: #d0393e; margin-left: 3px; }
+
+.hc-helper {
+    font-size: 12px;
+    color: #525960;
+    margin-bottom: 10px;
+}
+
+/* Inputs */
+.hc-input, .hc-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #babfc4;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.hc-input:focus, .hc-select:focus {
+    border-color: #379fef;
+    outline: 3px solid #ddecfa;
+}
+
+/* Editor Specifics */
+.hc-editor-container {
+    border: 1px solid #babfc4;
+    border-radius: 4px;
+}
+
+.hc-toolbar {
+    background: #f8f9f9;
+    padding: 8px;
+    border-bottom: 1px solid #babfc4;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.hc-toolbar button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 8px;
+    color: #525960;
+}
+
+.hc-toolbar button:hover { background: #e3e6e8; border-radius: 3px; }
+
+.hc-divider { width: 1px; height: 20px; background: #babfc4; }
+
+.hc-editor-body {
+    min-height: 200px;
+    padding: 15px;
+    outline: none;
+}
+
+.hc-editor-body:empty:before {
+    content: attr(placeholder);
+    color: #9199a1;
+}
+
+/* Tags */
+.hc-tag-box {
+    border: 1px solid #babfc4;
+    padding: 8px;
+    border-radius: 4px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.hc-tag {
+    background: #e1ecf4;
+    color: #39739d;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.hc-tag-remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.hc-tag-input {
+    border: none;
+    outline: none;
+    flex: 1;
+    min-width: 100px;
+}
+
+/* Button */
+.hc-submit-btn {
+    background-color: #0a95ff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.hc-submit-btn:hover { background-color: #0074cc; }
