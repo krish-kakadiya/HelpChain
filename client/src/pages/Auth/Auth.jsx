@@ -17,13 +17,13 @@ const LoginRegister = () => {
 
         <form>
           <div className="input-box animation" style={{ "--D": 1, "--S": 22 }}>
-            <input type="text" required />
+            <input type="text" required placeholder=" "/>
             <label>Username</label>
             <box-icon type="solid" name="user" color="gray"></box-icon>
           </div>
 
           <div className="input-box animation" style={{ "--D": 2, "--S": 23 }}>
-            <input type="password" required />
+            <input type="password" required placeholder=" "/>
             <label>Password</label>
             <box-icon name="lock-alt" type="solid" color="gray"></box-icon>
           </div>
@@ -61,19 +61,19 @@ const LoginRegister = () => {
 
         <form>
           <div className="input-box animation" style={{ "--li": 18, "--S": 1 }}>
-            <input type="text" required />
+            <input type="text" required placeholder=" "/>
             <label>Username</label>
             <box-icon type="solid" name="user" color="gray"></box-icon>
           </div>
 
           <div className="input-box animation" style={{ "--li": 19, "--S": 2 }}>
-            <input type="email" required />
+            <input type="email" required placeholder=" "/>
             <label>Email</label>
             <box-icon name="envelope" type="solid" color="gray"></box-icon>
           </div>
 
           <div className="input-box animation" style={{ "--li": 19, "--S": 3 }}>
-            <input type="password" required />
+            <input type="password" required placeholder=" "/>
             <label>Password</label>
             <box-icon name="lock-alt" type="solid" color="gray"></box-icon>
           </div>

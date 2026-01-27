@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-* {
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -16,6 +16,8 @@ body{
     background: linear-gradient(135deg, #f2ecff, #e6ddff);
 }
 
+/* ================= CONTAINER ================= */
+
 .container{
     position: relative;
     width: 750px;
@@ -25,6 +27,8 @@ body{
     overflow: hidden;
     background: #faf7ff;
 }
+
+/* ================= FORM BOX ================= */
 
 .container .form-box{
     position: absolute;
@@ -36,6 +40,8 @@ body{
     flex-direction: column;
 }
 
+/* ---------- LOGIN FORM ---------- */
+
 .form-box.Login{
     left: 0;
     padding: 0 40px;
@@ -43,16 +49,18 @@ body{
 
 .form-box.Login .animation{
     transform: translateX(0%);
-    transition: .7s;
     opacity: 1;
-    transition-delay: calc(.1s * var(--S));
+    transition: .35s ease;
+    transition-delay: 0s;
 }
 
 .container.active .form-box.Login .animation{
     transform: translateX(-120%);
     opacity: 0;
-    transition-delay: calc(.1s * var(--D));
+    transition-delay: calc(.05s * var(--D));
 }
+
+/* ---------- REGISTER FORM ---------- */
 
 .form-box.Register{
     right: 0;
@@ -61,24 +69,28 @@ body{
 
 .form-box.Register .animation{
     transform: translateX(120%);
-    transition: .7s ease;
     opacity: 0;
-    filter: blur(10px);
-    transition-delay: calc(.1s * var(--S));
+    filter: blur(8px);
+    transition: .35s ease;
+    transition-delay: calc(.05s * var(--S));
 }
 
 .container.active .form-box.Register .animation{
     transform: translateX(0%);
     opacity: 1;
-    filter: blur(0px);
-    transition-delay: calc(.1s * var(--li));
+    filter: blur(0);
+    transition-delay: calc(.05s * var(--D));
 }
+
+/* ================= HEADINGS ================= */
 
 .form-box h2{
     font-size: 32px;
     text-align: center;
     color: #4a148c;
 }
+
+/* ================= INPUT ================= */
 
 .form-box .input-box{
     position: relative;
@@ -94,11 +106,10 @@ body{
     border: none;
     outline: none;
     font-size: 16px;
-    color: #2b2b35;
     font-weight: 600;
     border-bottom: 2px solid #b39ddb;
     padding-right: 23px;
-    transition: .5s;
+    transition: .3s;
 }
 
 .input-box input:focus,
@@ -113,31 +124,18 @@ body{
     transform: translateY(-50%);
     font-size: 16px;
     color: #6d6d7d;
-    transition: .5s;
+    transition: .3s;
 }
 
 .input-box input:focus ~ label,
-.input-box input:valid ~ label{
+.input-box input:not(:placeholder-shown) ~ label{
     top: -5px;
     color: #6a1b9a;
 }
 
-.input-box box-icon{
-    position: absolute;
-    top: 50%;
-    right: 0;
-    font-size: 18px;
-    transform: translateY(-50%);
-    color: #6d6d7d;
-}
-
-.input-box input:focus ~ box-icon,
-.input-box input:valid ~ box-icon{
-    color: #6a1b9a;
-}
+/* ================= BUTTON ================= */
 
 .btn{
-    position: relative;
     width: 100%;
     height: 45px;
     background: transparent;
@@ -148,33 +146,36 @@ body{
     border: 2px solid #6a1b9a;
     color: #4a148c;
     overflow: hidden;
-    z-index: 1;    
+    position: relative;
+    z-index: 1;
 }
 
 .btn::before{
     content: "";
     position: absolute;
-    height: 300%;
     width: 100%;
+    height: 300%;
+    top: -100%;
+    left: 0;
     background: linear-gradient(
         #b3a1d8,
         #6a1b9a,
         #b3a1d8,
         #6a1b9a
     );
-    top: -100%;
-    left: 0;
     z-index: -1;
-    transition: .5s;
+    transition: .35s;
 }
 
 .btn:hover{
-    color: #ffffff;
+    color: #fff;
 }
 
-.btn:hover:before{
+.btn:hover::before{
     top: 0;
 }
+
+/* ================= LINK ================= */
 
 .regi-link{
     font-size: 14px;
@@ -192,11 +193,13 @@ body{
     text-decoration: underline;
 }
 
+/* ================= INFO CONTENT ================= */
+
 .info-content{
     position: absolute;
     top: 0;
-    height: 100%;
     width: 50%;
+    height: 100%;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -210,17 +213,17 @@ body{
 
 .info-content.Login .animation{
     transform: translateX(0);
-    transition: .7s ease;
-    transition-delay: calc(.1s * var(--S));
     opacity: 1;
-    filter: blur(0px);
+    filter: blur(0);
+    transition: .35s ease;
+    transition-delay: 0s;
 }
 
 .container.active .info-content.Login .animation{
     transform: translateX(120%);
     opacity: 0;
-    filter: blur(10px);
-    transition-delay: calc(.1s * var(--D));
+    filter: blur(8px);
+    transition-delay: 0s;
 }
 
 .info-content.Register{
@@ -232,64 +235,54 @@ body{
 
 .info-content.Register .animation{
     transform: translateX(-120%);
-    transition: .7s ease;
     opacity: 0;
-    filter: blur(10PX);
-    transition-delay: calc(.1s * var(--S));
+    filter: blur(8px);
+    transition: .35s ease;
+    transition-delay: calc(.05s * var(--S));
 }
 
 .container.active .info-content.Register .animation{
     transform: translateX(0%);
     opacity: 1;
     filter: blur(0);
-    transition-delay: calc(.1s * var(--li));
+    transition-delay: calc(.05s * var(--D));
 }
 
-.info-content h2{
-    text-transform: uppercase;
-    font-size: 36px;
-    line-height: 1.3;
-    color: #4a148c;
-}
-
-.info-content p{
-    font-size: 16px;
-    color: #4e4e5e;
-}
+/* ================= CURVED SHAPES ================= */
 
 .container .curved-shape{
     position: absolute;
     right: 0;
     top: -5px;
-    height: 600px;
     width: 850px;
+    height: 600px;
     background: linear-gradient(45deg, #ede7ff, #6a1b9a);
+    border-bottom: 3px solid #6a1b9a;
     transform: rotate(10deg) skewY(40deg);
     transform-origin: bottom right;
-    transition: 1.5s ease;
-    transition-delay: 1.6s;
+    transition: .35s ease;
+    transition-delay: .15s;
 }
 
 .container.active .curved-shape{
-    transform: rotate(0deg) skewY(0deg);
-    transition-delay: .5s;
+    transform: rotate(0) skewY(0);
+    transition-delay: 0s;
 }
 
 .container .curved-shape2{
     position: absolute;
     left: 250px;
     top: 100%;
-    height: 700px;
     width: 850px;
+    height: 700px;
     background: #f2ecff;
     border-top: 3px solid #6a1b9a;
-    transform: rotate(0deg) skewY(0deg);
     transform-origin: bottom left;
-    transition: 1.5s ease;
-    transition-delay: .5s;
+    transition: .35s ease;
+    transition-delay: 0s;
 }
 
 .container.active .curved-shape2{
     transform: rotate(-11deg) skewY(-41deg);
-    transition-delay: 1.2s;
+    transition-delay: .15s;
 }
