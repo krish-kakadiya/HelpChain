@@ -1,0 +1,260 @@
+/* ========================================
+   LEADERBOARD - MINIMALIST DESIGN
+   ======================================== */
+
+.leaderboard {
+  width: 100%;
+}
+
+.leaderboard__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ========================================
+   LEADERBOARD ITEM
+   ======================================== */
+
+.leaderboard-item {
+  display: grid;
+  grid-template-columns: 50px 50px 1fr auto 120px;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: #fafafa;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.leaderboard-item:hover {
+  background: #ffffff;
+  border-color: #e0e0e0;
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Top 3 Special Styling */
+.leaderboard-item--top {
+  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+  border: 2px solid #e8e8e8;
+}
+
+.leaderboard-item--top:hover {
+  border-color: #7b61ff;
+  box-shadow: 0 4px 12px rgba(123, 97, 255, 0.15);
+}
+
+/* ========================================
+   RANK
+   ======================================== */
+
+.leaderboard-item__rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #666;
+}
+
+.rank-number {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8e8e8;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.rank-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.rank-icon--gold {
+  color: #ffd700;
+}
+
+.rank-icon--silver {
+  color: #c0c0c0;
+}
+
+.rank-icon--bronze {
+  color: #cd7f32;
+}
+
+/* ========================================
+   AVATAR
+   ======================================== */
+
+.leaderboard-item__avatar {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #7b61ff 0%, #9581ff 100%);
+  color: white;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(123, 97, 255, 0.3);
+}
+
+.leaderboard-item--top:nth-child(1) .leaderboard-item__avatar {
+  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+  color: #1a1a1a;
+}
+
+.leaderboard-item--top:nth-child(2) .leaderboard-item__avatar {
+  background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+  color: #1a1a1a;
+}
+
+.leaderboard-item--top:nth-child(3) .leaderboard-item__avatar {
+  background: linear-gradient(135deg, #cd7f32 0%, #e89f5f 100%);
+  color: white;
+}
+
+/* ========================================
+   USER INFO
+   ======================================== */
+
+.leaderboard-item__info {
+  min-width: 0;
+}
+
+.leaderboard-item__name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.leaderboard-item__username {
+  font-size: 0.85rem;
+  color: #888;
+  font-weight: 500;
+}
+
+/* ========================================
+   STATS
+   ======================================== */
+
+.leaderboard-item__stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stat-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #e8e8e8;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #666;
+}
+
+.stat-badge svg {
+  color: #7b61ff;
+}
+
+.trend-icon {
+  opacity: 0.7;
+}
+
+.trend-icon--up {
+  color: #10b981;
+  transform: rotate(0deg);
+}
+
+.trend-icon--down {
+  color: #ef4444;
+  transform: rotate(180deg);
+}
+
+/* ========================================
+   POINTS
+   ======================================== */
+
+.leaderboard-item__points {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.points-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.leaderboard-item--top .leaderboard-item__points {
+  color: #7b61ff;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+  .leaderboard-item {
+    grid-template-columns: 40px 45px 1fr 100px;
+    gap: 12px;
+    padding: 14px 16px;
+  }
+
+  .leaderboard-item__rank {
+    font-size: 1rem;
+  }
+
+  .rank-number {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
+
+  .rank-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .leaderboard-item__avatar {
+    width: 45px;
+    height: 45px;
+    font-size: 0.9rem;
+  }
+
+  .leaderboard-item__name {
+    font-size: 0.95rem;
+  }
+
+  .leaderboard-item__username {
+    font-size: 0.8rem;
+  }
+
+  .leaderboard-item__stats {
+    display: none;
+  }
+
+  .leaderboard-item__points {
+    font-size: 1.25rem;
+  }
+}

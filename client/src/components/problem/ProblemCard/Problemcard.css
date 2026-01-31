@@ -1,0 +1,51 @@
+.hc-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid #f1f5f9;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.hc-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(123, 97, 255, 0.06);
+  border-color: #7b61ff;
+}
+
+.hc-card__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.hc-card__description {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.hc-card__tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.hc-card__tag {
+  background: #f5f3ff;
+  color: #7b61ff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.hc-card__solutions-text {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 500;
+}

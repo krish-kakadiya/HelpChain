@@ -1,0 +1,288 @@
+/* ========================================
+   STATS CARD - MINIMALIST DESIGN
+   ======================================== */
+
+.stats-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 32px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.stats-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+.stats-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* Color Variants */
+.stats-card--purple {
+  color: #7b61ff;
+}
+
+.stats-card--blue {
+  color: #3b82f6;
+}
+
+.stats-card--green {
+  color: #10b981;
+}
+
+/* Clickable State */
+.stats-card--clickable {
+  cursor: pointer;
+}
+
+.stats-card--clickable:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+/* ========================================
+   CARD ELEMENTS
+   ======================================== */
+
+.stats-card__icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: currentColor;
+  color: white;
+  border-radius: 12px;
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+.stats-card__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.stats-card__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.stats-card__value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.stats-card__subtitle {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #888;
+  margin-top: 6px;
+}
+
+/* Badge Image */
+.stats-card__badge {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid currentColor;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.stats-card__badge img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ========================================
+   MODAL STYLES
+   ======================================== */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 28px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.modal-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.modal-close {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 8px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+  background: #ff4444;
+  color: white;
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  padding: 28px;
+}
+
+/* Points Breakdown */
+.points-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.breakdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #fafafa;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.breakdown-item:hover {
+  background: #f0f0f0;
+  transform: translateX(4px);
+}
+
+.breakdown-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #666;
+}
+
+.breakdown-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.breakdown-item--total {
+  background: linear-gradient(135deg, #7b61ff 0%, #9581ff 100%);
+  margin-top: 8px;
+}
+
+.breakdown-item--total .breakdown-label,
+.breakdown-item--total .breakdown-value {
+  color: white;
+}
+
+.breakdown-item--total:hover {
+  transform: translateX(0) scale(1.02);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+  .stats-card {
+    padding: 20px 24px;
+    gap: 16px;
+  }
+
+  .stats-card__icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .stats-card__value {
+    font-size: 1.75rem;
+  }
+
+  .stats-card__badge {
+    width: 50px;
+    height: 50px;
+  }
+
+  .modal-content {
+    width: 95%;
+    margin: 0 20px;
+  }
+
+  .modal-header,
+  .modal-body {
+    padding: 20px;
+  }
+}

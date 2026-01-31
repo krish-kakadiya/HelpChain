@@ -1,0 +1,38 @@
+.hc-dashboard {
+  /* This padding ensures the content starts below your fixed Navbar */
+  padding-top: 20px; 
+}
+
+.hc-dashboard__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.hc-dashboard__title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.hc-dashboard__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+}
+
+.hc-btn-primary {
+  background: #7b61ff;
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.hc-btn-primary:hover {
+  background: #6246ea;
+}

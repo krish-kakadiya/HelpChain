@@ -1,0 +1,317 @@
+/* ========================================
+   BADGE SECTION LAYOUT
+   ======================================== */
+
+.badge-section {
+  width: 100%;
+}
+
+/* ========================================
+   STATS OVERVIEW
+   ======================================== */
+
+.badge-section__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 32px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 2px solid #e8eaf0;
+  transition: all 0.3s ease;
+  cursor: default;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+.stat-card__icon {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover .stat-card__icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.stat-card--primary .stat-card__icon {
+  background: linear-gradient(135deg, #7b61ff 0%, #9581ff 100%);
+  color: white;
+  box-shadow: 0 8px 16px rgba(123, 97, 255, 0.3);
+}
+
+.stat-card--secondary .stat-card__icon {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: white;
+  box-shadow: 0 8px 16px rgba(251, 191, 36, 0.3);
+}
+
+.stat-card--tertiary .stat-card__icon {
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+  color: white;
+  box-shadow: 0 8px 16px rgba(100, 116, 139, 0.3);
+}
+
+.stat-card__info {
+  flex: 1;
+}
+
+.stat-card__value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #1a1d2e;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.stat-card__label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+/* ========================================
+   SECTION TITLES
+   ======================================== */
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a1d2e;
+  margin-bottom: 28px;
+  letter-spacing: -0.02em;
+}
+
+.section-title svg {
+  color: #7b61ff;
+}
+
+.badge-section__earned {
+  margin-bottom: 56px;
+}
+
+/* ========================================
+   BADGE GRID
+   ======================================== */
+
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+}
+
+/* ========================================
+   DETAILED BADGE CARDS
+   ======================================== */
+
+.badge-card-detailed {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid #e8eaf0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.badge-card-detailed:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.12);
+  border-color: #7b61ff;
+}
+
+/* Image Section */
+.badge-card-detailed__image {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f8f9fc 0%, #e8eaf0 100%);
+}
+
+.badge-card-detailed__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.badge-card-detailed:hover .badge-card-detailed__image img {
+  transform: scale(1.1);
+}
+
+.badge-card-detailed__overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+  pointer-events: none;
+}
+
+.badge-card-detailed__points {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #7b61ff 0%, #9581ff 100%);
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(123, 97, 255, 0.4);
+}
+
+/* Content Section */
+.badge-card-detailed__content {
+  padding: 24px;
+}
+
+.badge-card-detailed__category {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #f5f3ff;
+  color: #7b61ff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.badge-card-detailed__name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1d2e;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.badge-card-detailed__description {
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.badge-card-detailed__footer {
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.badge-card-detailed__date {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* ========================================
+   LOCKED BADGE STYLES
+   ======================================== */
+
+.badge-card-detailed--locked {
+  opacity: 0.85;
+}
+
+.badge-card-detailed--locked .badge-card-detailed__image {
+  filter: grayscale(60%);
+}
+
+.badge-card-detailed__lock-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  backdrop-filter: blur(2px);
+}
+
+.badge-card-detailed--locked:hover {
+  border-color: #94a3b8;
+}
+
+/* Progress Bar */
+.badge-card-detailed__progress {
+  margin-top: 16px;
+  margin-bottom: 12px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e8eaf0;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-bar__fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7b61ff 0%, #9581ff 100%);
+  border-radius: 8px;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 8px rgba(123, 97, 255, 0.4);
+}
+
+.progress-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #7b61ff;
+}
+
+.badge-card-detailed__requirement {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-style: italic;
+  margin-top: 8px;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+  .badge-section__stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .badge-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat-card {
+    padding: 20px 24px;
+  }
+  
+  .stat-card__value {
+    font-size: 1.75rem;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+}

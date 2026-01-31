@@ -1,0 +1,309 @@
+:root {
+  --badge-dim: 100px;      /* Reduced from 120px for better proportions */
+  --badge-gap: 2.5rem;     /* Slightly reduced gap */
+  --scroll-speed: 20s;     /* Slower, smoother animation */
+}
+
+/* ========================================
+   WRAPPER - REDUCED HEIGHT & PREMIUM BG
+   ======================================== */
+
+.achievement-slider-wrapper {
+  width: 100%;
+  max-width: 100vw;
+  overflow: hidden;
+  padding: 30px 0;          /* Reduced from 40px */
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #fafafa 0%, #ffffff 100%);
+  border-radius: 16px;
+}
+
+/* Animated gradient background */
+.slider-bg-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(123, 97, 255, 0.03) 0%,
+    rgba(59, 130, 246, 0.03) 25%,
+    rgba(16, 185, 129, 0.03) 50%,
+    rgba(59, 130, 246, 0.03) 75%,
+    rgba(123, 97, 255, 0.03) 100%
+  );
+  background-size: 200% 100%;
+  animation: gradientShift 15s ease infinite;
+  pointer-events: none;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ========================================
+   TRACK - SMOOTH INFINITE SCROLL
+   ======================================== */
+
+.badge-track {
+  display: flex;
+  width: max-content;
+  gap: var(--badge-gap);
+  animation: scrollInfinite var(--scroll-speed) linear infinite;
+  will-change: transform;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes scrollInfinite {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-33.33% - (var(--badge-gap) / 3))); }
+}
+
+.achievement-slider-wrapper:hover .badge-track {
+  animation-play-state: paused;
+}
+
+/* ========================================
+   BADGE CARD - EXTRAORDINARY EFFECTS
+   ======================================== */
+
+.badge-card {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08));
+  transition: filter 0.3s ease;
+}
+
+.badge-card:hover {
+  filter: drop-shadow(0 8px 24px rgba(123, 97, 255, 0.25));
+}
+
+/* ========================================
+   GLASS CIRCLE - PREMIUM 3D EFFECT
+   ======================================== */
+
+.glass-circle {
+  width: var(--badge-dim);
+  height: var(--badge-dim);
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  border: 3px solid #f0f0f0;
+  box-shadow: 
+    0 8px 16px rgba(0, 0, 0, 0.12),
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    inset 0 -2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+}
+
+/* Glow effect behind badge */
+.badge-glow {
+  position: absolute;
+  inset: -10px;
+  background: radial-gradient(
+    circle at center,
+    rgba(123, 97, 255, 0.3) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+  filter: blur(15px);
+}
+
+/* ========================================
+   IMAGE - PERFECT FIT
+   ======================================== */
+
+.actual-badge-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ========================================
+   PREMIUM OVERLAY - GLOSSY EFFECT
+   ======================================== */
+
+.premium-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.1) 30%,
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.03) 100%
+  );
+  pointer-events: none;
+}
+
+/* ========================================
+   ANIMATED SHINE EFFECT
+   ======================================== */
+
+.badge-shine {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.6) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%) rotate(45deg);
+  pointer-events: none;
+}
+
+/* ========================================
+   HOVER INTERACTIONS - EXTRAORDINARY
+   ======================================== */
+
+.badge-card:hover .glass-circle {
+  transform: scale(1.15) translateY(-8px) rotateY(5deg);
+  border-color: #7b61ff;
+  box-shadow: 
+    0 12px 32px rgba(123, 97, 255, 0.3),
+    0 4px 8px rgba(123, 97, 255, 0.15),
+    inset 0 -2px 12px rgba(123, 97, 255, 0.1);
+}
+
+.badge-card:hover .badge-glow {
+  opacity: 1;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.badge-card:hover .actual-badge-img {
+  transform: scale(1.05);
+}
+
+.badge-card:hover .badge-shine {
+  animation: shine 0.8s ease;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
+}
+
+/* ========================================
+   FADE OVERLAYS - CLEAN EDGES
+   ======================================== */
+
+.fade-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 150px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.fade-overlay--left {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    rgba(250, 250, 250, 1) 0%,
+    rgba(250, 250, 250, 0.8) 40%,
+    transparent 100%
+  );
+}
+
+.fade-overlay--right {
+  right: 0;
+  background: linear-gradient(
+    to left,
+    rgba(250, 250, 250, 1) 0%,
+    rgba(250, 250, 250, 0.8) 40%,
+    transparent 100%
+  );
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+  :root {
+    --badge-dim: 80px;
+    --badge-gap: 2rem;
+  }
+
+  .achievement-slider-wrapper {
+    padding: 24px 0;
+  }
+
+  .fade-overlay {
+    width: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --badge-dim: 70px;
+    --badge-gap: 1.5rem;
+  }
+
+  .achievement-slider-wrapper {
+    padding: 20px 0;
+  }
+
+  .fade-overlay {
+    width: 60px;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY & PERFORMANCE
+   ======================================== */
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .badge-track {
+    animation: scrollInfiniteReduced var(--scroll-speed) linear infinite;
+  }
+  
+  @keyframes scrollInfiniteReduced {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(-33.33% - (var(--badge-gap) / 3))); }
+  }
+  
+  .badge-card:hover .glass-circle {
+    transform: scale(1.05) translateY(-4px);
+  }
+  
+  .badge-shine,
+  .slider-bg-gradient {
+    animation: none;
+  }
+}
+
+/* GPU acceleration for smooth animations */
+.glass-circle,
+.actual-badge-img,
+.badge-track {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
