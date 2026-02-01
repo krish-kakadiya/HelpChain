@@ -17,7 +17,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  margin-bottom: 48px;
+  margin-bottom: 32px;      /* Reduced from 48px */
 }
 
 /* ========================================
@@ -25,11 +25,12 @@
    ======================================== */
 
 .rewards-page__slider {
-  margin-bottom: 48px;
+  margin-bottom: 32px;      /* Reduced from 48px */
   background: #ffffff;
   border-radius: 16px;
-  padding: 40px 0;
+  padding: 0;               /* Removed extra padding */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
 }
 
 /* ========================================
@@ -134,6 +135,11 @@
   .rewards-page__stats {
     grid-template-columns: 1fr;
     gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .rewards-page__slider {
+    margin-bottom: 24px;
   }
 
   .section-header {

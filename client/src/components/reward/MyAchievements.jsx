@@ -3,14 +3,14 @@ import { Award, Calendar, Star, Filter } from 'lucide-react';
 import './MyAchievements.css';
 
 // Import badge images
-import bugSpecialist from '../../assets/badges/bug-specialist.jpg';
-import cyberSecurity from '../../assets/badges/cyberSecurity.jpg';
-import debug from '../../assets/badges/Debug.jpg';
-import fifty from '../../assets/badges/fifty.jpg';
-import logicArchitect from '../../assets/badges/logicArchitect.jpg';
-import mentor from '../../assets/badges/mentor.jpg';
-import problemSolver from '../../assets/badges/problem-solver.jpg';
-import topContributor from '../../assets/badges/topContributor.jpg';
+// import bugSpecialist from '../../assets/badges/bug-specialist.png';
+// import cyberSecurity from '../../assets/badges/cyberSecurity.png';
+// import debug from '../../assets/badges/Debug.png';
+import fifty from '../../assets/badges/fifty.png';
+// import logicArchitect from '../../assets/badges/logicArchitect.png';
+import mentor from '../../assets/badges/mentor.png';
+// import problemSolver from '../../assets/badges/problem-solver.png';
+// import topContributor from '../../assets/badges/topContributor.png';
 
 const MyAchievements = () => {
   const [filter, setFilter] = useState('all');

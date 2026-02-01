@@ -6,21 +6,33 @@ import './Dashboard.css';
 const Dashboard = () => {
   const navigate = useNavigate();
 
-  // Mock data representing your Helpchain problems
   const problems = [
     {
       id: 1,
       title: "Sample Problem",
       description: "Fixing the UI layout for Helpchain to ensure components don't overlap.",
       tags: ["React", "CSS"],
-      solutions: 3
+      solutions: 3,
+      uploaderName: "John Doe",
+      image: null // No image for this problem
     },
     {
       id: 2,
       title: "Logo Scaling",
       description: "Ensuring the SVG logo stays rounded and properly sized in the Navbar.",
       tags: ["Frontend", "UI/UX"],
-      solutions: 5
+      solutions: 5,
+      uploaderName: "Jane Smith",
+      image: "https://via.placeholder.com/280x200" // Example with image
+    },
+    {
+      id: 3,
+      title: "Database Performance Issue",
+      description: "Optimizing slow queries that are affecting the application response time during peak hours.",
+      tags: ["Backend", "Database", "Performance"],
+      solutions: 8,
+      uploaderName: "Mike Johnson",
+      image: "https://via.placeholder.com/280x200/4CAF50/FFFFFF"
     }
   ];
 
@@ -30,7 +42,7 @@ const Dashboard = () => {
         <h1 className="hc-dashboard__title">Dashboard Overview</h1>
         <button 
           className="hc-btn-primary" 
-          onClick={() => navigate('/ProblemForm')} // Connects to the route
+          onClick={() => navigate('/ProblemForm')}
         >
           + New Post
         </button>

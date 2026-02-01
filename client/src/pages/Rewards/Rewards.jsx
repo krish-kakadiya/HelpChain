@@ -4,7 +4,7 @@ import BadgeSlider from '../../components/reward/BadgeSlider';
 import StatsCard from '../../components/reward/StatsCard';
 import Leaderboard from '../../components/reward/Leaderboard';
 import MyAchievements from '../../components/reward/MyAchievements';
-import hundredBadge from '../../assets/badges/hundred.jpg';
+import hundredBadge from '../../assets/badges/hundred.png';
 import './Rewards.css';
 
 const Rewards = () => {

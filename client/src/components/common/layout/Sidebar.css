@@ -1,7 +1,3 @@
-/* ========================================
-   PREMIUM SIDEBAR STYLES
-   ======================================== */
-
 .hc-sidebar {
   width: 280px;
   background: #ffffff;
@@ -13,35 +9,57 @@
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+  transition: width 0.3s ease;
+}
+
+.hc-sidebar--closed {
+  width: 80px;
+}
+
+/* Toggle Button */
+.hc-sidebar__toggle {
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  background: #ffffff;
+  border: 2px solid #7b61ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #7b61ff;
+  box-shadow: 0 2px 12px rgba(123, 97, 255, 0.25);
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.hc-sidebar__toggle:hover {
+  background: #7b61ff;
+  color: #ffffff;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 4px 16px rgba(123, 97, 255, 0.4);
+}
+
+/* Sections */
+.hc-sidebar__main {
+  flex: 1;
+  padding: 24px 0;
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-/* Custom Scrollbar */
-.hc-sidebar::-webkit-scrollbar {
-  width: 6px;
+.hc-sidebar__main::-webkit-scrollbar {
+  width: 4px;
 }
 
-.hc-sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.hc-sidebar::-webkit-scrollbar-thumb {
+.hc-sidebar__main::-webkit-scrollbar-thumb {
   background: #e8eaf0;
   border-radius: 10px;
-}
-
-.hc-sidebar::-webkit-scrollbar-thumb:hover {
-  background: #d1d5db;
-}
-
-/* ========================================
-   SIDEBAR SECTIONS
-   ======================================== */
-
-.hc-sidebar__main {
-  flex: 1;
-  padding: 24px 0;
 }
 
 .hc-sidebar__bottom {
@@ -57,14 +75,11 @@
 
 .hc-sidebar__divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, #e8eaf0 20%, #e8eaf0 80%, transparent 100%);
+  background: #e8eaf0;
   margin: 16px 20px 20px 20px;
 }
 
-/* ========================================
-   SIDEBAR LINKS
-   ======================================== */
-
+/* Links */
 .hc-sidebar__link {
   display: flex;
   align-items: center;
@@ -75,45 +90,20 @@
   font-weight: 500;
   font-size: 0.95rem;
   border-radius: 12px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
-}
-
-/* Subtle gradient background on hover */
-.hc-sidebar__link::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, #f8f9fc 0%, #f1f3f9 100%);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  border-radius: 12px;
-}
-
-.hc-sidebar__link:hover::before {
-  opacity: 1;
+  white-space: nowrap;
 }
 
 .hc-sidebar__link:hover {
   color: #7b61ff;
-  transform: translateX(4px);
+  background: #f8f9fc;
 }
 
-/* Active State */
 .hc-sidebar__link--active {
   background: linear-gradient(135deg, #f5f3ff 0%, #ebe8ff 100%);
   color: #7b61ff;
   font-weight: 600;
-  box-shadow: 0 2px 8px rgba(123, 97, 255, 0.1);
-  border: 1px solid #e8e4ff;
-}
-
-.hc-sidebar__link--active::before {
-  display: none;
 }
 
 .hc-sidebar__link--active::after {
@@ -124,53 +114,41 @@
   transform: translateY(-50%);
   width: 4px;
   height: 28px;
-  background: linear-gradient(180deg, #7b61ff 0%, #9581ff 100%);
+  background: #7b61ff;
   border-radius: 0 4px 4px 0;
-  box-shadow: 2px 0 8px rgba(123, 97, 255, 0.3);
 }
-
-/* ========================================
-   ICONS & LABELS
-   ======================================== */
 
 .hc-sidebar__icon {
   min-width: 20px;
   min-height: 20px;
-  position: relative;
-  z-index: 1;
-  transition: all 0.3s ease;
-}
-
-.hc-sidebar__link:hover .hc-sidebar__icon {
-  transform: scale(1.1);
-}
-
-.hc-sidebar__link--active .hc-sidebar__icon {
-  stroke-width: 2.5;
+  flex-shrink: 0;
 }
 
 .hc-sidebar__label {
-  position: relative;
-  z-index: 1;
-  letter-spacing: -0.01em;
+  overflow: hidden;
+  transition: opacity 0.2s ease;
 }
 
-/* ========================================
-   BOTTOM LINKS
-   ======================================== */
+.hc-sidebar--closed .hc-sidebar__label {
+  opacity: 0;
+  width: 0;
+}
 
+.hc-sidebar--closed .hc-sidebar__link {
+  justify-content: center;
+  padding: 13px;
+}
+
+/* Bottom Links */
 .hc-sidebar__link--bottom {
   color: #94a3b8;
-  font-weight: 500;
 }
 
 .hc-sidebar__link--bottom:hover {
   color: #64748b;
   background: #f8f9fc;
-  transform: translateX(2px);
 }
 
-/* Logout link special styling */
 .hc-sidebar__link--bottom:last-child {
   color: #ef4444;
 }
@@ -180,70 +158,13 @@
   background: #fef2f2;
 }
 
-.hc-sidebar__link--bottom:last-child:hover .hc-sidebar__icon {
-  transform: scale(1.1) rotate(-5deg);
-}
-
-/* ========================================
-   PREMIUM TOUCHES
-   ======================================== */
-
-/* Add subtle glow to active item */
-.hc-sidebar__link--active {
-  position: relative;
-}
-
-.hc-sidebar__link--active::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  background: linear-gradient(135deg, rgba(123, 97, 255, 0.1) 0%, rgba(149, 129, 255, 0.05) 100%);
-  border-radius: 14px;
-  z-index: -1;
-  opacity: 1;
-}
-
-/* Smooth transitions for all interactive elements */
-.hc-sidebar__link * {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ========================================
-   RESPONSIVE DESIGN
-   ======================================== */
-
-@media (max-width: 1024px) {
-  .hc-sidebar {
-    width: 260px;
-  }
-}
-
+/* Responsive */
 @media (max-width: 768px) {
   .hc-sidebar {
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
   }
   
   .hc-sidebar--open {
     transform: translateX(0);
-  }
-}
-
-/* ========================================
-   ACCESSIBILITY
-   ======================================== */
-
-.hc-sidebar__link:focus-visible {
-  outline: 2px solid #7b61ff;
-  outline-offset: 2px;
-}
-
-/* Reduce motion for users who prefer it */
-@media (prefers-reduced-motion: reduce) {
-  .hc-sidebar__link,
-  .hc-sidebar__icon,
-  .hc-sidebar__link::before,
-  .hc-sidebar__link::after {
-    transition: none;
   }
 }
