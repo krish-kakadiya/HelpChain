@@ -31,9 +31,15 @@ const Sidebar = () => {
                 <NavLink 
                   key={item.path} 
                   to={item.path} 
-                  className={({isActive}) => 
-                    isActive ? 'hc-sidebar__link hc-sidebar__link--active' : 'hc-sidebar__link'
-                  }
+                  className={({ isActive }) => {
+                    const isDashboard = item.path === '/dashboard';
+                    const isRoot = window.location.pathname === '/';
+
+                    return (isActive || (isDashboard && isRoot))
+                      ? 'hc-sidebar__link hc-sidebar__link--active'
+                      : 'hc-sidebar__link';
+                  }}
+
                   title={!isOpen ? item.name : ''}
                 >
                   <IconComponent className="hc-sidebar__icon" size={20} />

@@ -2,12 +2,12 @@ import React from 'react';
 import './BadgeSlider.css';
 
 // Importing your specific assets
-// import bugSpecialist from '../../assets/badges/bug-specialist.png';
-// import cyberSecurity from '../../assets/badges/cyberSecurity.png';
+import bugSpecialist from '../../assets/badges/bug-specialist.png';
+import cyberSecurity from '../../assets/badges/cyberSecurity.png';
 // import debug from '../../assets/badges/Debug.png';
 import fifty from '../../assets/badges/fifty.png';
 import hundred from '../../assets/badges/hundred.png';
-// import logicArchitect from '../../assets/badges/logicArchitect.png';
+import logicArchitect from '../../assets/badges/logicArchitect.png';
 import mentor from '../../assets/badges/mentor.png';
 // import performanceOptimizer from '../../assets/badges/performanceOptimizer.png';
 // import problemSolver from '../../assets/badges/problem-solver.png';
@@ -20,7 +20,7 @@ const BadgeSlider = () => {
   // ];
 
   const badges = [
-    fifty, hundred, mentor
+    bugSpecialist, cyberSecurity, fifty, hundred, logicArchitect, mentor
   ];
 
   // Triple the items to ensure seamless infinite scroll

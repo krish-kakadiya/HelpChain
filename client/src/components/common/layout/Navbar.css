@@ -133,8 +133,8 @@
   align-items: center;
   gap: 8px;
   font-weight: 600;
-  color: #7b61ff;
-  background: linear-gradient(135deg, #f5f3ff 0%, #ebe8ff 100%);
+  color: #6B4E00;
+  background: linear-gradient(135deg, #FFF6CC 0%, #F3E5AB 100%);
   padding: 10px 18px;
   border-radius: 12px;
   font-size: 0.95rem;
@@ -144,14 +144,20 @@
 }
 
 .hc-navbar__points:hover {
-  background: linear-gradient(135deg, #ebe8ff 0%, #e0dbff 100%);
+  background: linear-gradient(
+    135deg,
+    #FFE9A3 0%,
+    #F5D76E 45%,
+    #D4AF37 100%
+  );
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(123, 97, 255, 0.15);
 }
 
-.hc-navbar__points svg {
-  color: #7b61ff;
+.hc-navbar__points img {
+  filter: drop-shadow(0 0 4px rgba(201, 162, 39, 0.4));
 }
+
 
 .hc-navbar__points span {
   font-weight: 700;

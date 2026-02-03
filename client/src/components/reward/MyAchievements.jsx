@@ -3,11 +3,11 @@ import { Award, Calendar, Star, Filter } from 'lucide-react';
 import './MyAchievements.css';
 
 // Import badge images
-// import bugSpecialist from '../../assets/badges/bug-specialist.png';
-// import cyberSecurity from '../../assets/badges/cyberSecurity.png';
+import bugSpecialist from '../../assets/badges/bug-specialist.png';
+import cyberSecurity from '../../assets/badges/cyberSecurity.png';
 // import debug from '../../assets/badges/Debug.png';
 import fifty from '../../assets/badges/fifty.png';
-// import logicArchitect from '../../assets/badges/logicArchitect.png';
+import logicArchitect from '../../assets/badges/logicArchitect.png';
 import mentor from '../../assets/badges/mentor.png';
 // import problemSolver from '../../assets/badges/problem-solver.png';
 // import topContributor from '../../assets/badges/topContributor.png';
@@ -16,15 +16,15 @@ const MyAchievements = () => {
   const [filter, setFilter] = useState('all');
 
   const achievements = [
-    {
-      id: 1,
-      name: 'Problem Solver',
-      description: 'Solved 10 problems',
-      image: problemSolver,
-      points: 100,
-      earnedDate: '2026-01-15',
-      category: 'Solving'
-    },
+    // {
+    //   id: 1,
+    //   name: 'Problem Solver',
+    //   description: 'Solved 10 problems',
+    //   image: problemSolver,
+    //   points: 100,
+    //   earnedDate: '2026-01-15',
+    //   category: 'Solving'
+    // },
     {
       id: 2,
       name: 'Bug Specialist',
@@ -61,15 +61,15 @@ const MyAchievements = () => {
       earnedDate: '2026-01-29',
       category: 'Security'
     },
-    {
-      id: 6,
-      name: 'Debug Master',
-      description: 'Debugging excellence',
-      image: debug,
-      points: 150,
-      earnedDate: '2026-01-30',
-      category: 'Debugging'
-    },
+    // {
+    //   id: 6,
+    //   name: 'Debug Master',
+    //   description: 'Debugging excellence',
+    //   image: debug,
+    //   points: 150,
+    //   earnedDate: '2026-01-30',
+    //   category: 'Debugging'
+    // },
     {
       id: 7,
       name: 'Mentor',
@@ -79,15 +79,15 @@ const MyAchievements = () => {
       earnedDate: '2026-01-31',
       category: 'Community'
     },
-    {
-      id: 8,
-      name: 'Top Contributor',
-      description: 'Most active contributor',
-      image: topContributor,
-      points: 500,
-      earnedDate: '2026-01-31',
-      category: 'Achievement'
-    }
+    // {
+    //   id: 8,
+    //   name: 'Top Contributor',
+    //   description: 'Most active contributor',
+    //   image: topContributor,
+    //   points: 500,
+    //   earnedDate: '2026-01-31',
+    //   category: 'Achievement'
+    // }
   ];
 
   const categories = ['all', 'Solving', 'Debugging', 'Contribution', 'Advanced', 'Security', 'Community', 'Achievement'];
