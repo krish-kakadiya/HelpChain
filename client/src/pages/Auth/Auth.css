@@ -286,3 +286,43 @@ body{
     transform: rotate(-11deg) skewY(-41deg);
     transition-delay: .15s;
 }
+
+/* Add a glowing glass effect to the container */
+.container {
+    backdrop-filter: blur(10px);
+    background: rgba(250, 247, 255, 0.8);
+    border: 1px solid rgba(106, 27, 154, 0.2) !important;
+}
+
+/* Shine effect for buttons */
+.shine-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.shine-effect::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 20%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: rotate(30deg);
+    transition: none;
+}
+
+.shine-effect:hover::after {
+    left: 120%;
+    transition: all 0.6s ease-in-out;
+}
+
+/* Floating animation for info text */
+.info-content h2 {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}

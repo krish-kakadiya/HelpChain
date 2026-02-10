@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import "./Auth.css";
+import OtpModal from "./OtpModal/OtpModal";
 
 const LoginRegister = () => {
   const [active, setActive] = useState(false);
+  const [showOtp, setShowOtp] = useState(false);
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    // Trigger the extraordinary OTP popup
+    setShowOtp(true);
+  };
 
   return (
     <div className={`container ${active ? "active" : ""}`}>
@@ -14,94 +22,75 @@ const LoginRegister = () => {
         <h2 className="animation" style={{ "--D": 0, "--S": 21 }}>
           Login
         </h2>
-
         <form>
           <div className="input-box animation" style={{ "--D": 1, "--S": 22 }}>
             <input type="text" required placeholder=" "/>
             <label>Username</label>
-            <box-icon type="solid" name="user" color="gray"></box-icon>
+            <i className='bx bxs-user'></i>
           </div>
 
           <div className="input-box animation" style={{ "--D": 2, "--S": 23 }}>
             <input type="password" required placeholder=" "/>
             <label>Password</label>
-            <box-icon name="lock-alt" type="solid" color="gray"></box-icon>
+            <i className='bx bxs-lock-alt'></i>
           </div>
 
           <div className="input-box animation" style={{ "--D": 3, "--S": 24 }}>
-            <button className="btn">Login</button>
+            <button type="button" className="btn shine-effect">Login</button>
           </div>
 
           <div className="regi-link animation" style={{ "--D": 4, "--S": 25 }}>
-            <p>
-              Don't have an account? <br />
-              <a href="#" onClick={() => setActive(true)}>
-                Sign Up
-              </a>
-            </p>
+            <p>Don't have an account? <a href="#" onClick={() => setActive(true)}>Sign Up</a></p>
           </div>
         </form>
       </div>
 
       {/* LOGIN INFO */}
       <div className="info-content Login">
-        <h2 className="animation" style={{ "--D": 0, "--S": 20 }}>
-          WELCOME BACK!
-        </h2>
-        <p className="animation" style={{ "--D": 1, "--S": 21 }}>
-          We are happy to have you with us again.
-        </p>
+        <h2 className="animation" style={{ "--D": 0, "--S": 20 }}>WELCOME BACK!</h2>
+        <p className="animation" style={{ "--D": 1, "--S": 21 }}>We are happy to have you with us again.</p>
       </div>
 
       {/* REGISTER FORM */}
       <div className="form-box Register">
-        <h2 className="animation" style={{ "--li": 17, "--S": 0 }}>
-          Register
-        </h2>
-
-        <form>
+        <h2 className="animation" style={{ "--li": 17, "--S": 0 }}>Register</h2>
+        <form onSubmit={handleRegister}>
           <div className="input-box animation" style={{ "--li": 18, "--S": 1 }}>
             <input type="text" required placeholder=" "/>
             <label>Username</label>
-            <box-icon type="solid" name="user" color="gray"></box-icon>
+            <i className='bx bxs-user'></i>
           </div>
 
           <div className="input-box animation" style={{ "--li": 19, "--S": 2 }}>
             <input type="email" required placeholder=" "/>
             <label>Email</label>
-            <box-icon name="envelope" type="solid" color="gray"></box-icon>
+            <i className='bx bxs-envelope'></i>
           </div>
 
           <div className="input-box animation" style={{ "--li": 19, "--S": 3 }}>
             <input type="password" required placeholder=" "/>
             <label>Password</label>
-            <box-icon name="lock-alt" type="solid" color="gray"></box-icon>
+            <i className='bx bxs-lock-alt'></i>
           </div>
 
           <div className="input-box animation" style={{ "--li": 20, "--S": 4 }}>
-            <button className="btn">Register</button>
+            <button type="submit" className="btn shine-effect">Register</button>
           </div>
 
           <div className="regi-link animation" style={{ "--li": 21, "--S": 5 }}>
-            <p>
-              Already have an account? <br />
-              <a href="#" onClick={() => setActive(false)}>
-                Sign In
-              </a>
-            </p>
+            <p>Already have an account? <a href="#" onClick={() => setActive(false)}>Sign In</a></p>
           </div>
         </form>
       </div>
 
       {/* REGISTER INFO */}
       <div className="info-content Register">
-        <h2 className="animation" style={{ "--li": 17, "--S": 0 }}>
-          WELCOME!
-        </h2>
-        <p className="animation" style={{ "--li": 18, "--S": 1 }}>
-          We’re delighted to have you here.
-        </p>
+        <h2 className="animation" style={{ "--li": 17, "--S": 0 }}>WELCOME!</h2>
+        <p className="animation" style={{ "--li": 18, "--S": 1 }}>We’re delighted to have you here.</p>
       </div>
+
+      {/* OTP MODAL COMPONENT */}
+      {showOtp && <OtpModal onClose={() => setShowOtp(false)} />}
     </div>
   );
 };
