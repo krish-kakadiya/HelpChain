@@ -1,124 +1,137 @@
-import React, { useState } from 'react';
-import RichTextEditor from './RichTextEditor';
-import './ProblemForm.css';
+import { useEffect, useRef, useState } from "react";
+import Editor from "@toast-ui/editor";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import "./ProblemForm.css";
 
-const ProblemForm = () => {
-  const [formData, setFormData] = useState({
-    type: 'Troubleshooting / Debugging',
-    title: '',
-    body: '',
-    tags: []
-  });
+export default function ProblemForm() {
+  const editorRef = useRef(null);
+  const editorInstance = useRef(null);
 
-  const [tagInput, setTagInput] = useState('');
+  const [title, setTitle] = useState("");
+  const [tags, setTags] = useState("");
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
+  useEffect(() => {
+    if (!editorInstance.current) {
+      editorInstance.current = new Editor({
+        el: editorRef.current,
+        height: "400px",
+        initialEditType: "markdown",
+        previewStyle: "vertical",
+        placeholder: "Describe your problem in detail...",
+        usageStatistics: false,
 
-  const handleBodyChange = (htmlContent) => {
-    setFormData(prev => ({ ...prev, body: htmlContent }));
-  };
+        toolbarItems: [
+          ["heading", "bold", "italic", "strike"],
+          ["hr", "quote"],
+          ["ul", "ol"],
+          ["link", "image"],
+          ["code", "codeblock"],
+        ],
 
-  const handleTagKeyDown = (e) => {
-    if (e.key === 'Enter' && tagInput.trim() !== '') {
-      e.preventDefault();
-      if (!formData.tags.includes(tagInput.trim()) && formData.tags.length < 5) {
-        setFormData(prev => ({
-          ...prev,
-          tags: [...prev.tags, tagInput.trim()]
-        }));
-      }
-      setTagInput('');
+        /**
+         * 🔥 Handles:
+         * - Image button upload
+         * - Paste screenshots (Ctrl+V)
+         * - Drag & drop images
+         */
+        hooks: {
+          addImageBlobHook: async (blob, callback) => {
+            try {
+              // FRONTEND responsibility
+              // const formData = new FormData();
+              // formData.append("image", blob);
+
+              // Replace with real endpoint later
+              // const res = await fetch("/api/upload-image", {
+              //   method: "POST",
+              //   body: formData,
+              // });
+
+              // const data = await res.json();
+              if (!blob || !blob.type.startsWith("image/")) {
+                return;
+              }
+
+
+              const fakeUrl = URL.createObjectURL(blob);
+              callback(fakeUrl, blob.name);
+
+
+              // Insert markdown automatically
+              // callback(data.url, blob.name);
+            } catch (error) {
+              console.error("Image upload failed", error);
+              alert("Image upload failed");
+            }
+          },
+        },
+      });
     }
-  };
 
-  const removeTag = (tagToRemove) => {
-    setFormData(prev => ({
-      ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
-    }));
-  };
+    return () => {
+      editorInstance.current?.destroy();
+      editorInstance.current = null;
+    };
+  }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // This 'formData' object is exactly what you send to your MongoDB/SQL DB
-    console.log("Submitting to HelpChain DB:", formData);
-    alert("Check console to see the structured data for your Database!");
+  const handleSubmit = () => {
+    const body = editorInstance.current.getMarkdown();
+
+    const payload = {
+      title: title.trim(),
+      tags: tags
+        .split(",")
+        .map((t) => t.trim())
+        .filter(Boolean),
+      body,
+    };
+
+    console.log("POST DATA →", payload);
+
+    // Ready for backend
+    /*
+    fetch("/api/problems", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    */
   };
 
   return (
-    <div className="hc-page-layout">
-      <div className="hc-form-card">
-        <h1 className="hc-main-title">Ask a public question</h1>
+    <div className="problem-form">
+      <h1>Ask a public question</h1>
 
-        <form onSubmit={handleSubmit} className="hc-form">
-          {/* Section: Type */}
-          <div className="hc-input-group">
-            <label className="hc-label">Type<span className="hc-req">*</span></label>
-            <select 
-              name="type" 
-              className="hc-select"
-              value={formData.type}
-              onChange={handleInputChange}
-            >
-              <option>Troubleshooting / Debugging</option>
-              <option>Project Brainstorming</option>
-              <option>Code Review Request</option>
-            </select>
-          </div>
+      {/* Title */}
+      <label className="label">Title</label>
+      <input
+        className="input"
+        type="text"
+        placeholder="e.g. Why does React re-render twice in StrictMode?"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
 
-          {/* Section: Title */}
-          <div className="hc-input-group">
-            <label className="hc-label">Title<span className="hc-req">*</span></label>
-            <p className="hc-helper">Be specific and imagine you’re asking a question to another person.</p>
-            <input 
-              type="text" 
-              name="title" 
-              className="hc-input"
-              placeholder="e.g. How to implement JWT in a React and Node.js app?" 
-              required
-              value={formData.title}
-              onChange={handleInputChange}
-            />
-          </div>
+      {/* Editor */}
+      <label className="label">What are the details of your problem?</label>
+      <div ref={editorRef} className="editor-container" />
 
-          {/* Section: Body (Modular Editor) */}
-          <div className="hc-input-group">
-            <label className="hc-label">Body<span className="hc-req">*</span></label>
-            <p className="hc-helper">Include all information someone would need to answer your question.</p>
-            <RichTextEditor onContentChange={handleBodyChange} />
-          </div>
+      {/* Tags */}
+      <label className="label">
+        Tags <span>(comma separated)</span>
+      </label>
+      <input
+        className="input"
+        type="text"
+        placeholder="react, markdown, toast-ui"
+        value={tags}
+        onChange={(e) => setTags(e.target.value)}
+      />
 
-          {/* Section: Tags */}
-          <div className="hc-input-group">
-            <label className="hc-label">Tags<span className="hc-req">*</span></label>
-            <p className="hc-helper">Add up to 5 tags to describe what your question is about.</p>
-            <div className="hc-tag-box">
-              {formData.tags.map(tag => (
-                <span key={tag} className="hc-tag">
-                  {tag}
-                  <button type="button" onClick={() => removeTag(tag)} className="hc-tag-remove">×</button>
-                </span>
-              ))}
-              <input 
-                type="text" 
-                className="hc-tag-input"
-                placeholder={formData.tags.length < 5 ? "Add tags..." : "Max 5 tags"}
-                value={tagInput}
-                disabled={formData.tags.length >= 5}
-                onChange={(e) => setTagInput(e.target.value)}
-                onKeyDown={handleTagKeyDown}
-              />
-            </div>
-          </div>
-
-          <button type="submit" className="hc-submit-btn">Post your question</button>
-        </form>
-      </div>
+      {/* Submit */}
+      <button className="submit-btn" onClick={handleSubmit}>
+        Post your question
+      </button>
     </div>
   );
-};
-
-export default ProblemForm;
+}
