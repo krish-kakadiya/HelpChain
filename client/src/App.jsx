@@ -6,6 +6,7 @@ import Navbar from './components/common/layout/Navbar';
 import Sidebar from './components/common/layout/Sidebar';
 import ProblemForm from './components/problem/ProblemForm/ProblemForm';
 import Rewards from './pages/Rewards/Rewards';
+import QuestionPage from './pages/ProblemView/QuestionPage';
 
 const Problems = () => <div className="page-content"><h1>My Problems</h1></div>;
 const Solutions = () => <div className="page-content"><h1>My Solutions</h1></div>;
@@ -23,6 +24,7 @@ function AppContent() {
         <Routes>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/ProblemForm" element={<ProblemForm />} />
+          <Route path="/QuestionPage" element={<QuestionPage/>} />
           <Route path="/problems" element={<Problems />} />
           <Route path="/rewards" element={<Rewards />} />
           <Route path="/solutions" element={<Solutions />} />
