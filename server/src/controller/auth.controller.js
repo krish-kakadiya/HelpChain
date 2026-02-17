@@ -1,10 +1,16 @@
-import { registerService, loginService, logoutService } from "../services/auth.service.js";
+import { registerService, loginService, verifyOtpService } from "../services/auth.service.js";
 
 export const register = async (req, res) => {
   try {
     console.log("register controller");
+    console.log(req.body);
     const user = await registerService(req.body);
-    res.status(201).json({ msg: "Registered", user });
+
+    res.status(201).json({
+      succsess: true,
+      message: "User registered successfully",
+      user
+    })
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -14,14 +20,18 @@ export const login = async (req, res) => {
   try {
     console.log("login controller");
     const data = await loginService(req.body);
+    console.log("login controller data:", data);
     res.json(data);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 };
 
-export const logout = async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  await logoutService(token);
-  res.json({ msg: "Logged out" });
+export const verifyOtp = async (req, res) => {
+  try {
+    const data = await verifyOtpService(req.body);
+    res.json(data);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 };

@@ -1,8 +1,9 @@
 import Navbar from "../components/common/layout/Navbar";
 import Sidebar from "../components/common/layout/Sidebar";
 import { useSidebar } from "../context/SidebarContext";
+import { Outlet } from "react-router-dom";
 
-const MainLayout = ({ children }) => {
+const MainLayout = () => {
   const { isOpen } = useSidebar();
 
   return (
@@ -15,7 +16,7 @@ const MainLayout = ({ children }) => {
           !isOpen ? "app__main-content--sidebar-closed" : ""
         }`}
       >
-        {children}
+        <Outlet />   {/* 🔥 This renders Dashboard and other pages */}
       </main>
     </div>
   );

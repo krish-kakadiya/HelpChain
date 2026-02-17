@@ -3,27 +3,32 @@ import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
   {
-    email: {
+    username:{
       type: String,
       required: true,
       unique: true,
       lowercase: true,
       trim: true,
     },
-
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+      match: /^\S+@\S+\.\S+$/,
+    },
     password: {
       type: String,
       required: true,
       minlength: 6,
     },
 
-    role: {
-      type: String,
-      enum: ["user", "admin"],
-      default: "user",
+    isVerified: {
+      type: Boolean,
+      default: false,
     },
 
-    // store ONLY hashed refresh token (ROTATION)
     refreshTokenHash: {
       type: String,
       default: null,
@@ -38,11 +43,10 @@ userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
-
-// method to compare passwords
+// compare password
 userSchema.methods.comparePassword = function (password) {
   return bcrypt.compare(password, this.password);
 };
 
 const User = mongoose.model("User", userSchema);
-export {User};
+export { User };

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { SidebarProvider } from "./context/SidebarContext";
-import { useState } from "react";
+import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 import AuthLayout from "./layouts/AuthLayout";
 import MainLayout from "./layouts/MainLayout";
@@ -11,58 +12,51 @@ import ProblemForm from "./components/problem/ProblemForm/ProblemForm";
 import Rewards from "./pages/Rewards/Rewards";
 import QuestionPage from "./pages/ProblemView/QuestionPage";
 
-// Temporary pages (replace with real ones)
 const Problems = () => <div>My Problems</div>;
 const Solutions = () => <div>My Solutions</div>;
 const Experts = () => <div>Expert Connect</div>;
 const Settings = () => <div>Settings</div>;
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   return (
     <Router>
-      <SidebarProvider>
-        <Routes>
+      <AuthProvider>
+        <SidebarProvider>
+          <Routes>
 
-          {/* 🔓 Public Route */}
-          <Route
-            path="/login"
-            element={
-              <AuthLayout>
-                <LoginRegister setIsAuthenticated={setIsAuthenticated} />
-              </AuthLayout>
-            }
-          />
+            {/* Public Route */}
+            <Route
+              path="/login"
+              element={
+                <AuthLayout>
+                  <LoginRegister />
+                </AuthLayout>
+              }
+            />
 
-          {/* 🔐 Protected Routes Wrapper */}
-          <Route
-            path="/*"
-            element={
-              isAuthenticated ? (
-                <MainLayout>
-                  <Routes>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/ProblemForm" element={<ProblemForm />} />
-                    <Route path="/QuestionPage" element={<QuestionPage />} />
-                    <Route path="/problems" element={<Problems />} />
-                    <Route path="/rewards" element={<Rewards />} />
-                    <Route path="/solutions" element={<Solutions />} />
-                    <Route path="/experts" element={<Experts />} />
-                    <Route path="/settings" element={<Settings />} />
+            {/* Protected Routes */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <MainLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<Navigate to="/dashboard" />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="ProblemForm" element={<ProblemForm />} />
+              <Route path="QuestionPage" element={<QuestionPage />} />
+              <Route path="problems" element={<Problems />} />
+              <Route path="rewards" element={<Rewards />} />
+              <Route path="solutions" element={<Solutions />} />
+              <Route path="experts" element={<Experts />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
 
-                    {/* Default Protected Route */}
-                    <Route path="/" element={<Navigate to="/dashboard" />} />
-                  </Routes>
-                </MainLayout>
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-
-        </Routes>
-      </SidebarProvider>
+          </Routes>
+        </SidebarProvider>
+      </AuthProvider>
     </Router>
   );
 }
