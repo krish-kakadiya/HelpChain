@@ -1,9 +1,25 @@
+/* ============================================
+   DASHBOARD — Auth-Matched Indigo Theme
+   Palette sourced from auth.css:
+   Primary:   #3f51b5 (indigo)
+   Mid:       #5c6bc0
+   Light:     #7986cb
+   Wash:      #c5cae9
+   Soft bg:   #e8eaf6
+   Text:      #2b2d42
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
 .hc-dashboard {
   padding: 20px;
   max-width: 1400px;
   margin: 0 auto;
+  font-family: 'Poppins', sans-serif;
+  background: #fafafa;
 }
 
+/* ── Header ───────────────────────────────── */
 .hc-dashboard__header {
   display: flex;
   justify-content: space-between;
@@ -11,12 +27,19 @@
   margin-bottom: 32px;
 }
 
+/* Auth-matched indigo gradient title */
 .hc-dashboard__title {
   font-size: 2rem;
   font-weight: 800;
-  color: #1e293b;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #3f51b5 0%, #7986cb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
 }
 
+/* ── Grid ─────────────────────────────────── */
 .hc-dashboard__grid {
   display: flex;
   flex-direction: column;
@@ -24,26 +47,58 @@
   width: 100%;
 }
 
+/* ── Primary Button — exact auth .btn match ─ */
 .hc-btn-primary {
-  background: #7b61ff;
-  color: white;
+  background: linear-gradient(135deg, #5c6bc0 0%, #3f51b5 100%);
+  color: #ffffff;
   border: none;
   padding: 12px 28px;
-  border-radius: 12px;
-  font-weight: 700;
+  border-radius: 25px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(123, 97, 255, 0.2);
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(63, 81, 181, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover dark layer — mirrors auth .btn::before */
+.hc-btn-primary::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: linear-gradient(135deg, #3f51b5 0%, #303f9f 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.hc-btn-primary span,
+.hc-btn-primary svg {
+  position: relative;
+  z-index: 1;
 }
 
 .hc-btn-primary:hover {
-  background: #6246ea;
-  box-shadow: 0 4px 12px rgba(123, 97, 255, 0.3);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(63, 81, 181, 0.45);
 }
 
-/* Responsive Design */
+.hc-btn-primary:hover::before {
+  opacity: 1;
+}
+
+.hc-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.3);
+}
+
+/* ── Responsive ───────────────────────────── */
 @media (max-width: 768px) {
   .hc-dashboard {
     padding: 16px;

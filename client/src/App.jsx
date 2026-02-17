@@ -1,47 +1,67 @@
-import './App.css'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { SidebarProvider, useSidebar } from './context/SidebarContext';
-import Dashboard from './pages/Dashboard/Dashboard'
-import Navbar from './components/common/layout/Navbar';
-import Sidebar from './components/common/layout/Sidebar';
-import ProblemForm from './components/problem/ProblemForm/ProblemForm';
-import Rewards from './pages/Rewards/Rewards';
-import QuestionPage from './pages/ProblemView/QuestionPage';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { SidebarProvider } from "./context/SidebarContext";
+import { useState } from "react";
 
-const Problems = () => <div className="page-content"><h1>My Problems</h1></div>;
-const Solutions = () => <div className="page-content"><h1>My Solutions</h1></div>;
-const Experts = () => <div className="page-content"><h1>Expert Connect</h1></div>;
-const Settings = () => <div className="page-content"><h1>Settings</h1></div>;
+import AuthLayout from "./layouts/AuthLayout";
+import MainLayout from "./layouts/MainLayout";
 
-function AppContent() {
-  const { isOpen } = useSidebar();
-  
-  return (
-    <div className="app">
-      <Navbar />
-      <Sidebar />
-      <main className={`app__main-content ${!isOpen ? 'app__main-content--sidebar-closed' : ''}`}>
-        <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/ProblemForm" element={<ProblemForm />} />
-          <Route path="/QuestionPage" element={<QuestionPage/>} />
-          <Route path="/problems" element={<Problems />} />
-          <Route path="/rewards" element={<Rewards />} />
-          <Route path="/solutions" element={<Solutions />} />
-          <Route path="/experts" element={<Experts />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/" element={<Dashboard />} />
-        </Routes>
-      </main>
-    </div>
-  );
-}
+import LoginRegister from "./pages/Auth/Auth";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import ProblemForm from "./components/problem/ProblemForm/ProblemForm";
+import Rewards from "./pages/Rewards/Rewards";
+import QuestionPage from "./pages/ProblemView/QuestionPage";
+
+// Temporary pages (replace with real ones)
+const Problems = () => <div>My Problems</div>;
+const Solutions = () => <div>My Solutions</div>;
+const Experts = () => <div>Expert Connect</div>;
+const Settings = () => <div>Settings</div>;
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   return (
     <Router>
       <SidebarProvider>
-        <AppContent />
+        <Routes>
+
+          {/* 🔓 Public Route */}
+          <Route
+            path="/login"
+            element={
+              <AuthLayout>
+                <LoginRegister setIsAuthenticated={setIsAuthenticated} />
+              </AuthLayout>
+            }
+          />
+
+          {/* 🔐 Protected Routes Wrapper */}
+          <Route
+            path="/*"
+            element={
+              isAuthenticated ? (
+                <MainLayout>
+                  <Routes>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/ProblemForm" element={<ProblemForm />} />
+                    <Route path="/QuestionPage" element={<QuestionPage />} />
+                    <Route path="/problems" element={<Problems />} />
+                    <Route path="/rewards" element={<Rewards />} />
+                    <Route path="/solutions" element={<Solutions />} />
+                    <Route path="/experts" element={<Experts />} />
+                    <Route path="/settings" element={<Settings />} />
+
+                    {/* Default Protected Route */}
+                    <Route path="/" element={<Navigate to="/dashboard" />} />
+                  </Routes>
+                </MainLayout>
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+
+        </Routes>
       </SidebarProvider>
     </Router>
   );

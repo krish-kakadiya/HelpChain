@@ -1,12 +1,18 @@
-/* ========================================
-   REWARDS PAGE - MINIMALIST DESIGN
-   ======================================== */
+/* ============================================
+   REWARDS PAGE — Auth-Matched Indigo Theme
+   Primary:   #3f51b5 | Mid: #5c6bc0
+   Light:     #7986cb | Wash: #c5cae9
+   Soft bg:   #e8eaf6 | Text: #2b2d42
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 .rewards-page {
   width: 100%;
   min-height: calc(100vh - 85px);
   padding: 32px;
   background: #fafafa;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* ========================================
@@ -17,7 +23,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  margin-bottom: 32px;      /* Reduced from 48px */
+  margin-bottom: 32px;
 }
 
 /* ========================================
@@ -25,11 +31,14 @@
    ======================================== */
 
 .rewards-page__slider {
-  margin-bottom: 32px;      /* Reduced from 48px */
+  margin-bottom: 32px;
   background: #ffffff;
   border-radius: 16px;
-  padding: 0;               /* Removed extra padding */
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  padding: 0;
+  border: 1px solid #c5cae9;
+  box-shadow:
+    0 2px 10px rgba(63, 81, 181, 0.07),
+    0 1px 3px rgba(63, 81, 181, 0.04);
   overflow: hidden;
 }
 
@@ -42,15 +51,21 @@
   border-radius: 16px;
   overflow: hidden;
   margin-bottom: 24px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #c5cae9;
+  box-shadow:
+    0 2px 8px rgba(63, 81, 181, 0.06),
+    0 1px 3px rgba(63, 81, 181, 0.04);
   transition: all 0.3s ease;
 }
 
 .rewards-page__section:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 8px 24px rgba(63, 81, 181, 0.11),
+    0 2px 6px rgba(63, 81, 181, 0.06);
+  border-color: #9fa8da;
 }
 
-/* Section Header (Clickable) */
+/* ── Section Header ───────────────────────── */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -63,7 +78,7 @@
 }
 
 .section-header:hover {
-  background: #fafafa;
+  background: #f3f4fc;
 }
 
 .section-header__title {
@@ -72,49 +87,49 @@
   gap: 12px;
   font-size: 1.2rem;
   font-weight: 700;
-  color: #1a1a1a;
+  font-family: 'Poppins', sans-serif;
+  color: #2b2d42;
   margin: 0;
 }
 
+/* Icon — indigo mid */
 .section-header__title svg {
-  color: #7b61ff;
+  color: #5c6bc0;
+  filter: drop-shadow(0 0 4px rgba(92, 107, 192, 0.2));
 }
 
+/* Toggle button */
 .section-header__toggle {
   width: 40px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f5f5f5;
-  border: none;
+  background: #e8eaf6;
+  border: 1px solid #c5cae9;
   border-radius: 10px;
-  color: #666;
+  color: #6b6b7e;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .section-header__toggle:hover {
-  background: #7b61ff;
-  color: white;
+  background: linear-gradient(135deg, #5c6bc0 0%, #3f51b5 100%);
+  border-color: #3f51b5;
+  color: #ffffff;
   transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.30);
 }
 
-/* Section Content */
+/* ── Section Content ──────────────────────── */
 .section-content {
   padding: 0 32px 32px 32px;
   animation: slideDown 0.3s ease;
 }
 
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ========================================
@@ -143,11 +158,11 @@
   }
 
   .section-header {
-    padding: 20px 20px;
+    padding: 20px;
   }
 
   .section-header__title {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
   }
 
   .section-content {

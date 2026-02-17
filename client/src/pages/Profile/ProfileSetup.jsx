@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import "./ProfileSetup.css";
+import { useNavigate } from "react-router-dom";
 
 const ProfileSetup = ({ onComplete }) => {
+  const navigate = useNavigate();
+
+  const handleProfile = () => {
+    navigate("/dashboard");
+  };
   const [formData, setFormData] = useState({
     name: "",
     age: "",
@@ -229,7 +235,7 @@ const ProfileSetup = ({ onComplete }) => {
             </div>
           </div>
 
-          <button type="submit" className="submit-btn">
+          <button onClick={handleProfile} type="submit" className="submit-btn">
             Complete Profile
             <i className='bx bx-right-arrow-alt'></i>
           </button>

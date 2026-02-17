@@ -1,6 +1,8 @@
 /* ========================================
-   STATS CARD - MINIMALIST DESIGN
+   STATS CARD — Auth-Matched Indigo Theme
    ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 .stats-card {
   position: relative;
@@ -10,11 +12,16 @@
   padding: 28px 32px;
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #c5cae9;
+  box-shadow:
+    0 2px 8px rgba(63, 81, 181, 0.06),
+    0 1px 3px rgba(63, 81, 181, 0.04);
   transition: all 0.3s ease;
   overflow: hidden;
+  font-family: 'Poppins', sans-serif;
 }
 
+/* Left accent bar — keeps currentColor so variants work */
 .stats-card::before {
   content: '';
   position: absolute;
@@ -22,35 +29,33 @@
   top: 0;
   bottom: 0;
   width: 4px;
-  background: currentColor;
-  opacity: 0.6;
+  background: linear-gradient(180deg, currentColor 0%, transparent 100%);
+  opacity: 0.7;
 }
 
 .stats-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 8px 24px rgba(63, 81, 181, 0.11),
+    0 2px 6px rgba(63, 81, 181, 0.06);
   transform: translateY(-2px);
+  border-color: #9fa8da;
 }
 
-/* Color Variants */
-.stats-card--purple {
-  color: #7b61ff;
-}
+/* ── Color Variants ───────────────────────── */
+/* Purple → indigo primary */
+.stats-card--purple { color: #3f51b5; }
+/* Blue stays as-is — already close to indigo family */
+.stats-card--blue   { color: #5c6bc0; }
+/* Green stays — semantic accent */
+.stats-card--green  { color: #10b981; }
 
-.stats-card--blue {
-  color: #3b82f6;
-}
-
-.stats-card--green {
-  color: #10b981;
-}
-
-/* Clickable State */
-.stats-card--clickable {
-  cursor: pointer;
-}
+/* Clickable */
+.stats-card--clickable { cursor: pointer; }
 
 .stats-card--clickable:hover {
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  box-shadow:
+    0 10px 28px rgba(63, 81, 181, 0.14),
+    0 4px 8px rgba(63, 81, 181, 0.08);
   transform: translateY(-4px);
 }
 
@@ -65,7 +70,7 @@
   align-items: center;
   justify-content: center;
   background: currentColor;
-  color: white;
+  color: #ffffff;
   border-radius: 12px;
   flex-shrink: 0;
   opacity: 0.9;
@@ -79,7 +84,7 @@
 .stats-card__label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #666;
+  color: #9fa8da;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 6px;
@@ -88,7 +93,7 @@
 .stats-card__value {
   font-size: 2rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #2b2d42;
   line-height: 1;
   letter-spacing: -0.02em;
 }
@@ -96,7 +101,7 @@
 .stats-card__subtitle {
   font-size: 0.9rem;
   font-weight: 500;
-  color: #888;
+  color: #9fa8da;
   margin-top: 6px;
 }
 
@@ -108,7 +113,7 @@
   overflow: hidden;
   border: 3px solid currentColor;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.18);
 }
 
 .stats-card__badge img {
@@ -127,7 +132,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(43, 45, 66, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -137,32 +142,25 @@
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .modal-content {
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: 18px;
   width: 90%;
   max-width: 500px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  border: 1px solid #c5cae9;
+  box-shadow:
+    0 24px 60px rgba(63, 81, 181, 0.20),
+    0 8px 20px rgba(63, 81, 181, 0.10);
   animation: slideUp 0.3s ease;
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .modal-header {
@@ -170,14 +168,15 @@
   justify-content: space-between;
   align-items: center;
   padding: 24px 28px;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #c5cae9;
 }
 
 .modal-header h3 {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #2b2d42;
   margin: 0;
+  font-family: 'Poppins', sans-serif;
 }
 
 .modal-close {
@@ -186,17 +185,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f5f5f5;
-  border: none;
+  background: #e8eaf6;
+  border: 1px solid #c5cae9;
   border-radius: 8px;
-  color: #666;
+  color: #6b6b7e;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .modal-close:hover {
-  background: #ff4444;
-  color: white;
+  background: #ef4444;
+  border-color: #ef4444;
+  color: #ffffff;
   transform: rotate(90deg);
 }
 
@@ -204,7 +204,7 @@
   padding: 28px;
 }
 
-/* Points Breakdown */
+/* ── Points Breakdown ─────────────────────── */
 .points-breakdown {
   display: flex;
   flex-direction: column;
@@ -216,44 +216,55 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px 20px;
-  background: #fafafa;
+  background: #f3f4fc;
   border-radius: 12px;
+  border: 1px solid #e8eaf6;
   transition: all 0.3s ease;
 }
 
 .breakdown-item:hover {
-  background: #f0f0f0;
+  background: #e8eaf6;
+  border-color: #c5cae9;
   transform: translateX(4px);
 }
 
 .breakdown-label {
   font-size: 0.95rem;
   font-weight: 500;
-  color: #666;
+  color: #6b6b7e;
+  font-family: 'Poppins', sans-serif;
 }
 
 .breakdown-value {
   font-size: 1.1rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #2b2d42;
+  font-family: 'Poppins', sans-serif;
 }
 
+/* Total row — auth btn gradient */
 .breakdown-item--total {
-  background: linear-gradient(135deg, #7b61ff 0%, #9581ff 100%);
+  background: linear-gradient(135deg, #5c6bc0 0%, #3f51b5 50%, #303f9f 100%);
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  border-color: #3f51b5;
   margin-top: 8px;
+  transition: background-position 0.4s ease, transform 0.2s ease;
+}
+
+.breakdown-item--total:hover {
+  background-position: 100% 50%;
+  transform: translateX(0) scale(1.02);
+  border-color: #303f9f;
 }
 
 .breakdown-item--total .breakdown-label,
 .breakdown-item--total .breakdown-value {
-  color: white;
-}
-
-.breakdown-item--total:hover {
-  transform: translateX(0) scale(1.02);
+  color: #ffffff;
 }
 
 /* ========================================
-   RESPONSIVE DESIGN
+   RESPONSIVE
    ======================================== */
 
 @media (max-width: 768px) {
@@ -262,27 +273,12 @@
     gap: 16px;
   }
 
-  .stats-card__icon {
-    width: 48px;
-    height: 48px;
-  }
+  .stats-card__icon  { width: 48px; height: 48px; }
+  .stats-card__value { font-size: 1.75rem; }
+  .stats-card__badge { width: 50px; height: 50px; }
 
-  .stats-card__value {
-    font-size: 1.75rem;
-  }
-
-  .stats-card__badge {
-    width: 50px;
-    height: 50px;
-  }
-
-  .modal-content {
-    width: 95%;
-    margin: 0 20px;
-  }
+  .modal-content { width: 95%; margin: 0 20px; }
 
   .modal-header,
-  .modal-body {
-    padding: 20px;
-  }
+  .modal-body { padding: 20px; }
 }

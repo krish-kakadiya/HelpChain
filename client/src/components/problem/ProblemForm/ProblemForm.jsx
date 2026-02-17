@@ -28,37 +28,21 @@ export default function ProblemForm() {
           ["code", "codeblock"],
         ],
 
-        /**
-         * 🔥 Handles:
-         * - Image button upload
-         * - Paste screenshots (Ctrl+V)
-         * - Drag & drop images
-         */
         hooks: {
           addImageBlobHook: async (blob, callback) => {
             try {
-              // FRONTEND responsibility
-              // const formData = new FormData();
-              // formData.append("image", blob);
-
-              // Replace with real endpoint later
-              // const res = await fetch("/api/upload-image", {
-              //   method: "POST",
-              //   body: formData,
-              // });
-
-              // const data = await res.json();
-              if (!blob || !blob.type.startsWith("image/")) {
-                return;
-              }
-
+              if (!blob || !blob.type.startsWith("image/")) return;
 
               const fakeUrl = URL.createObjectURL(blob);
               callback(fakeUrl, blob.name);
 
-
-              // Insert markdown automatically
-              // callback(data.url, blob.name);
+              // Replace with Cloudinary upload when ready:
+              // const formData = new FormData();
+              // formData.append("file", blob);
+              // formData.append("upload_preset", "your_preset");
+              // const res = await fetch(`https://api.cloudinary.com/v1_1/your_cloud/image/upload`, { method: "POST", body: formData });
+              // const data = await res.json();
+              // callback(data.secure_url, blob.name);
             } catch (error) {
               console.error("Image upload failed", error);
               alert("Image upload failed");
@@ -79,33 +63,27 @@ export default function ProblemForm() {
 
     const payload = {
       title: title.trim(),
-      tags: tags
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean),
+      tags: tags.split(",").map((t) => t.trim()).filter(Boolean),
       body,
     };
 
     console.log("POST DATA →", payload);
 
-    // Ready for backend
-    /*
-    fetch("/api/problems", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-    */
+    // fetch("/api/problems", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(payload),
+    // });
   };
 
   return (
-    <div className="problem-form">
-      <h1>Ask a public question</h1>
+    <div className="pf-wrapper">
+      <h1 className="pf-title">Ask a public question</h1>
 
       {/* Title */}
-      <label className="label">Title</label>
+      <label className="pf-label">Title</label>
       <input
-        className="input"
+        className="pf-input"
         type="text"
         placeholder="e.g. Why does React re-render twice in StrictMode?"
         value={title}
@@ -113,15 +91,15 @@ export default function ProblemForm() {
       />
 
       {/* Editor */}
-      <label className="label">What are the details of your problem?</label>
-      <div ref={editorRef} className="editor-container" />
+      <label className="pf-label">What are the details of your problem?</label>
+      <div ref={editorRef} className="pf-editor" />
 
       {/* Tags */}
-      <label className="label">
-        Tags <span>(comma separated)</span>
+      <label className="pf-label">
+        Tags <span className="pf-label__hint">(comma separated)</span>
       </label>
       <input
-        className="input"
+        className="pf-input"
         type="text"
         placeholder="react, markdown, toast-ui"
         value={tags}
@@ -129,7 +107,7 @@ export default function ProblemForm() {
       />
 
       {/* Submit */}
-      <button className="submit-btn" onClick={handleSubmit}>
+      <button className="pf-submit" onClick={handleSubmit}>
         Post your question
       </button>
     </div>

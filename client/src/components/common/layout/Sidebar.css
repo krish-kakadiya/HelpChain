@@ -1,7 +1,49 @@
+/* ============================================
+   SIDEBAR — Auth-Matched Indigo Theme
+   Palette sourced from auth.css:
+   Primary:   #3f51b5 (indigo)
+   Mid:       #5c6bc0
+   Light:     #7986cb
+   Wash:      #c5cae9
+   Soft bg:   #e8eaf6
+   Text:      #2b2d42
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* ── Root tokens ──────────────────────────── */
 .hc-sidebar {
+  --sb-bg:            #ffffff;
+  --sb-border:        #c5cae9;
+  --sb-primary:       #3f51b5;
+  --sb-primary-mid:   #5c6bc0;
+  --sb-primary-light: #7986cb;
+  --sb-wash:          #c5cae9;
+  --sb-wash-soft:     #e8eaf6;
+  --sb-text-main:     #2b2d42;
+  --sb-text-muted:    #6b6b7e;
+  --sb-text-faint:    #9fa8da;
+  --sb-active-bg:     linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
+  --sb-hover-bg:      #f3f4fc;
+  --sb-indicator:     #3f51b5;
+  --sb-toggle-border: #5c6bc0;
+  --sb-toggle-color:  #5c6bc0;
+  --sb-danger:        #ef4444;
+  --sb-danger-hover:  #dc2626;
+  --sb-danger-bg:     #fef2f2;
+  --sb-radius:        14px;
+  --sb-transition:    0.3s ease;
+
   width: 280px;
-  background: #ffffff;
-  border-right: 1px solid #e8eaf0;
+  background: var(--sb-bg);
+
+  /* Subtle left accent line */
+  border-right: 1px solid var(--sb-border);
+
+  /* Delicate top highlight from auth gradient */
+  background-image:
+    linear-gradient(180deg, rgba(232, 234, 246, 0.55) 0%, transparent 120px);
+
   position: fixed;
   left: 0;
   top: 85px;
@@ -10,42 +52,58 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transition: width 0.3s ease;
+  transition: width var(--sb-transition);
+  font-family: 'Poppins', sans-serif;
+
+  /* Lifted card feel matching auth container */
+  box-shadow: 4px 0 24px rgba(63, 81, 181, 0.08);
 }
 
 .hc-sidebar--closed {
   width: 80px;
 }
 
-/* Toggle Button */
+/* ── Toggle Button ────────────────────────── */
 .hc-sidebar__toggle {
   position: absolute;
-  right: -12px;
+  right: -14px;
   top: 50%;
   transform: translateY(-50%);
-  width: 30px;
-  height: 30px;
-  background: #ffffff;
-  border: 2px solid #7b61ff;
+  width: 28px;
+  height: 28px;
+
+  /* Auth-match gradient */
+  background: linear-gradient(135deg, #7986cb 0%, #5c6bc0 100%);
+  border: 2px solid #ffffff;
   border-radius: 50%;
+
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #7b61ff;
-  box-shadow: 0 2px 12px rgba(123, 97, 255, 0.25);
-  transition: all 0.2s ease;
+  color: #ffffff;
+
+  box-shadow:
+    0 2px 10px rgba(63, 81, 181, 0.35),
+    0 0 0 3px rgba(197, 202, 233, 0.4);
+
+  transition: all 0.25s ease;
   z-index: 10;
 }
 
 .hc-sidebar__toggle:hover {
-  background: #7b61ff;
-  color: #ffffff;
-  transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 4px 16px rgba(123, 97, 255, 0.4);
+  background: linear-gradient(135deg, #5c6bc0 0%, #3f51b5 100%);
+  transform: translateY(-50%) scale(1.12);
+  box-shadow:
+    0 4px 16px rgba(63, 81, 181, 0.45),
+    0 0 0 3px rgba(197, 202, 233, 0.6);
 }
 
-/* Sections */
+.hc-sidebar__toggle:active {
+  transform: translateY(-50%) scale(1.0);
+}
+
+/* ── Scrollable Main Area ─────────────────── */
 .hc-sidebar__main {
   flex: 1;
   padding: 24px 0;
@@ -54,76 +112,105 @@
 }
 
 .hc-sidebar__main::-webkit-scrollbar {
-  width: 4px;
+  width: 3px;
+}
+
+.hc-sidebar__main::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .hc-sidebar__main::-webkit-scrollbar-thumb {
-  background: #e8eaf0;
+  background: var(--sb-wash);
   border-radius: 10px;
 }
 
+/* ── Bottom Section ───────────────────────── */
 .hc-sidebar__bottom {
   padding: 0 0 24px 0;
 }
 
+/* ── List Container ───────────────────────── */
 .hc-sidebar__list {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: 0 16px;
+  gap: 3px;
+  padding: 0 14px;
 }
 
+/* ── Divider ──────────────────────────────── */
 .hc-sidebar__divider {
   height: 1px;
-  background: #e8eaf0;
-  margin: 16px 20px 20px 20px;
+  /* Gradient divider matching auth form underlines */
+  background: linear-gradient(90deg, transparent, var(--sb-wash) 30%, var(--sb-wash) 70%, transparent);
+  margin: 16px 18px 18px 18px;
 }
 
-/* Links */
+/* ── Nav Links ────────────────────────────── */
 .hc-sidebar__link {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 13px 16px;
+  padding: 12px 16px;
   text-decoration: none;
-  color: #64748b;
+  color: var(--sb-text-muted);
+  font-family: 'Poppins', sans-serif;
   font-weight: 500;
-  font-size: 0.95rem;
-  border-radius: 12px;
-  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  border-radius: var(--sb-radius);
+  transition: all var(--sb-transition);
   position: relative;
   white-space: nowrap;
+  letter-spacing: 0.01em;
 }
 
+/* Hover state — soft indigo wash, matching auth input focus */
 .hc-sidebar__link:hover {
-  color: #7b61ff;
-  background: #f8f9fc;
+  color: var(--sb-primary-mid);
+  background: var(--sb-hover-bg);
 }
 
+/* Hover — icon picks up the indigo */
+.hc-sidebar__link:hover .hc-sidebar__icon {
+  color: var(--sb-primary-mid);
+  filter: drop-shadow(0 0 4px rgba(92, 107, 192, 0.3));
+}
+
+/* ── Active Link ──────────────────────────── */
 .hc-sidebar__link--active {
-  background: linear-gradient(135deg, #f5f3ff 0%, #ebe8ff 100%);
-  color: #7b61ff;
+  background: var(--sb-active-bg);
+  color: var(--sb-primary);
   font-weight: 600;
 }
 
-.hc-sidebar__link--active::after {
+/* Left indicator bar — mirrors auth's btn gradient */
+.hc-sidebar__link--active::before {
   content: '';
   position: absolute;
   left: 0;
   top: 50%;
   transform: translateY(-50%);
   width: 4px;
-  height: 28px;
-  background: #7b61ff;
+  height: 60%;
+  background: linear-gradient(180deg, #7986cb 0%, #3f51b5 100%);
   border-radius: 0 4px 4px 0;
 }
 
+/* Subtle glowing dot on active icon */
+.hc-sidebar__link--active .hc-sidebar__icon {
+  color: var(--sb-primary);
+  filter: drop-shadow(0 0 5px rgba(63, 81, 181, 0.35));
+}
+
+/* ── Icons ────────────────────────────────── */
 .hc-sidebar__icon {
   min-width: 20px;
   min-height: 20px;
   flex-shrink: 0;
+  color: var(--sb-text-faint);
+  transition: color var(--sb-transition), filter var(--sb-transition);
 }
 
+/* ── Labels ───────────────────────────────── */
 .hc-sidebar__label {
   overflow: hidden;
   transition: opacity 0.2s ease;
@@ -139,31 +226,39 @@
   padding: 13px;
 }
 
-/* Bottom Links */
+/* Closed state: centre the indicator bar */
+.hc-sidebar--closed .hc-sidebar__link--active::before {
+  height: 40%;
+}
+
+/* ── Bottom Menu Links ────────────────────── */
 .hc-sidebar__link--bottom {
-  color: #94a3b8;
+  color: var(--sb-text-faint);
 }
 
 .hc-sidebar__link--bottom:hover {
-  color: #64748b;
-  background: #f8f9fc;
+  color: var(--sb-text-muted);
+  background: var(--sb-hover-bg);
 }
 
+/* Logout — red accent, consistent with most auth UIs */
 .hc-sidebar__link--bottom:last-child {
-  color: #ef4444;
+  color: var(--sb-danger);
 }
 
 .hc-sidebar__link--bottom:last-child:hover {
-  color: #dc2626;
-  background: #fef2f2;
+  color: var(--sb-danger-hover);
+  background: var(--sb-danger-bg);
 }
 
-/* Responsive */
+/* ── Responsive ───────────────────────────── */
 @media (max-width: 768px) {
   .hc-sidebar {
     transform: translateX(-100%);
+    /* Full shadow on mobile overlay */
+    box-shadow: 8px 0 32px rgba(63, 81, 181, 0.15);
   }
-  
+
   .hc-sidebar--open {
     transform: translateX(0);
   }

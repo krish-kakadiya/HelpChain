@@ -1,9 +1,15 @@
 /* ========================================
-   LEADERBOARD - MINIMALIST DESIGN
+   LEADERBOARD — Auth-Matched Indigo Theme
+   Primary:   #3f51b5 | Mid: #5c6bc0
+   Light:     #7986cb | Wash: #c5cae9
+   Soft bg:   #e8eaf6 | Text: #2b2d42
    ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 .leaderboard {
   width: 100%;
+  font-family: 'Poppins', sans-serif;
 }
 
 .leaderboard__list {
@@ -30,20 +36,20 @@
 
 .leaderboard-item:hover {
   background: #ffffff;
-  border-color: #e0e0e0;
+  border-color: #c5cae9;
   transform: translateX(4px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 10px rgba(63, 81, 181, 0.08);
 }
 
 /* Top 3 Special Styling */
 .leaderboard-item--top {
   background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
-  border: 2px solid #e8e8e8;
+  border: 2px solid #c5cae9;
 }
 
 .leaderboard-item--top:hover {
-  border-color: #7b61ff;
-  box-shadow: 0 4px 12px rgba(123, 97, 255, 0.15);
+  border-color: #7986cb;
+  box-shadow: 0 4px 14px rgba(63, 81, 181, 0.14);
 }
 
 /* ========================================
@@ -56,7 +62,7 @@
   justify-content: center;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #666;
+  color: #6b6b7e;
 }
 
 .rank-number {
@@ -65,26 +71,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #e8e8e8;
+  background: #e8eaf6;
+  color: #5c6bc0;
   border-radius: 8px;
   font-size: 0.95rem;
+  font-weight: 700;
 }
 
 .rank-icon {
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
-.rank-icon--gold {
-  color: #ffd700;
-}
-
-.rank-icon--silver {
-  color: #c0c0c0;
-}
-
-.rank-icon--bronze {
-  color: #cd7f32;
-}
+/* Keep medal colours — they're semantic */
+.rank-icon--gold   { color: #ffd700; }
+.rank-icon--silver { color: #c0c0c0; }
+.rank-icon--bronze { color: #cd7f32; }
 
 /* ========================================
    AVATAR
@@ -96,27 +97,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #7b61ff 0%, #9581ff 100%);
-  color: white;
+  background: linear-gradient(135deg, #5c6bc0 0%, #3f51b5 100%);
+  color: #ffffff;
   border-radius: 12px;
   font-weight: 700;
   font-size: 1rem;
-  box-shadow: 0 2px 8px rgba(123, 97, 255, 0.3);
+  box-shadow:
+    0 2px 8px rgba(63, 81, 181, 0.30),
+    0 0 0 2px rgba(197, 202, 233, 0.4);
 }
 
+/* Top 3 avatars keep their medal colours */
 .leaderboard-item--top:nth-child(1) .leaderboard-item__avatar {
   background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
   color: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.35);
 }
 
 .leaderboard-item--top:nth-child(2) .leaderboard-item__avatar {
   background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
   color: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(192, 192, 192, 0.35);
 }
 
 .leaderboard-item--top:nth-child(3) .leaderboard-item__avatar {
   background: linear-gradient(135deg, #cd7f32 0%, #e89f5f 100%);
-  color: white;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(205, 127, 50, 0.35);
 }
 
 /* ========================================
@@ -130,7 +137,7 @@
 .leaderboard-item__name {
   font-size: 1rem;
   font-weight: 600;
-  color: #1a1a1a;
+  color: #2b2d42;
   margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
@@ -139,7 +146,7 @@
 
 .leaderboard-item__username {
   font-size: 0.85rem;
-  color: #888;
+  color: #9fa8da;
   font-weight: 500;
 }
 
@@ -158,30 +165,21 @@
   align-items: center;
   gap: 6px;
   padding: 6px 12px;
-  background: #e8e8e8;
+  background: #e8eaf6;
   border-radius: 8px;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #666;
+  color: #6b6b7e;
+  border: 1px solid #c5cae9;
 }
 
 .stat-badge svg {
-  color: #7b61ff;
+  color: #5c6bc0;
 }
 
-.trend-icon {
-  opacity: 0.7;
-}
-
-.trend-icon--up {
-  color: #10b981;
-  transform: rotate(0deg);
-}
-
-.trend-icon--down {
-  color: #ef4444;
-  transform: rotate(180deg);
-}
+.trend-icon { opacity: 0.7; }
+.trend-icon--up   { color: #10b981; }
+.trend-icon--down { color: #ef4444; transform: rotate(180deg); }
 
 /* ========================================
    POINTS
@@ -190,7 +188,7 @@
 .leaderboard-item__points {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #2b2d42;
   text-align: right;
   display: flex;
   flex-direction: column;
@@ -201,17 +199,18 @@
 .points-label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: #888;
+  color: #9fa8da;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
+/* Top 3 points in indigo */
 .leaderboard-item--top .leaderboard-item__points {
-  color: #7b61ff;
+  color: #3f51b5;
 }
 
 /* ========================================
-   RESPONSIVE DESIGN
+   RESPONSIVE
    ======================================== */
 
 @media (max-width: 768px) {
@@ -221,40 +220,12 @@
     padding: 14px 16px;
   }
 
-  .leaderboard-item__rank {
-    font-size: 1rem;
-  }
-
-  .rank-number {
-    width: 28px;
-    height: 28px;
-    font-size: 0.85rem;
-  }
-
-  .rank-icon {
-    width: 18px;
-    height: 18px;
-  }
-
-  .leaderboard-item__avatar {
-    width: 45px;
-    height: 45px;
-    font-size: 0.9rem;
-  }
-
-  .leaderboard-item__name {
-    font-size: 0.95rem;
-  }
-
-  .leaderboard-item__username {
-    font-size: 0.8rem;
-  }
-
-  .leaderboard-item__stats {
-    display: none;
-  }
-
-  .leaderboard-item__points {
-    font-size: 1.25rem;
-  }
+  .leaderboard-item__rank  { font-size: 1rem; }
+  .rank-number             { width: 28px; height: 28px; font-size: 0.85rem; }
+  .rank-icon               { width: 18px; height: 18px; }
+  .leaderboard-item__avatar { width: 45px; height: 45px; font-size: 0.9rem; }
+  .leaderboard-item__name  { font-size: 0.95rem; }
+  .leaderboard-item__username { font-size: 0.8rem; }
+  .leaderboard-item__stats { display: none; }
+  .leaderboard-item__points { font-size: 1.25rem; }
 }

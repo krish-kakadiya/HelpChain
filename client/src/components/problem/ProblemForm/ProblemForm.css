@@ -1,76 +1,134 @@
-.problem-form {
+/* ============================================
+   PROBLEM FORM — Auth-Matched Indigo Theme
+   Primary:   #3f51b5 | Mid: #5c6bc0
+   Light:     #7986cb | Wash: #c5cae9
+   Soft bg:   #e8eaf6 | Text: #2b2d42
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+.pf-wrapper {
   max-width: 900px;
   margin: 40px auto;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
-.problem-form h1 {
+.pf-title {
   margin-bottom: 24px;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #3f51b5 0%, #7986cb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.label {
+/* ── Label ────────────────────────────────── */
+.pf-label {
   display: block;
   font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  color: #2b2d42;
   margin: 20px 0 8px;
 }
 
-.label span {
+.pf-label__hint {
   font-weight: 400;
-  color: #6a737c;
+  color: #9fa8da;
 }
 
-.input {
+/* ── Input ────────────────────────────────── */
+.pf-input {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #cfd8dc;
-  border-radius: 4px;
+  padding: 11px 14px;
+  border: 2px solid #c5cae9;
+  border-radius: 10px;
   font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #2b2d42;
+  background: #f3f4fc;
+  transition: all 0.3s ease;
 }
 
-.input:focus {
+.pf-input::placeholder {
+  color: #9fa8da;
+  font-weight: 400;
+}
+
+.pf-input:focus {
   outline: none;
-  border-color: #0a95ff;
+  border-color: #5c6bc0;
+  background: #ffffff;
+  box-shadow:
+    0 0 0 4px rgba(92, 107, 192, 0.10),
+    0 4px 12px rgba(63, 81, 181, 0.08);
 }
 
-.editor-container {
-  border: 1px solid #cfd8dc;
-  border-radius: 4px;
+/* ── Editor Container ─────────────────────── */
+.pf-editor {
+  border: 2px solid #c5cae9;
+  border-radius: 12px;
   overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.submit-btn {
+.pf-editor:focus-within {
+  border-color: #5c6bc0;
+  box-shadow:
+    0 0 0 4px rgba(92, 107, 192, 0.10),
+    0 4px 12px rgba(63, 81, 181, 0.08);
+}
+
+/* ── Submit Button ────────────────────────── */
+.pf-submit {
   margin-top: 30px;
-  padding: 12px 20px;
-  background: #0a95ff;
-  color: white;
+  padding: 13px 32px;
+  background: linear-gradient(135deg, #5c6bc0 0%, #3f51b5 50%, #303f9f 100%);
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  color: #ffffff;
   border: none;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: 25px;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
   cursor: pointer;
+  transition: background-position 0.4s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 6px 20px rgba(63, 81, 181, 0.35);
 }
 
-.submit-btn:hover {
-  background: #0074cc;
+.pf-submit:hover {
+  background-position: 100% 50%;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(63, 81, 181, 0.45);
 }
 
-/* Limit image size inside editor & preview */
-.editor-container img {
+.pf-submit:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.3);
+}
+
+/* ── Images inside editor / preview ──────── */
+.pf-editor img {
   max-width: 100%;
   max-height: 400px;
   width: auto;
   height: auto;
   display: block;
   margin: 12px 0;
-  border-radius: 4px;
-}
-
-.editor-container img {
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(63, 81, 181, 0.10);
   cursor: zoom-in;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.editor-container img:active {
+.pf-editor img:hover {
+  box-shadow: 0 8px 24px rgba(63, 81, 181, 0.15);
+}
+
+.pf-editor img:active {
   max-height: none;
+  cursor: zoom-out;
 }
-
-
-

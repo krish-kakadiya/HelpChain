@@ -1,21 +1,56 @@
 /* ========================================
-   PREMIUM NAVBAR STYLES
+   NAVBAR — Auth-Matched Indigo Theme
+   Palette sourced from auth.css:
+   Primary:   #3f51b5 (indigo)
+   Mid:       #5c6bc0
+   Light:     #7986cb
+   Wash:      #c5cae9
+   Soft bg:   #e8eaf6
+   Text:      #2b2d42
    ======================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+
+/* ── Root tokens ──────────────────────────── */
 .hc-navbar {
+  --nb-bg:            #ffffff;
+  --nb-border:        #c5cae9;
+  --nb-primary:       #3f51b5;
+  --nb-primary-mid:   #5c6bc0;
+  --nb-primary-light: #7986cb;
+  --nb-wash:          #c5cae9;
+  --nb-wash-soft:     #e8eaf6;
+  --nb-text-main:     #2b2d42;
+  --nb-text-muted:    #6b6b7e;
+  --nb-text-faint:    #9fa8da;
+  --nb-surface:       #f3f4fc;
+  --nb-transition:    0.3s ease;
+
   height: 85px;
-  background: #ffffff;
+  background: var(--nb-bg);
+
+  /* Faint indigo tint at bottom edge — mirrors auth gradient */
+  background-image: linear-gradient(180deg, #ffffff 60%, rgba(232, 234, 246, 0.4) 100%);
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 40px;
-  border-bottom: 1px solid #e8eaf0;
+
+  /* Auth-matched border */
+  border-bottom: 1px solid var(--nb-border);
+
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1100;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  font-family: 'Poppins', sans-serif;
+
+  /* Softer, indigo-tinted shadow matching auth container */
+  box-shadow:
+    0 2px 12px rgba(63, 81, 181, 0.07),
+    0 1px 3px rgba(63, 81, 181, 0.04);
 }
 
 /* ========================================
@@ -34,20 +69,28 @@
   min-width: 56px;
   border-radius: 50%;
   overflow: hidden;
-  background: linear-gradient(135deg, #7b61ff 0%, #9581ff 100%);
+
+  /* Auth curved-shape gradient */
+  background: linear-gradient(135deg, #7986cb 0%, #5c6bc0 50%, #3f51b5 100%);
+
   border: 3px solid #ffffff;
-  box-shadow: 0 4px 16px rgba(123, 97, 255, 0.25),
-              0 2px 8px rgba(123, 97, 255, 0.15);
+  box-shadow:
+    0 4px 16px rgba(63, 81, 181, 0.28),
+    0 2px 8px rgba(63, 81, 181, 0.15),
+    0 0 0 3px rgba(197, 202, 233, 0.4);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform var(--nb-transition), box-shadow var(--nb-transition);
 }
 
 .hc-navbar__logo-wrapper:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(123, 97, 255, 0.3),
-              0 3px 10px rgba(123, 97, 255, 0.2);
+  box-shadow:
+    0 8px 24px rgba(63, 81, 181, 0.35),
+    0 3px 10px rgba(63, 81, 181, 0.2),
+    0 0 0 3px rgba(197, 202, 233, 0.6);
 }
 
 .hc-navbar__logo-wrapper img {
@@ -57,12 +100,12 @@
   display: block;
 }
 
+/* Brand text — indigo gradient matching auth h2 */
 .hc-navbar__brand-text {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #1a1d2e;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #1a1d2e 0%, #4a4d5e 100%);
+  background: linear-gradient(135deg, #3f51b5 0%, #7986cb 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -82,39 +125,43 @@
   left: 18px;
   top: 50%;
   transform: translateY(-50%);
-  color: #94a3b8;
+  color: var(--nb-text-faint);
   pointer-events: none;
-  transition: color 0.3s ease;
+  transition: color var(--nb-transition);
 }
 
 .hc-navbar__search input {
   width: 100%;
-  padding: 14px 20px 14px 50px;
-  background: #f8f9fc;
+  padding: 13px 20px 13px 50px;
+  background: var(--nb-surface);
+
+  /* Matches auth input-box bottom border style */
   border: 2px solid transparent;
   border-radius: 14px;
-  font-size: 0.95rem;
-  color: #1a1d2e;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.92rem;
+  color: var(--nb-text-main);
   outline: none;
-  transition: all 0.3s ease;
+  transition: all var(--nb-transition);
   font-weight: 500;
 }
 
 .hc-navbar__search input::placeholder {
-  color: #94a3b8;
+  color: var(--nb-text-faint);
   font-weight: 400;
 }
 
+/* Focus — mirrors auth input:focus border + glow */
 .hc-navbar__search input:focus {
-  border-color: #7b61ff;
+  border-color: var(--nb-primary-mid);
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(123, 97, 255, 0.08),
-              0 4px 12px rgba(123, 97, 255, 0.12);
+  box-shadow:
+    0 0 0 4px rgba(92, 107, 192, 0.10),
+    0 4px 12px rgba(63, 81, 181, 0.10);
 }
 
-.hc-navbar__search input:focus + .hc-navbar__search-icon,
 .hc-navbar__search:focus-within .hc-navbar__search-icon {
-  color: #7b61ff;
+  color: var(--nb-primary-mid);
 }
 
 /* ========================================
@@ -127,67 +174,72 @@
   gap: 20px;
 }
 
-/* Points Display */
+/* ── Points Display ───────────────────────── */
+/* Kept gold — but border and shadow now indigo-aware */
 .hc-navbar__points {
   display: flex;
   align-items: center;
   gap: 8px;
+  font-family: 'Poppins', sans-serif;
   font-weight: 600;
-  color: #6B4E00;
-  background: linear-gradient(135deg, #FFF6CC 0%, #F3E5AB 100%);
+  color: #6b4e00;
+  background: linear-gradient(135deg, #fff6cc 0%, #f3e5ab 100%);
   padding: 10px 18px;
   border-radius: 12px;
-  font-size: 0.95rem;
-  border: 1px solid #e8e4ff;
-  transition: all 0.3s ease;
+  font-size: 0.92rem;
+
+  /* Subtle indigo tint on border to tie into theme */
+  border: 1px solid rgba(197, 202, 233, 0.8);
+  transition: all var(--nb-transition);
   cursor: pointer;
 }
 
 .hc-navbar__points:hover {
-  background: linear-gradient(
-    135deg,
-    #FFE9A3 0%,
-    #F5D76E 45%,
-    #D4AF37 100%
-  );
+  background: linear-gradient(135deg, #ffe9a3 0%, #f5d76e 45%, #d4af37 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(123, 97, 255, 0.15);
+  box-shadow:
+    0 4px 14px rgba(212, 175, 55, 0.25),
+    0 2px 6px rgba(63, 81, 181, 0.08);
 }
 
 .hc-navbar__points img {
   filter: drop-shadow(0 0 4px rgba(201, 162, 39, 0.4));
 }
 
-
 .hc-navbar__points span {
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 
-/* Notification Button */
+/* ── Notification Button ──────────────────── */
 .hc-navbar__notification {
   position: relative;
   width: 44px;
   height: 44px;
-  background: #f8f9fc;
+  background: var(--nb-surface);
+
+  /* Transparent border that fills on hover */
   border: 2px solid transparent;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s ease;
-  color: #64748b;
+  transition: all var(--nb-transition);
+  color: var(--nb-text-muted);
 }
 
 .hc-navbar__notification:hover {
   background: #ffffff;
-  border-color: #e8eaf0;
-  color: #7b61ff;
+  border-color: var(--nb-wash);
+  color: var(--nb-primary-mid);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 4px 14px rgba(63, 81, 181, 0.12),
+    0 0 0 3px rgba(197, 202, 233, 0.3);
 }
 
+/* Badge unchanged — red is intentional contrast */
 .hc-navbar__notification-badge {
   position: absolute;
   top: -4px;
@@ -195,7 +247,7 @@
   width: 20px;
   height: 20px;
   background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
-  color: white;
+  color: #ffffff;
   border-radius: 50%;
   font-size: 0.7rem;
   font-weight: 700;
@@ -206,48 +258,54 @@
   box-shadow: 0 2px 8px rgba(255, 82, 82, 0.4);
 }
 
-/* Profile Section */
+/* ── Profile Section ──────────────────────── */
 .hc-navbar__profile {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 6px 12px 6px 6px;
-  background: #f8f9fc;
+  background: var(--nb-surface);
   border-radius: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--nb-transition);
   border: 2px solid transparent;
 }
 
 .hc-navbar__profile:hover {
   background: #ffffff;
-  border-color: #e8eaf0;
+  border-color: var(--nb-wash);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 4px 14px rgba(63, 81, 181, 0.10),
+    0 0 0 3px rgba(197, 202, 233, 0.3);
 }
 
+/* Avatar — auth btn gradient */
 .hc-navbar__profile-avatar {
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #7b61ff 0%, #9581ff 100%);
-  color: white;
+  background: linear-gradient(135deg, #5c6bc0 0%, #3f51b5 100%);
+  color: #ffffff;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: 'Poppins', sans-serif;
   font-weight: 700;
   font-size: 0.9rem;
-  box-shadow: 0 2px 8px rgba(123, 97, 255, 0.3);
+  box-shadow:
+    0 2px 10px rgba(63, 81, 181, 0.35),
+    0 0 0 2px rgba(197, 202, 233, 0.4);
 }
 
 .hc-navbar__profile-chevron {
-  color: #94a3b8;
-  transition: transform 0.3s ease;
+  color: var(--nb-text-faint);
+  transition: transform var(--nb-transition), color var(--nb-transition);
 }
 
 .hc-navbar__profile:hover .hc-navbar__profile-chevron {
   transform: translateY(2px);
-  color: #7b61ff;
+  color: var(--nb-primary-mid);
 }
 
 /* ========================================
@@ -264,15 +322,15 @@
   .hc-navbar {
     padding: 0 20px;
   }
-  
+
   .hc-navbar__brand-text {
     display: none;
   }
-  
+
   .hc-navbar__search {
     flex: 1;
   }
-  
+
   .hc-navbar__points span {
     display: none;
   }
