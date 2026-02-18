@@ -1,9 +1,15 @@
-import React from 'react';
+import { useNavigate } from "react-router-dom";
 import './ProblemCard.css';
 
 const ProblemCard = ({ problem }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/question/${problem.id}`);
+  };
+
   return (
-    <div className="hc-card">
+    <div className="hc-card" onClick={() => navigate(`/question/${problem.id}`)} style={{ cursor: "pointer" }}>
       <div className="hc-card__content">
         <div className="hc-card__left">
           {/* Uploader info at top left */}

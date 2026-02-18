@@ -47,13 +47,13 @@ function App() {
               <Route index element={<Navigate to="/dashboard" />} />
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="ProblemForm" element={<ProblemForm />} />
-              <Route path="QuestionPage" element={<QuestionPage />} />
+              <Route path="/question/:id" element={<QuestionPage />} />
               <Route path="problems" element={<Problems />} />
               <Route path="rewards" element={<Rewards />} />
               <Route path="solutions" element={<SolutionsPage />} />
               <Route path="experts" element={<Experts />} />
               <Route path="settings" element={<Settings />} />
-              <Route path="/notifications" element={<NotificationsPage />} />
+              <Route path="notifications" element={<NotificationsPage />} />
 
             </Route>
 

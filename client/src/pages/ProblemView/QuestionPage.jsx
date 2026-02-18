@@ -1,57 +1,22 @@
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { problemsData } from "../Dashboard/Dashboard";
 import "./QuestionPage.css";
 import QuestionCard from "../../components/question/QuestionCard";
 import AnswerCard from "../../components/question/AnswerCard";
 import AnswerForm from "../../components/question/AnswerForm";
 
 export default function QuestionPage() {
+  const { id } = useParams();
+
   const currentUser = "KK";
   const currentUserId = 1; // This should come from your auth context/backend
 
-  const [question] = useState({
-    id: 1,
-    title: "Why does React re-render twice in StrictMode?",
-    body: `
-I am seeing my component render **twice** in development.
+  const question = problemsData.find(
+    (p) => p.id === parseInt(id)
+  );
 
-Here is my code:
-
-\`\`\`js
-useEffect(() => {
-  console.log("mounted");
-}, []);
-\`\`\`
-
-Here is the screenshot:
-
-![error](https://res.cloudinary.com/dvicbvpsu/image/upload/v1759394775/profile_photos/user_68dc05661665895120636210_1759394771582.jpg)
-
-Why is this happening?
-`,
-    author: "KK",
-    authorId: 1,
-    createdAt: "2026-02-14",
-    views: 124,
-    tags: ["react", "strict-mode", "javascript"]
-  });
-
-  const [answers, setAnswers] = useState([
-    {
-      id: 1,
-      body: `
-This happens because StrictMode double invokes lifecycle methods in development.
-
-# this is the problem:-
-
-![error](https://res.cloudinary.com/dvicbvpsu/image/upload/v1759394775/profile_photos/user_68dc05661665895120636210_1759394771582.jpg)
-`,
-      author: "DevUser",
-      authorId: 2,
-      votes: 3,
-      isAccepted: false,
-      createdAt: "2026-02-14"
-    }
-  ]);
+  const [answers, setAnswers] = useState([]);
 
   // Track user votes - stores 'up', 'down', or null for each answer
   const [userVotes, setUserVotes] = useState(() => {
@@ -163,6 +128,10 @@ This happens because StrictMode double invokes lifecycle methods in development.
     if (b.isAccepted) return 1;
     return b.votes - a.votes;
   });
+
+  if (!question) {
+    return <div>Question not found</div>;
+  }
 
   return (
     <div className="page-wrapper">

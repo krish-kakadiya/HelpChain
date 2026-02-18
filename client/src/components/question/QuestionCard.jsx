@@ -8,16 +8,28 @@ export default function QuestionCard({ question }) {
       <h1>{question.title}</h1>
 
       <div className="meta">
-        Asked by {question.author} on {question.createdAt} • 👁 {question.views}
+        Asked by {question.uploaderName || "Anonymous"}
       </div>
 
+      {/* ✅ Show image if exists */}
+      {question.image && (
+        <div className="question-image-wrapper">
+          <img
+            src={question.image}
+            alt={question.title}
+            className="question-image"
+          />
+        </div>
+      )}
+
       <div className="tags">
-        {question.tags.map(tag => (
+        {question.tags && question.tags.map(tag => (
           <span key={tag} className="tag">{tag}</span>
         ))}
       </div>
 
-      <MarkdownRenderer content={question.body} />
+      {/* Use description as body for now */}
+      <MarkdownRenderer content={question.description} />
     </div>
   );
 }
