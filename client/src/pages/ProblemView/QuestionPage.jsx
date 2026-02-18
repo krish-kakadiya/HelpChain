@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import "./QuestionPage.css";
-import QuestionCard from "../../components/qustion/QuestionCard";
-import AnswerCard from "../../components/qustion/AnswerCard";
-import AnswerForm from "../../components/qustion/AnswerForm";
+import QuestionCard from "../../components/question/QuestionCard";
+import AnswerCard from "../../components/question/AnswerCard";
+import AnswerForm from "../../components/question/AnswerForm";
 
 export default function QuestionPage() {
   const currentUser = "KK";

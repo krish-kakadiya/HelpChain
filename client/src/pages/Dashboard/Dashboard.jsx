@@ -23,7 +23,7 @@ const Dashboard = () => {
       tags: ["Frontend", "UI/UX"],
       solutions: 5,
       uploaderName: "Jane Smith",
-      image: "https://via.placeholder.com/280x200" // Example with image
+      image: "https://res.cloudinary.com/dvicbvpsu/image/upload/v1759394775/profile_photos/user_68dc05661665895120636210_1759394771582.jpg" // Example with image
     },
     {
       id: 3,
@@ -32,7 +32,7 @@ const Dashboard = () => {
       tags: ["Backend", "Database", "Performance"],
       solutions: 8,
       uploaderName: "Mike Johnson",
-      image: "https://via.placeholder.com/280x200/4CAF50/FFFFFF"
+      image: "https://res.cloudinary.com/dvicbvpsu/image/upload/v1759394775/profile_photos/user_68dc05661665895120636210_1759394771582.jpg"
     }
   ];
 
