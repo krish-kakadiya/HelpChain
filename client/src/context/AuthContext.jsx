@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { loginUser } from "../api/authApi";
+import { loginUser, getMe } from "../api/authApi";
 
 const AuthContext = createContext();
 
@@ -7,29 +7,48 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // 🔐 Check authentication on app load
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+    const checkAuth = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const res = await getMe(); // calls /auth/me
+        setUser(res.data);
+      } catch (error) {
+        // Token invalid or expired
+        localStorage.removeItem("token");
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkAuth();
   }, []);
 
+  // 🔐 Login
   const login = async (credentials) => {
     const res = await loginUser(credentials);
 
     const token = res.data.accessToken;
-    const userData = res.data.user;
 
+    // Store only token
     localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(userData));
 
-    setUser(userData);
+    // Set user from backend response
+    const meRes = await getMe();
+    setUser(meRes.data);
   };
 
+  // 🔐 Logout
   const logout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
     setUser(null);
   };
 

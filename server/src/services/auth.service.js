@@ -109,12 +109,6 @@ export const loginService = async ({ email, password }) => {
   return {
     accessToken,
     refreshToken,
-    user: {
-      id: user._id.toString(),
-      username: user.username,
-      email: user.email,
-      isVerified: user.isVerified
-    }
   };
 };
 
@@ -162,3 +156,17 @@ export const refreshTokenService = async (refreshToken) => {
   };
 };
 
+export const getMeservices = async (userId) => {
+  const user  = await User.findById(userId).select("-password -refreshTokenHash");
+
+  if(!user){
+    throw new Error("User not found");
+  }
+
+  return {
+    id: user._id.toString(),
+    username: user.username,
+    email: user.email,
+    isVerified: user.isVerified,
+  }
+}

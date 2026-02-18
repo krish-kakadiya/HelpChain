@@ -11,3 +11,7 @@ export const verifyOtp = (data) => {
 export const loginUser = (data) => {
   return api.post("/auth/login", data);
 };
+
+export const getMe = () => {
+  return api.get("/auth/me");
+};
