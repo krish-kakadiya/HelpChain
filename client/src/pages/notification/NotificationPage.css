@@ -1,5 +1,9 @@
 /* ===========================
    Notifications Page Styles
+   Auth-Matched Indigo Theme
+   Primary:   #3f51b5 | Mid: #5c6bc0
+   Light:     #7986cb | Wash: #c5cae9
+   Soft bg:   #e8eaf6 | Text: #2b2d42
    =========================== */
 
 * {
@@ -11,7 +15,7 @@
 /* Page Wrapper */
 .notifications-page {
   min-height: 100vh;
-  background: #f3f2ef;
+  background: #fafafa;                        /* ← was #f3f2ef */
   padding: 28px 40px;
   font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
 }
@@ -43,11 +47,11 @@
 .notifications-title {
   font-size: 20px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #2b2d42;                             /* ← was #1a1a1a */
 }
 
 .notifications-badge {
-  background: #cc1016;
+  background: #3f51b5;                        /* ← was #cc1016 */
   color: #fff;
   font-size: 11px;
   font-weight: 700;
@@ -58,7 +62,7 @@
 .mark-all-btn {
   background: none;
   border: none;
-  color: #0a66c2;
+  color: #3f51b5;                             /* ← was #0a66c2 */
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -68,7 +72,7 @@
 }
 
 .mark-all-btn:hover {
-  background: #e8f0fe;
+  background: #e8eaf6;                        /* ← was #e8f0fe */
 }
 
 /* ===========================
@@ -82,7 +86,7 @@
   background: #fff;
   border-radius: 12px;
   padding: 8px 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(63, 81, 181, 0.1);   /* ← indigo tint */
   width: 100%;
 }
 
@@ -93,7 +97,7 @@
   background: transparent;
   font-size: 14px;
   font-weight: 500;
-  color: #666;
+  color: #6b6b7e;                             /* ← was #666 */
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -102,18 +106,19 @@
 }
 
 .tab-btn:hover {
-  background: #f3f2ef;
-  color: #1a1a1a;
+  background: #e8eaf6;                        /* ← was #f3f2ef */
+  color: #2b2d42;                             /* ← was #1a1a1a */
 }
 
 .tab-btn.active {
-  background: #0a66c2;
+  background: linear-gradient(135deg, #5c6bc0 0%, #3f51b5 100%);  /* ← was flat #0a66c2 */
   color: #fff;
   font-weight: 700;
+  box-shadow: 0 2px 6px rgba(63, 81, 181, 0.30);
 }
 
 .tab-count {
-  background: #cc1016;
+  background: rgba(255,255,255,0.25);         /* ← was #cc1016; subtle on gradient */
   color: #fff;
   font-size: 10px;
   font-weight: 700;
@@ -121,6 +126,12 @@
   padding: 1px 5px;
   min-width: 14px;
   text-align: center;
+}
+
+/* For inactive tabs the count should still pop */
+.tab-btn:not(.active) .tab-count {
+  background: #3f51b5;
+  color: #fff;
 }
 
 /* ===========================
@@ -150,13 +161,13 @@
 }
 
 .notif-card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(63, 81, 181, 0.12);   /* ← indigo tint */
   filter: brightness(0.97);
 }
 
-/* Unseen = blue background */
+/* Unseen = indigo wash background */
 .notif-card.unseen {
-  background: #dce6f0;
+  background: #dde0f5;                        /* ← was #dce6f0; indigo-tinted */
 }
 
 /* Seen = white background */
@@ -173,7 +184,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #0a66c2;
+  background: #3f51b5;                        /* ← was #0a66c2 */
   flex-shrink: 0;
 }
 
@@ -199,6 +210,7 @@
   font-weight: 700;
   letter-spacing: 0.5px;
   user-select: none;
+  box-shadow: 0 2px 6px rgba(63, 81, 181, 0.25);   /* ← indigo glow */
 }
 
 /* Type icon badge on avatar */
@@ -216,9 +228,10 @@
   border: 2px solid #fff;
 }
 
-.type-icon.solution { background: #27ae60; }
-.type-icon.reaction { background: #e74c3c; }
-.type-icon.comment  { background: #3498db; }
+/* Keeping semantic colors for icon types, slightly adjusted to feel indigo-family */
+.type-icon.solution { background: #43a047; }  /* green — unchanged intent */
+.type-icon.reaction { background: #e53935; }  /* red   — unchanged intent */
+.type-icon.comment  { background: #5c6bc0; }  /* ← was #3498db; now indigo mid */
 
 .type-icon svg {
   width: 10px;
@@ -237,22 +250,22 @@
 .notif-text {
   margin: 0 0 4px 0;
   font-size: 14px;
-  color: #1a1a1a;
+  color: #2b2d42;                             /* ← was #1a1a1a */
   line-height: 1.4;
 }
 
 .actor-name {
   font-weight: 700;
-  color: #1a1a1a;
+  color: #2b2d42;                             /* ← was #1a1a1a */
 }
 
-.action-text        { color: #1a1a1a; }
-.action-text.seen   { color: #555; }
+.action-text        { color: #2b2d42; }       /* ← was #1a1a1a */
+.action-text.seen   { color: #6b6b7e; }       /* ← was #555 */
 
 .problem-title {
   margin: 0 0 6px 0;
   font-size: 12px;
-  color: #0a66c2;
+  color: #3f51b5;                             /* ← was #0a66c2 */
   font-weight: 500;
   line-height: 1.4;
   white-space: normal;
@@ -268,18 +281,19 @@
 }
 
 .tag {
-  background: #e8f0fe;
-  color: #0a66c2;
+  background: #e8eaf6;                        /* ← was #e8f0fe */
+  color: #3f51b5;                             /* ← was #0a66c2 */
   font-size: 11px;
   font-weight: 600;
   padding: 2px 8px;
   border-radius: 10px;
+  border: 1px solid #c5cae9;                  /* ← added to match card tags */
 }
 
 .notif-meta {
   margin: 0;
   font-size: 12px;
-  color: #888;
+  color: #9fa8da;                             /* ← was #888; indigo-tinted muted */
 }
 
 /* ===========================
@@ -296,14 +310,14 @@
 
 .notif-time {
   font-size: 12px;
-  color: #888;
+  color: #9fa8da;                             /* ← was #888; indigo-tinted muted */
   white-space: nowrap;
 }
 
 .more-btn {
   background: none;
   border: none;
-  color: #888;
+  color: #9fa8da;                             /* ← was #888 */
   font-size: 14px;
   cursor: pointer;
   padding: 2px 4px;
@@ -313,8 +327,8 @@
 }
 
 .more-btn:hover {
-  background: #e0e0e0;
-  color: #333;
+  background: #e8eaf6;                        /* ← was #e0e0e0 */
+  color: #3f51b5;                             /* ← was #333 */
 }
 
 /* ===========================
@@ -326,11 +340,12 @@
   padding: 60px 20px;
   background: #fff;
   border-radius: 12px;
+  border: 1px solid #c5cae9;                  /* ← added to match card style */
 }
 
 .empty-icon    { font-size: 48px; margin-bottom: 12px; }
-.empty-text    { font-size: 18px; font-weight: 700; color: #1a1a1a; margin: 0 0 8px 0; }
-.empty-subtext { font-size: 14px; color: #666; }
+.empty-text    { font-size: 18px; font-weight: 700; color: #2b2d42; margin: 0 0 8px 0; }  /* ← was #1a1a1a */
+.empty-subtext { font-size: 14px; color: #6b6b7e; }                                        /* ← was #666 */
 
 /* ===========================
    Responsive
