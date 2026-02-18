@@ -1,4 +1,4 @@
-import { registerService, loginService, verifyOtpService } from "../services/auth.service.js";
+import { registerService, loginService, verifyOtpService, getMeservices } from "../services/auth.service.js";
 
 export const register = async (req, res) => {
   try {
@@ -35,3 +35,16 @@ export const verifyOtp = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+
+export const getMe = async (req, res) => {
+  try {
+    const user = await getMeservices(req.user.userId);
+    res.status(200).json({
+      success:true,
+      user
+    })
+  }
+  catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+}
