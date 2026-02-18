@@ -1,0 +1,352 @@
+/* ===========================
+   Notifications Page Styles
+   =========================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Page Wrapper */
+.notifications-page {
+  min-height: 100vh;
+  background: #f3f2ef;
+  padding: 28px 40px;
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Container — full width, no max-width cap */
+.notifications-container {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+}
+
+/* ===========================
+   Header
+   =========================== */
+
+.notifications-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.notifications-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notifications-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.notifications-badge {
+  background: #cc1016;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 2px 8px;
+}
+
+.mark-all-btn {
+  background: none;
+  border: none;
+  color: #0a66c2;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+
+.mark-all-btn:hover {
+  background: #e8f0fe;
+}
+
+/* ===========================
+   Tab Bar
+   =========================== */
+
+.tab-bar {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 8px 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  width: 100%;
+}
+
+.tab-btn {
+  padding: 8px 20px;
+  border-radius: 20px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.tab-btn:hover {
+  background: #f3f2ef;
+  color: #1a1a1a;
+}
+
+.tab-btn.active {
+  background: #0a66c2;
+  color: #fff;
+  font-weight: 700;
+}
+
+.tab-count {
+  background: #cc1016;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 1px 5px;
+  min-width: 14px;
+  text-align: center;
+}
+
+/* ===========================
+   Notification List
+   =========================== */
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ===========================
+   Notification Card
+   =========================== */
+
+.notif-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 24px;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.notif-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  filter: brightness(0.97);
+}
+
+/* Unseen = blue background */
+.notif-card.unseen {
+  background: #dce6f0;
+}
+
+/* Seen = white background */
+.notif-card.seen {
+  background: #ffffff;
+}
+
+/* Blue dot for unseen */
+.unseen-dot {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #0a66c2;
+  flex-shrink: 0;
+}
+
+/* ===========================
+   Avatar
+   =========================== */
+
+.avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  user-select: none;
+}
+
+/* Type icon badge on avatar */
+.type-icon {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  border: 2px solid #fff;
+}
+
+.type-icon.solution { background: #27ae60; }
+.type-icon.reaction { background: #e74c3c; }
+.type-icon.comment  { background: #3498db; }
+
+.type-icon svg {
+  width: 10px;
+  height: 10px;
+}
+
+/* ===========================
+   Notification Content
+   =========================== */
+
+.notif-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notif-text {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: #1a1a1a;
+  line-height: 1.4;
+}
+
+.actor-name {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.action-text        { color: #1a1a1a; }
+.action-text.seen   { color: #555; }
+
+.problem-title {
+  margin: 0 0 6px 0;
+  font-size: 12px;
+  color: #0a66c2;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+}
+
+.tag-row {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.tag {
+  background: #e8f0fe;
+  color: #0a66c2;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.notif-meta {
+  margin: 0;
+  font-size: 12px;
+  color: #888;
+}
+
+/* ===========================
+   Time & More Button
+   =========================== */
+
+.time-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.notif-time {
+  font-size: 12px;
+  color: #888;
+  white-space: nowrap;
+}
+
+.more-btn {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 4px;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.more-btn:hover {
+  background: #e0e0e0;
+  color: #333;
+}
+
+/* ===========================
+   Empty State
+   =========================== */
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  background: #fff;
+  border-radius: 12px;
+}
+
+.empty-icon    { font-size: 48px; margin-bottom: 12px; }
+.empty-text    { font-size: 18px; font-weight: 700; color: #1a1a1a; margin: 0 0 8px 0; }
+.empty-subtext { font-size: 14px; color: #666; }
+
+/* ===========================
+   Responsive
+   =========================== */
+
+@media (max-width: 768px) {
+  .notifications-page { padding: 16px 16px; }
+  .notif-card         { padding: 12px 14px; }
+  .avatar             { width: 40px; height: 40px; font-size: 13px; }
+  .tab-btn            { padding: 7px 14px; font-size: 13px; }
+}
+
+@media (max-width: 480px) {
+  .notifications-page { padding: 12px 8px; }
+  .notif-card         { padding: 10px 10px; gap: 10px; }
+  .avatar             { width: 36px; height: 36px; font-size: 12px; }
+  .tab-btn            { padding: 6px 12px; font-size: 12px; }
+  .notifications-title { font-size: 17px; }
+}

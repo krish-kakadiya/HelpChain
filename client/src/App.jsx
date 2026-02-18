@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import ProblemForm from "./components/problem/ProblemForm/ProblemForm";
 import Rewards from "./pages/Rewards/Rewards";
 import QuestionPage from "./pages/ProblemView/QuestionPage";
+import NotificationsPage from "./pages/notification/NotificationPage";
 
 const Problems = () => <div>My Problems</div>;
 const Solutions = () => <div>My Solutions</div>;
@@ -52,6 +53,8 @@ function App() {
               <Route path="solutions" element={<Solutions />} />
               <Route path="experts" element={<Experts />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="/notifications" element={<NotificationsPage />} />
+
             </Route>
 
           </Routes>
