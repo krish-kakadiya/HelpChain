@@ -3,9 +3,12 @@ import { Search, Bell, ChevronDown } from 'lucide-react';
 import logo from '../../../assets/logo/logo.png';
 import './Navbar.css';
 import goldIcon from '../../../assets/gold.svg';
+import { useNavigate } from "react-router-dom";
 
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   return (
     <nav className="hc-navbar">
       <div className="hc-navbar__brand">
@@ -27,7 +30,7 @@ const Navbar = () => {
         </div>
 
         
-        <button className="hc-navbar__notification">
+        <button className="hc-navbar__notification" onClick={() => navigate("/notifications")}>
           <Bell size={20} />
           <span className="hc-navbar__notification-badge">3</span>
         </button>

@@ -11,9 +11,10 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import ProblemForm from "./components/problem/ProblemForm/ProblemForm";
 import Rewards from "./pages/Rewards/Rewards";
 import QuestionPage from "./pages/ProblemView/QuestionPage";
+import NotificationsPage from "./pages/notification/NotificationPage.jsx";
+import SolutionsPage from "./pages/Solutions/SolutionsPage.jsx";
 
 const Problems = () => <div>My Problems</div>;
-const Solutions = () => <div>My Solutions</div>;
 const Experts = () => <div>Expert Connect</div>;
 const Settings = () => <div>Settings</div>;
 
@@ -49,9 +50,11 @@ function App() {
               <Route path="QuestionPage" element={<QuestionPage />} />
               <Route path="problems" element={<Problems />} />
               <Route path="rewards" element={<Rewards />} />
-              <Route path="solutions" element={<Solutions />} />
+              <Route path="solutions" element={<SolutionsPage />} />
               <Route path="experts" element={<Experts />} />
               <Route path="settings" element={<Settings />} />
+              <Route path="/notifications" element={<NotificationsPage />} />
+
             </Route>
 
           </Routes>
