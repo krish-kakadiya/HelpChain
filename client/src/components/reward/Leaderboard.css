@@ -1,231 +1,246 @@
-/* ========================================
-   LEADERBOARD — Auth-Matched Indigo Theme
-   Primary:   #3f51b5 | Mid: #5c6bc0
-   Light:     #7986cb | Wash: #c5cae9
-   Soft bg:   #e8eaf6 | Text: #2b2d42
-   ======================================== */
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Sora:wght@400;500;600;700&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
-
-.leaderboard {
+/* ─── Container ──────────────────────────────────────────────────────────────── */
+.lb {
+  font-family: 'Sora', sans-serif;
   width: 100%;
-  font-family: 'Poppins', sans-serif;
+  padding: 4px 0;
 }
 
-.leaderboard__list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* ========================================
-   LEADERBOARD ITEM
-   ======================================== */
-
-.leaderboard-item {
+/* ─── Column grid ────────────────────────────────────────────────────────────── */
+.lb-header,
+.lb-row {
   display: grid;
-  grid-template-columns: 50px 50px 1fr auto 120px;
+  grid-template-columns: 40px 1fr 72px 140px 90px;
   align-items: center;
-  gap: 16px;
-  padding: 16px 20px;
-  background: #fafafa;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+  gap: 0 12px;
 }
 
-.leaderboard-item:hover {
-  background: #ffffff;
-  border-color: #c5cae9;
-  transform: translateX(4px);
-  box-shadow: 0 2px 10px rgba(63, 81, 181, 0.08);
+/* ─── Header ─────────────────────────────────────────────────────────────────── */
+.lb-header {
+  padding: 0 16px 10px;
+  border-bottom: 1px solid #f1f1f5;
+  margin-bottom: 2px;
 }
 
-/* Top 3 Special Styling */
-.leaderboard-item--top {
-  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
-  border: 2px solid #c5cae9;
+.lb-col {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #b0b5c5;
 }
 
-.leaderboard-item--top:hover {
-  border-color: #7986cb;
-  box-shadow: 0 4px 14px rgba(63, 81, 181, 0.14);
+.lb-col--rank   { text-align: center; }
+.lb-col--badges { text-align: center; }
+.lb-col--pts    { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 0; }
+
+/* ─── Row ────────────────────────────────────────────────────────────────────── */
+.lb-row {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: background 0.18s, border-color 0.18s, transform 0.18s;
+  animation: lb-fadein 0.35s ease both;
+  cursor: default;
 }
 
-/* ========================================
-   RANK
-   ======================================== */
+@keyframes lb-fadein {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-.leaderboard-item__rank {
+.lb-row:hover {
+  background: #fafafe;
+  border-color: #ebebf5;
+  transform: translateX(3px);
+}
+
+.lb-row--podium {
+  background: linear-gradient(to right, #fafaff, #f5f5ff);
+  border-color: #e8e8f8;
+}
+
+.lb-row--podium:hover {
+  background: linear-gradient(to right, #f4f4ff, #ededff);
+  border-color: #d5d5ef;
+  transform: translateX(3px);
+}
+
+/* ─── Rank cell ──────────────────────────────────────────────────────────────── */
+.lb-col--rank {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #6b6b7e;
 }
 
-.rank-number {
-  width: 32px;
-  height: 32px;
+.lb-rank-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: #c0c4d6;
+  width: 24px;
+  text-align: center;
+}
+
+.lb-crown {
+  flex-shrink: 0;
+}
+
+/* ─── User cell ──────────────────────────────────────────────────────────────── */
+.lb-col--user {
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: #e8eaf6;
-  color: #5c6bc0;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: 700;
-}
-
-.rank-icon {
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-}
-
-/* Keep medal colours — they're semantic */
-.rank-icon--gold   { color: #ffd700; }
-.rank-icon--silver { color: #c0c0c0; }
-.rank-icon--bronze { color: #cd7f32; }
-
-/* ========================================
-   AVATAR
-   ======================================== */
-
-.leaderboard-item__avatar {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #5c6bc0 0%, #3f51b5 100%);
-  color: #ffffff;
-  border-radius: 12px;
-  font-weight: 700;
-  font-size: 1rem;
-  box-shadow:
-    0 2px 8px rgba(63, 81, 181, 0.30),
-    0 0 0 2px rgba(197, 202, 233, 0.4);
-}
-
-/* Top 3 avatars keep their medal colours */
-.leaderboard-item--top:nth-child(1) .leaderboard-item__avatar {
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-  color: #1a1a1a;
-  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.35);
-}
-
-.leaderboard-item--top:nth-child(2) .leaderboard-item__avatar {
-  background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
-  color: #1a1a1a;
-  box-shadow: 0 2px 8px rgba(192, 192, 192, 0.35);
-}
-
-.leaderboard-item--top:nth-child(3) .leaderboard-item__avatar {
-  background: linear-gradient(135deg, #cd7f32 0%, #e89f5f 100%);
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(205, 127, 50, 0.35);
-}
-
-/* ========================================
-   USER INFO
-   ======================================== */
-
-.leaderboard-item__info {
+  gap: 10px;
   min-width: 0;
 }
 
-.leaderboard-item__name {
-  font-size: 1rem;
+/* Avatar */
+.lb-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
+.lb-avatar--default { background: #eeeef8; color: #6b6f9a; }
+.lb-avatar--p1 { background: linear-gradient(135deg, #ffd700, #ffed6a); color: #7a5a00; box-shadow: 0 2px 8px rgba(255,215,0,0.3); }
+.lb-avatar--p2 { background: linear-gradient(135deg, #c0c0c0, #e0e0e0); color: #4a4a4a; box-shadow: 0 2px 8px rgba(180,180,180,0.3); }
+.lb-avatar--p3 { background: linear-gradient(135deg, #c47d2c, #e09a50); color: #fff; box-shadow: 0 2px 8px rgba(196,125,44,0.3); }
+
+/* Name + handle */
+.lb-userinfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.lb-name {
+  font-size: 13px;
   font-weight: 600;
-  color: #2b2d42;
-  margin-bottom: 4px;
+  color: #1a1d2e;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.leaderboard-item__username {
-  font-size: 0.85rem;
-  color: #9fa8da;
-  font-weight: 500;
+.lb-handle {
+  font-size: 11px;
+  color: #b0b5c8;
+  font-weight: 400;
+  white-space: nowrap;
 }
 
-/* ========================================
-   STATS
-   ======================================== */
-
-.leaderboard-item__stats {
+/* ─── Trend badge ────────────────────────────────────────────────────────────── */
+.lb-trend {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
 }
 
-.stat-badge {
+.lb-trend--up   { background: #edfdf5; color: #16a34a; }
+.lb-trend--down { background: #fff1f1; color: #dc2626; }
+.lb-trend--flat { background: #f5f5f8; color: #a0a5b8; }
+
+/* ─── Badges cell ────────────────────────────────────────────────────────────── */
+.lb-col--badges {
   display: flex;
+  justify-content: center;
+}
+
+.lb-badge-pill {
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  background: #e8eaf6;
-  border-radius: 8px;
-  font-size: 0.85rem;
+  gap: 4px;
+  padding: 3px 9px;
+  background: #f0f0fa;
+  border: 1px solid #e4e4f4;
+  border-radius: 999px;
+  font-size: 11px;
   font-weight: 600;
-  color: #6b6b7e;
-  border: 1px solid #c5cae9;
+  color: #6b6f9a;
 }
 
-.stat-badge svg {
-  color: #5c6bc0;
+/* ─── Progress bar cell ──────────────────────────────────────────────────────── */
+.lb-col--bar {
+  padding-right: 4px;
 }
 
-.trend-icon { opacity: 0.7; }
-.trend-icon--up   { color: #10b981; }
-.trend-icon--down { color: #ef4444; transform: rotate(180deg); }
+.lb-bar-track {
+  height: 4px;
+  border-radius: 999px;
+  background: #f0f0f5;
+  overflow: hidden;
+}
 
-/* ========================================
-   POINTS
-   ======================================== */
+.lb-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  width: 0%;
+  animation: lb-grow 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
 
-.leaderboard-item__points {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #2b2d42;
-  text-align: right;
+@keyframes lb-grow {
+  from { width: 0%; }
+  to   { width: var(--w); }
+}
+
+.lb-bar-fill--default { background: linear-gradient(to right, #c5cae9, #7986cb); }
+.lb-bar-fill--p1 { background: linear-gradient(to right, #ffd700, #ffed4e); }
+.lb-bar-fill--p2 { background: linear-gradient(to right, #c0c0c0, #e0e0e0); }
+.lb-bar-fill--p3 { background: linear-gradient(to right, #c47d2c, #e09a50); }
+
+/* ─── Points cell ────────────────────────────────────────────────────────────── */
+.lb-col--pts {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 2px;
+  gap: 0;
+  text-align: right;
 }
 
-.points-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: #9fa8da;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.lb-pts {
+  font-family: 'DM Mono', monospace;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2a2d3e;
+  line-height: 1;
 }
 
-/* Top 3 points in indigo */
-.leaderboard-item--top .leaderboard-item__points {
+.lb-pts--podium {
   color: #3f51b5;
+  font-weight: 700;
 }
 
-/* ========================================
-   RESPONSIVE
-   ======================================== */
+.lb-pts-label {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #c0c4d6;
+}
 
-@media (max-width: 768px) {
-  .leaderboard-item {
-    grid-template-columns: 40px 45px 1fr 100px;
-    gap: 12px;
-    padding: 14px 16px;
+/* ─── Responsive ─────────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .lb-header,
+  .lb-row {
+    grid-template-columns: 36px 1fr 60px 80px;
   }
 
-  .leaderboard-item__rank  { font-size: 1rem; }
-  .rank-number             { width: 28px; height: 28px; font-size: 0.85rem; }
-  .rank-icon               { width: 18px; height: 18px; }
-  .leaderboard-item__avatar { width: 45px; height: 45px; font-size: 0.9rem; }
-  .leaderboard-item__name  { font-size: 0.95rem; }
-  .leaderboard-item__username { font-size: 0.8rem; }
-  .leaderboard-item__stats { display: none; }
-  .leaderboard-item__points { font-size: 1.25rem; }
+  .lb-col--bar { display: none; }
+  .lb-avatar   { width: 30px; height: 30px; font-size: 10px; }
+  .lb-name     { font-size: 12px; }
+  .lb-pts      { font-size: 13px; }
 }

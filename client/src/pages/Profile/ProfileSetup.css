@@ -30,19 +30,13 @@
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 .profile-header {
   background: #f8f9fa;
-  padding: 40px 30px;
+  padding: 40px 30px 32px;
   border-radius: 0;
   text-align: center;
   color: #2c3e50;
@@ -54,44 +48,147 @@
 .profile-header::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 5px;
   background: #4a90e2;
 }
 
-.header-icon {
-  font-size: 60px;
-  margin-bottom: 16px;
+/* ── Profile Photo Upload ────────────── */
+.profile-photo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.profile-photo-ring {
+  position: relative;
+  width: 108px;
+  height: 108px;
+}
+
+/* Animated gradient ring */
+.profile-photo-ring::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4a90e2, #7b52e8, #4a90e2);
+  background-size: 200% 200%;
+  animation: ring-spin 3s linear infinite;
+  z-index: 0;
+}
+
+@keyframes ring-spin {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* White inner circle to create ring gap */
+.profile-photo-ring::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: 50%;
+  background: #f8f9fa;
+  z-index: 1;
+}
+
+.profile-photo-img,
+.profile-photo-placeholder {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.profile-photo-img {
+  width: calc(100% - 8px);
+  height: calc(100% - 8px);
+  object-fit: cover;
+  display: block;
+}
+
+.profile-photo-placeholder {
+  background: linear-gradient(135deg, #e8eaf6, #c5cae9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-photo-placeholder i {
+  font-size: 42px;
+  color: #7986cb;
+}
+
+/* Camera upload button — bottom-right of ring */
+.profile-photo-upload-btn {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #4a90e2;
+  border: 2.5px solid #f8f9fa;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 8px rgba(74,144,226,0.35);
+}
+
+.profile-photo-upload-btn i {
+  font-size: 14px;
+  color: #fff;
+}
+
+.profile-photo-upload-btn:hover {
+  background: #357abd;
+  transform: scale(1.12);
+}
+
+/* Text upload button below ring */
+.profile-photo-text-btn {
+  background: none;
+  border: 1.5px solid #4a90e2;
+  border-radius: 20px;
   color: #4a90e2;
-  animation: iconFloat 3s ease-in-out infinite;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 16px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  font-family: inherit;
 }
 
-@keyframes iconFloat {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+.profile-photo-text-btn:hover {
+  background: #4a90e2;
+  color: #fff;
 }
 
+/* ── Header text ─────────────────────── */
 .profile-header h2 {
   margin: 0;
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   color: #2c3e50;
 }
 
 .profile-header p {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   color: #6c757d;
   font-weight: 400;
 }
 
+/* ── Form ────────────────────────────── */
 .profile-form {
   padding: 40px 50px;
   background: #ffffff;
@@ -108,14 +205,8 @@
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(15px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .form-section h3 {
@@ -137,36 +228,22 @@
   margin-top: 8px;
 }
 
-.required {
-  color: #e74c3c;
-  font-size: 14px;
-}
+.required { color: #e74c3c; font-size: 14px; }
+.optional  { color: #95a5a6; font-size: 13px; font-weight: 400; }
 
-.optional {
-  color: #95a5a6;
-  font-size: 13px;
-  font-weight: 400;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
+.form-group { margin-bottom: 20px; }
 
 .form-group label {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 14px;
   font-weight: 600;
   color: #34495e;
   margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
-.form-group label i {
-  font-size: 18px;
-  color: #4a90e2;
-}
+.form-group label i { font-size: 18px; color: #4a90e2; }
 
 .form-group input {
   width: 100%;
@@ -181,22 +258,17 @@
   color: #2c3e50;
 }
 
-.form-group input:hover {
-  background: #ffffff;
-  border-color: #adb5bd;
-}
+.form-group input:hover { background: #ffffff; border-color: #adb5bd; }
 
 .form-group input:focus {
   outline: none;
   border-color: #4a90e2;
   background: #ffffff;
-  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+  box-shadow: 0 0 0 3px rgba(74,144,226,0.1);
   transform: translateY(-1px);
 }
 
-.form-group input::placeholder {
-  color: #adb5bd;
-}
+.form-group input::placeholder { color: #adb5bd; }
 
 .form-row {
   display: grid;
@@ -204,12 +276,8 @@
   gap: 16px;
 }
 
-/* Tags Styling */
-.tags-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
+/* ── Tags ────────────────────────────── */
+.tags-container { display: flex; flex-wrap: wrap; gap: 10px; }
 
 .tag {
   padding: 10px 18px;
@@ -224,36 +292,28 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  position: relative;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .tag:hover {
   border-color: #4a90e2;
   background: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.15);
+  box-shadow: 0 4px 12px rgba(74,144,226,0.15);
 }
 
 .tag.selected {
   background: #4a90e2;
   border-color: #4a90e2;
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+  box-shadow: 0 4px 12px rgba(74,144,226,0.3);
   transform: translateY(-1px);
 }
 
-.tag.selected:hover {
-  background: #357abd;
-  border-color: #357abd;
-}
+.tag.selected:hover { background: #357abd; border-color: #357abd; }
+.tag-check { font-size: 13px; font-weight: bold; }
 
-.tag-check {
-  font-size: 13px;
-  font-weight: bold;
-}
-
-/* Submit Button */
+/* ── Submit ───────────────────────────── */
 .submit-btn {
   width: 100%;
   padding: 15px 28px;
@@ -271,38 +331,34 @@
   gap: 10px;
   margin-top: 35px;
   margin-bottom: 20px;
-  box-shadow: 0 6px 16px rgba(74, 144, 226, 0.3);
+  box-shadow: 0 6px 16px rgba(74,144,226,0.3);
   position: relative;
   overflow: hidden;
+  font-family: inherit;
 }
 
 .submit-btn::before {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255,255,255,0.2);
   transform: translate(-50%, -50%);
   transition: width 0.6s, height 0.6s;
 }
 
-.submit-btn:hover::before {
-  width: 300px;
-  height: 300px;
-}
+.submit-btn:hover::before { width: 300px; height: 300px; }
 
 .submit-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(74, 144, 226, 0.4);
+  box-shadow: 0 10px 24px rgba(74,144,226,0.4);
   background: #357abd;
 }
 
 .submit-btn:active {
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(74, 144, 226, 0.3);
+  box-shadow: 0 6px 16px rgba(74,144,226,0.3);
 }
 
 .submit-btn i {
@@ -312,119 +368,32 @@
   transition: transform 0.3s ease;
 }
 
-.submit-btn:hover i {
-  transform: translateX(5px);
-}
+.submit-btn:hover i { transform: translateX(5px); }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .profile-container {
-    max-width: 700px;
-  }
-  
-  .profile-form {
-    padding: 35px 40px;
-  }
-  
-  .form-section h3 {
-    font-size: 19px;
-  }
-  
-  .tags-container {
-    gap: 10px;
-  }
-}
-
+/* ── Responsive ───────────────────────── */
 @media (max-width: 768px) {
-  .profile-container {
-    max-width: 100%;
-  }
-
-  .profile-header {
-    padding: 35px 25px;
-  }
-
-  .profile-header h2 {
-    font-size: 28px;
-  }
-
-  .header-icon {
-    font-size: 54px;
-  }
-
-  .profile-form {
-    padding: 30px 25px;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-
-  .form-section h3 {
-    font-size: 18px;
-  }
-
-  .tag {
-    font-size: 12px;
-    padding: 9px 16px;
-  }
-
-  .tags-container {
-    gap: 8px;
-  }
-  
-  .submit-btn {
-    font-size: 15px;
-    padding: 14px 24px;
-  }
+  .profile-container { max-width: 100%; }
+  .profile-header { padding: 35px 25px 28px; }
+  .profile-header h2 { font-size: 24px; }
+  .profile-photo-ring { width: 96px; height: 96px; }
+  .profile-photo-placeholder i { font-size: 36px; }
+  .profile-form { padding: 30px 25px; }
+  .form-row { grid-template-columns: 1fr; gap: 0; }
+  .form-section h3 { font-size: 18px; }
+  .tag { font-size: 12px; padding: 9px 16px; }
+  .tags-container { gap: 8px; }
+  .submit-btn { font-size: 15px; padding: 14px 24px; }
 }
 
 @media (max-width: 480px) {
-  .profile-header {
-    padding: 30px 20px;
-  }
-
-  .header-icon {
-    font-size: 50px;
-  }
-
-  .profile-header h2 {
-    font-size: 24px;
-  }
-
-  .profile-header p {
-    font-size: 14px;
-  }
-
-  .profile-form {
-    padding: 25px 20px;
-  }
-
-  .form-section {
-    margin-bottom: 28px;
-  }
-
-  .form-section h3 {
-    font-size: 17px;
-  }
-
-  .tags-container {
-    gap: 8px;
-  }
-
-  .tag {
-    font-size: 11px;
-    padding: 8px 14px;
-  }
-
-  .submit-btn {
-    padding: 13px 22px;
-    font-size: 14px;
-  }
-  
-  .form-group input {
-    padding: 11px 14px;
-    font-size: 13px;
-  }
+  .profile-header { padding: 28px 20px 22px; }
+  .profile-photo-ring { width: 88px; height: 88px; }
+  .profile-photo-placeholder i { font-size: 32px; }
+  .profile-header h2 { font-size: 21px; }
+  .profile-form { padding: 25px 20px; }
+  .form-section { margin-bottom: 28px; }
+  .form-section h3 { font-size: 17px; }
+  .tag { font-size: 11px; padding: 8px 14px; }
+  .submit-btn { padding: 13px 22px; font-size: 14px; }
+  .form-group input { padding: 11px 14px; font-size: 13px; }
 }

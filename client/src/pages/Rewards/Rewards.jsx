@@ -1,31 +1,44 @@
+// ─── Rewards.jsx ─────────────────────────────────────────────────────────────
+// Changes from original:
+//   1. MyAchievements removed
+//   2. 3rd StatsCard replaced with BadgeCollectionCard
+//   3. collectedBadges state + handleBadgeCollect wired up
+
 import React, { useState } from 'react';
-import { Trophy, Upload, Target, ChevronDown, ChevronUp } from 'lucide-react';
-import BadgeSlider from '../../components/reward/BadgeSlider';
-import StatsCard from '../../components/reward/StatsCard';
-import Leaderboard from '../../components/reward/Leaderboard';
-import MyAchievements from '../../components/reward/MyAchievements';
-import hundredBadge from '../../assets/badges/hundred.png';
+import { Trophy, Upload, ChevronDown, ChevronUp } from 'lucide-react';
+import BadgeSlider         from '../../components/reward/BadgeSlider';
+import StatsCard           from '../../components/reward/StatsCard';
+import Leaderboard         from '../../components/reward/Leaderboard';
 import './Rewards.css';
+import BadgeCollection from '../../components/reward/Badgecollection';
 
 const Rewards = () => {
   const [leaderboardExpanded, setLeaderboardExpanded] = useState(false);
-  const [achievementsExpanded, setAchievementsExpanded] = useState(false);
 
-  // Stats data
-  const statsData = {
-    totalPoints: 1250,
-    uploadedPoints: 850,
-    nearestBadge: {
-      name: '100 Solutions',
-      current: 78,
-      target: 100,
-      image: hundredBadge
-    }
+  // ── Badge collection state ───────────────────────────────────────────────
+  // Pre-populate collectedBadges from your backend on mount, e.g.:
+  //   const [collectedBadges, setCollectedBadges] = useState(user.collectedBadgeIds ?? []);
+  const [collectedBadges, setCollectedBadges] = useState([]);
+
+  const handleBadgeCollect = (badgeId) => {
+    setCollectedBadges(prev => [...prev, badgeId]);
+    // ← YOUR API CALL HERE:
+    // await api.post('/badges/collect', { badgeId });
   };
+
+  // ── Stats ────────────────────────────────────────────────────────────────
+  const statsData = {
+    totalPoints:    1250,
+    uploadedPoints: 850,
+  };
+
+  // ← Replace with real user points from API / auth context
+  const userPoints = 120;
 
   return (
     <div className="rewards-page">
-      {/* Top Stats Cards */}
+
+      {/* ── Stats row ── */}
       <div className="rewards-page__stats">
         <StatsCard
           icon={Trophy}
@@ -33,73 +46,39 @@ const Rewards = () => {
           value={statsData.totalPoints}
           color="purple"
         />
-        
+
         <StatsCard
           icon={Upload}
           label="Uploaded Points"
           value={statsData.uploadedPoints}
           color="blue"
-          clickable={true}
+          clickable
         />
-        
-        <StatsCard
-          icon={Target}
-          label="Nearest Badge"
-          value={`${statsData.nearestBadge.current}/${statsData.nearestBadge.target}`}
-          subtitle={statsData.nearestBadge.name}
-          badge={statsData.nearestBadge}
-          color="green"
+
+        {/* 3rd card — Badge Collection */}
+        <BadgeCollection
+          userPoints={userPoints}
+          collectedIds={collectedBadges}
+          onCollect={handleBadgeCollect}
         />
       </div>
 
-      {/* Badge Slider */}
+      {/* ── Badge Slider ── */}
       <div className="rewards-page__slider">
         <BadgeSlider />
       </div>
 
-      {/* Leaderboard Section */}
+      {/* ── Leaderboard ── */}
       <div className="rewards-page__section">
-        <div 
-          className="section-header"
-          onClick={() => setLeaderboardExpanded(!leaderboardExpanded)}
-        >
           <h2 className="section-header__title">
-            <Trophy size={24} />
+            <Trophy size={22} />
             Overall Leaderboard
           </h2>
-          <button className="section-header__toggle">
-            {leaderboardExpanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
-          </button>
-        </div>
-        
-        {leaderboardExpanded && (
           <div className="section-content">
             <Leaderboard />
           </div>
-        )}
       </div>
 
-      {/* My Achievements Section */}
-      <div className="rewards-page__section">
-        <div 
-          className="section-header"
-          onClick={() => setAchievementsExpanded(!achievementsExpanded)}
-        >
-          <h2 className="section-header__title">
-            <Target size={24} />
-            My Achievements
-          </h2>
-          <button className="section-header__toggle">
-            {achievementsExpanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
-          </button>
-        </div>
-        
-        {achievementsExpanded && (
-          <div className="section-content">
-            <MyAchievements />
-          </div>
-        )}
-      </div>
     </div>
   );
 };
