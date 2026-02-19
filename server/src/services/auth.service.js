@@ -5,46 +5,40 @@ import Otp from "../models/otp.model.js";
 import sendEmail from "../utils/sendEmail.js";
 
 export const verifyOtpService = async ({ email, otp }) => {
- 
+
   const user = await User.findOne({ email });
-
-  if (!user) {
-    throw new Error("User not found");
-  }
-
-  
-  if (user.isVerified) {
-    throw new Error("User already verified");
-  }
+  if (!user) throw new Error("User not found");
+  if (user.isVerified) throw new Error("User already verified");
 
   const otpRecord = await Otp.findOne({ userId: user._id });
-
-  if (!otpRecord) {
-    throw new Error("OTP not found. Please request a new one.");
-  }
+  if (!otpRecord) throw new Error("OTP not found");
 
   if (otpRecord.expiresAt < new Date()) {
-    await Otp.deleteMany({ userId: user._id }); // cleanup
-    throw new Error("OTP expired. Please request a new one.");
+    await Otp.deleteMany({ userId: user._id });
+    throw new Error("OTP expired");
   }
-
 
   const isMatch = await bcrypt.compare(otp, otpRecord.otpHash);
+  if (!isMatch) throw new Error("Invalid OTP");
 
-  if (!isMatch) {
-    throw new Error("Invalid OTP");
-  }
-
-  // 6️⃣ Mark user verified
   user.isVerified = true;
   await user.save();
-
   await Otp.deleteMany({ userId: user._id });
+
+  // 🔥 ADD THIS PART
+  const accessToken = createAccessToken(user._id);
+  const refreshToken = createRefreshToken(user._id);
+
+  user.refreshTokenHash = await bcrypt.hash(refreshToken, 10);
+  await user.save();
 
   return {
     message: "Email verified successfully",
+    accessToken,
+    refreshToken,
   };
 };
+
 
 export const registerService = async ({ username, email, password }) => {
   console.log("register service");
