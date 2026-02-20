@@ -1,0 +1,118 @@
+/* ─── Helpchain Loader — Professional Minimal ──────── */
+
+:root {
+  --hc-indigo:      #3B3FA6;
+  --hc-indigo-soft: rgba(59, 63, 166, 0.08);
+  --hc-indigo-mid:  rgba(59, 63, 166, 0.18);
+  --hc-bg:          rgba(240, 242, 255, 0.72);
+  --hc-white:       #ffffff;
+}
+
+/* ── Overlay ───────────────────────────────────────── */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--hc-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* ── Card ──────────────────────────────────────────── */
+.loader-card {
+  background: var(--hc-white);
+  border-radius: 18px;
+  padding: 40px 52px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  box-shadow:
+    0 2px 0px rgba(59, 63, 166, 0.06),
+    0 8px 32px rgba(59, 63, 166, 0.10);
+  border: 1px solid rgba(59, 63, 166, 0.07);
+  animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ── Ring Spinner ──────────────────────────────────── */
+.loader-ring {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-spin {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2.5px solid var(--hc-indigo-mid);
+  border-top-color: var(--hc-indigo);
+  animation: spin 0.85s linear infinite;
+}
+
+.loader-logo-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--hc-indigo-soft);
+  border-radius: 50%;
+}
+
+/* ── Bottom: label + bar ───────────────────────────── */
+.loader-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.loader-label {
+  font-family: 'Nunito', 'Segoe UI', sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--hc-indigo);
+  opacity: 0.45;
+}
+
+/* Progress bar */
+.loader-bar {
+  width: 120px;
+  height: 3px;
+  background: var(--hc-indigo-mid);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.loader-bar-fill {
+  height: 100%;
+  width: 40%;
+  background: var(--hc-indigo);
+  border-radius: 99px;
+  animation: barSlide 1.4s ease-in-out infinite;
+}
+
+/* ── Keyframes ─────────────────────────────────────── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes barSlide {
+  0%   { transform: translateX(-100%); width: 40%; }
+  50%  { width: 60%; }
+  100% { transform: translateX(280%);  width: 40%; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

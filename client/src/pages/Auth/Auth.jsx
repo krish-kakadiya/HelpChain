@@ -4,12 +4,14 @@ import OtpModal from "./OtpModal/OtpModal";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios.js";
 import { useAuth } from "../../context/AuthContext.jsx";
+import Loader from "../../components/common/layout/Loader.jsx";
 
 const LoginRegister = () => {
   const navigate = useNavigate();
   const [active, setActive] = useState(false);
   const [showOtp, setShowOtp] = useState(false);
   const { login } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   // ================= REGISTER STATE =================
   const [registerData, setRegisterData] = useState({
@@ -27,7 +29,7 @@ const LoginRegister = () => {
   // ================= REGISTER =================
   const handleRegister = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const response = await api.post("/auth/register", registerData);
 
@@ -42,6 +44,8 @@ const LoginRegister = () => {
           error.response?.data?.error ||
           "Something went wrong during registration"
       );
+    } finally {
+      setLoading(false);  // ✅ stop loader
     }
   };
 
@@ -59,6 +63,7 @@ const LoginRegister = () => {
 
   return (
     <div className="auth-page">
+      {loading && <Loader text="Creating your account..." />}
       <div className={`container ${active ? "active" : ""}`}>
         <div className="curved-shape"></div>
         <div className="curved-shape2"></div>
