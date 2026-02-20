@@ -1,14 +1,16 @@
 import React, { useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import ProfileSetup from "../../Profile/ProfileSetup";
 import "./OtpModal.css";
-import api from "../../../api/axios"; // your axios instance
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 
 const OtpModal = ({ email, onClose }) => {
   const inputs = useRef([]);
-  const [showProfile, setShowProfile] = useState(false);
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [loading, setLoading] = useState(false);
+
+  const { otpLogin } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e, index) => {
     const value = e.target.value;
@@ -19,7 +21,7 @@ const OtpModal = ({ email, onClose }) => {
     newOtp[index] = value;
     setOtp(newOtp);
 
-    if (value.length > 0 && index < 3) {
+    if (value && index < 3) {
       inputs.current[index + 1].focus();
     }
   };
@@ -41,15 +43,15 @@ const OtpModal = ({ email, onClose }) => {
     try {
       setLoading(true);
 
-      const response = await api.post("/auth/verify-otp", {
-        email: email,
-        otp: otpValue,
-      });
+      const user = await otpLogin(email, otpValue);
 
-      if (response.data.message === "Email verified successfully") {
-        setShowProfile(true);
+      // Close modal before navigation
+      if (onClose) onClose();
+
+      if (user.isProfileCompleted) {
+        navigate("/dashboard",{ replace:true } );
       } else {
-        alert("Invalid OTP");
+        navigate("/profile-setup", { replace: true });
       }
 
     } catch (error) {
@@ -59,28 +61,6 @@ const OtpModal = ({ email, onClose }) => {
     }
   };
 
-  const handleProfileComplete = (profileData) => {
-    console.log("Profile completed with data:", profileData);
-
-    setShowProfile(false);
-
-    if (onClose) {
-      onClose();
-    }
-
-    // If needed:
-    // You can send profileData to backend here
-  };
-
-  // ================= PROFILE SETUP =================
-  if (showProfile) {
-    return createPortal(
-      <ProfileSetup onComplete={handleProfileComplete} />,
-      document.body
-    );
-  }
-
-  // ================= OTP MODAL =================
   return createPortal(
     <div className="otp-overlay">
       <div className="otp-card">

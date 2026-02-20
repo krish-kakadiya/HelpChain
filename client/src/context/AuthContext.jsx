@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import { loginUser, getMe } from "../api/authApi";
+import api from "../api/axios";
 
 const AuthContext = createContext();
 
@@ -18,10 +19,9 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const res = await getMe(); // calls /auth/me
+        const res = await getMe();
         setUser(res.data);
       } catch (error) {
-        // Token invalid or expired
         localStorage.removeItem("token");
         setUser(null);
       } finally {
@@ -32,28 +32,48 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  // 🔐 Login
+  // 🔐 Normal Login
   const login = async (credentials) => {
     const res = await loginUser(credentials);
 
     const token = res.data.accessToken;
-
-    // Store only token
     localStorage.setItem("token", token);
 
-    // Set user from backend response
     const meRes = await getMe();
     setUser(meRes.data);
+
+    return meRes.data;
   };
 
-  // 🔐 Logout
+  // 🔥 OTP Login
+  const otpLogin = async (email, otp) => {
+    const res = await api.post("/auth/verify-otp", { email, otp });
+
+    const token = res.data.accessToken;
+    localStorage.setItem("token", token);
+
+    const meRes = await getMe();
+    setUser(meRes.data);
+
+    return meRes.data;
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,     // 🔥 important
+        login,
+        otpLogin,
+        logout,
+        loading
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

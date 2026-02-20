@@ -1,16 +1,18 @@
-import React, { useState, useRef } from "react";
-import { createPortal } from "react-dom";
+import React, { useState, useRef, useEffect } from "react";
 import "./ProfileSetup.css";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { getMe } from "../../api/authApi";
+import api from "../../api/axios.js";
 
-const ProfileSetup = ({ onComplete }) => {
+const ProfileSetup = () => {
   const navigate = useNavigate();
-  const fileInputRef = useRef(null);
-  const [profilePhoto, setProfilePhoto] = useState(null);
+  const { user, loading, setUser } = useAuth();
 
-  const handleProfile = () => {
-    navigate("/dashboard");
-  };
+  const fileInputRef = useRef(null);
+  const [profilePhotoPreview, setProfilePhotoPreview] = useState(null);
+  const [profileFile, setProfileFile] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -38,6 +40,13 @@ const ProfileSetup = ({ onComplete }) => {
     "UI/UX Design", "Database Management", "API Development"
   ];
 
+  // 🔥 Safe redirect (no render navigation)
+  useEffect(() => {
+    if (!loading && user?.isProfileCompleted) {
+      navigate("/dashboard");
+    }
+  }, [user, loading, navigate]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -45,73 +54,108 @@ const ProfileSetup = ({ onComplete }) => {
 
   const toggleTechnology = (tech) => {
     setSelectedTechnologies(prev =>
-      prev.includes(tech) ? prev.filter(t => t !== tech) : [...prev, tech]
+      prev.includes(tech)
+        ? prev.filter(t => t !== tech)
+        : [...prev, tech]
     );
   };
 
   const toggleStack = (stack) => {
     setSelectedStacks(prev =>
-      prev.includes(stack) ? prev.filter(s => s !== stack) : [...prev, stack]
+      prev.includes(stack)
+        ? prev.filter(s => s !== stack)
+        : [...prev, stack]
     );
   };
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    setProfileFile(file);
+
     const reader = new FileReader();
-    reader.onload = (ev) => setProfilePhoto(ev.target.result);
+    reader.onload = (ev) => setProfilePhotoPreview(ev.target.result);
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.name || !formData.age || !formData.graduation) {
       alert("Please fill in all required fields");
       return;
     }
+
     if (selectedTechnologies.length === 0) {
       alert("Please select at least one technology");
       return;
     }
+
     if (selectedStacks.length === 0) {
       alert("Please select at least one tech stack");
       return;
     }
-    const profileData = {
-      ...formData,
-      technologies: selectedTechnologies,
-      techStacks: selectedStacks,
-      profilePhoto,
-    };
-    console.log("Profile Data:", profileData);
-    if (onComplete) onComplete(profileData);
+
+    try {
+      setSubmitting(true);
+
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("age", formData.age);
+      data.append("graduation", formData.graduation);
+      data.append("github", formData.github);
+      data.append("linkedin", formData.linkedin);
+      data.append("technologies", JSON.stringify(selectedTechnologies));
+      data.append("techStacks", JSON.stringify(selectedStacks));
+
+      if (profileFile) {
+        data.append("profilePhoto", profileFile);
+      }
+
+      await api.post("/profile/create", data);
+
+      // 🔥 Refresh user state after profile completion
+      const meRes = await getMe();
+      setUser(meRes.data);
+
+      navigate("/dashboard");
+
+    } catch (error) {
+      alert(error.response?.data?.message || "Profile creation failed");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  return createPortal(
+  return (
     <div className="profile-overlay">
       <div className="profile-container">
         <div className="profile-header">
 
-          {/* ── Profile Photo Upload ── */}
           <div className="profile-photo-wrap">
             <div className="profile-photo-ring">
-              {profilePhoto ? (
-                <img src={profilePhoto} alt="Profile" className="profile-photo-img" />
+              {profilePhotoPreview ? (
+                <img
+                  src={profilePhotoPreview}
+                  alt="Profile"
+                  className="profile-photo-img"
+                />
               ) : (
                 <div className="profile-photo-placeholder">
                   <i className="bx bxs-user"></i>
                 </div>
               )}
-              {/* Upload button overlay */}
+
               <button
                 type="button"
                 className="profile-photo-upload-btn"
                 onClick={() => fileInputRef.current?.click()}
-                title="Upload photo"
               >
                 <i className="bx bx-camera"></i>
               </button>
             </div>
+
             <input
               ref={fileInputRef}
               type="file"
@@ -119,12 +163,13 @@ const ProfileSetup = ({ onComplete }) => {
               style={{ display: "none" }}
               onChange={handlePhotoChange}
             />
+
             <button
               type="button"
               className="profile-photo-text-btn"
               onClick={() => fileInputRef.current?.click()}
             >
-              {profilePhoto ? "Change Photo" : "Upload Photo"}
+              {profilePhotoPreview ? "Change Photo" : "Upload Photo"}
             </button>
           </div>
 
@@ -134,47 +179,62 @@ const ProfileSetup = ({ onComplete }) => {
 
         <form onSubmit={handleSubmit} className="profile-form">
 
-          {/* Basic Information */}
           <div className="form-section">
             <h3>Basic Information</h3>
+
             <div className="form-group">
-              <label>Full Name <span className="required">*</span></label>
+              <label>Full Name *</label>
               <input
-                type="text" name="name" value={formData.name}
-                onChange={handleInputChange} placeholder="Enter your full name" required
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
               />
             </div>
+
             <div className="form-row">
               <div className="form-group">
-                <label>Age <span className="required">*</span></label>
+                <label>Age *</label>
                 <input
-                  type="number" name="age" value={formData.age}
-                  onChange={handleInputChange} placeholder="Age" min="15" max="100" required
+                  type="number"
+                  name="age"
+                  value={formData.age}
+                  onChange={handleInputChange}
+                  min="15"
+                  max="100"
+                  required
                 />
               </div>
+
               <div className="form-group">
-                <label>Graduation <span className="required">*</span></label>
+                <label>Graduation *</label>
                 <input
-                  type="text" name="graduation" value={formData.graduation}
-                  onChange={handleInputChange} placeholder="e.g., B.Tech in CSE" required
+                  type="text"
+                  name="graduation"
+                  value={formData.graduation}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
             </div>
           </div>
 
-          {/* Technology Languages */}
+          {/* Technologies */}
           <div className="form-section">
-            <h3>Technology Languages <span className="required">*</span></h3>
-            <p className="section-subtitle">Select the technologies you're familiar with</p>
+            <h3>Technology Languages *</h3>
             <div className="tags-container">
               {technologies.map((tech) => (
                 <button
-                  key={tech} type="button"
+                  key={tech}
+                  type="button"
                   className={`tag ${selectedTechnologies.includes(tech) ? "selected" : ""}`}
                   onClick={() => toggleTechnology(tech)}
                 >
                   {tech}
-                  {selectedTechnologies.includes(tech) && <span className="tag-check">✓</span>}
+                  {selectedTechnologies.includes(tech) && (
+                    <span className="tag-check">✓</span>
+                  )}
                 </button>
               ))}
             </div>
@@ -182,17 +242,19 @@ const ProfileSetup = ({ onComplete }) => {
 
           {/* Tech Stack */}
           <div className="form-section">
-            <h3>Tech Stack / Expertise <span className="required">*</span></h3>
-            <p className="section-subtitle">Select your areas of expertise</p>
+            <h3>Tech Stack / Expertise *</h3>
             <div className="tags-container">
               {techStacks.map((stack) => (
                 <button
-                  key={stack} type="button"
+                  key={stack}
+                  type="button"
                   className={`tag ${selectedStacks.includes(stack) ? "selected" : ""}`}
                   onClick={() => toggleStack(stack)}
                 >
                   {stack}
-                  {selectedStacks.includes(stack) && <span className="tag-check">✓</span>}
+                  {selectedStacks.includes(stack) && (
+                    <span className="tag-check">✓</span>
+                  )}
                 </button>
               ))}
             </div>
@@ -200,31 +262,37 @@ const ProfileSetup = ({ onComplete }) => {
 
           {/* Social Links */}
           <div className="form-section">
-            <h3>Social Links <span className="optional">(Optional)</span></h3>
+            <h3>Social Links</h3>
+
             <div className="form-group">
-              <label><i className="bx bxl-github"></i> GitHub Profile</label>
+              <label>GitHub</label>
               <input
-                type="url" name="github" value={formData.github}
-                onChange={handleInputChange} placeholder="https://github.com/yourusername"
+                type="url"
+                name="github"
+                value={formData.github}
+                onChange={handleInputChange}
               />
             </div>
+
             <div className="form-group">
-              <label><i className="bx bxl-linkedin"></i> LinkedIn Profile</label>
+              <label>LinkedIn</label>
               <input
-                type="url" name="linkedin" value={formData.linkedin}
-                onChange={handleInputChange} placeholder="https://linkedin.com/in/yourusername"
+                type="url"
+                name="linkedin"
+                value={formData.linkedin}
+                onChange={handleInputChange}
               />
             </div>
           </div>
 
-          <button onClick={handleProfile} type="submit" className="submit-btn">
-            Complete Profile
+          <button type="submit" className="submit-btn" disabled={submitting}>
+            {submitting ? "Saving..." : "Complete Profile"}
             <i className="bx bx-right-arrow-alt"></i>
           </button>
+
         </form>
       </div>
-    </div>,
-    document.body
+    </div>
   );
 };
 

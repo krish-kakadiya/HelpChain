@@ -7,7 +7,7 @@ export const register = async (req, res) => {
     const user = await registerService(req.body);
 
     res.status(201).json({
-      succsess: true,
+      success: true,
       message: "User registered successfully",
       user
     })
@@ -39,10 +39,7 @@ export const verifyOtp = async (req, res) => {
 export const getMe = async (req, res) => {
   try {
     const user = await getMeservices(req.user.userId);
-    res.status(200).json({
-      success:true,
-      user
-    })
+    res.status(200).json(user);
   }
   catch (err) {
     res.status(400).json({ error: err.message });

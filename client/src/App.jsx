@@ -13,6 +13,7 @@ import Rewards from "./pages/Rewards/Rewards";
 import QuestionPage from "./pages/ProblemView/QuestionPage";
 import NotificationsPage from "./pages/notification/NotificationPage.jsx";
 import SolutionsPage from "./pages/Solutions/SolutionsPage.jsx";
+import ProfileSetup from "./pages/Profile/ProfileSetup.jsx";
 
 const Problems = () => <div>My Problems</div>;
 const Experts = () => <div>Expert Connect</div>;
@@ -46,6 +47,7 @@ function App() {
             >
               <Route index element={<Navigate to="/dashboard" />} />
               <Route path="dashboard" element={<Dashboard />} />
+              <Route path="profile-setup" element={<ProfileSetup/>} />
               <Route path="ProblemForm" element={<ProblemForm />} />
               <Route path="/question/:id" element={<QuestionPage />} />
               <Route path="problems" element={<Problems />} />

@@ -1,6 +1,7 @@
 import fs from "fs";
 import Profile  from "../models/profile.model.js";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
+import { User } from "../models/user.model.js";
 
 export const createProfileService = async (body, file, userId) => {
   try {
@@ -37,6 +38,8 @@ export const createProfileService = async (body, file, userId) => {
         : [],
       profilePhoto: imageUrl,
     });
+    
+    await User.findByIdAndUpdate(userId,{ isProfileCompleted: true });
 
     return profile;
 

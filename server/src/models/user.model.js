@@ -28,11 +28,14 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-
     refreshTokenHash: {
       type: String,
       default: null,
     },
+    isProfileCompleted: {
+      type: Boolean,
+      default: false
+    }
   },
   { timestamps: true }
 );

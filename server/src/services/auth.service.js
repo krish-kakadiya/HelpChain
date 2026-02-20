@@ -76,7 +76,7 @@ export const registerService = async ({ username, email, password }) => {
   await sendEmail(email,otp);
 
   return {
-    sucssess: true,
+    success: true,
     message: "OTP sent to email",
   }
 
@@ -157,10 +157,13 @@ export const getMeservices = async (userId) => {
     throw new Error("User not found");
   }
 
+  console.log("isProfileCompleted from DB:", user.isProfileCompleted);
+
   return {
     id: user._id.toString(),
     username: user.username,
     email: user.email,
     isVerified: user.isVerified,
+    isProfileCompleted: user.isProfileCompleted
   }
 }

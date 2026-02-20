@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Auth.css";
 import OtpModal from "./OtpModal/OtpModal";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,13 @@ const LoginRegister = () => {
   const [showOtp, setShowOtp] = useState(false);
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
+
+  useEffect(() => {
+  if (user) {
+    navigate("/dashboard", { replace: true });
+  }
+  }, [user, navigate]);
 
   // ================= REGISTER STATE =================
   const [registerData, setRegisterData] = useState({
@@ -33,7 +40,7 @@ const LoginRegister = () => {
     try {
       const response = await api.post("/auth/register", registerData);
 
-      if (response.data.succsess) {
+      if (response.data.success) {
         setShowOtp(true);
       } else {
         alert(response.data.message || "Registration failed");
@@ -54,7 +61,7 @@ const LoginRegister = () => {
   e.preventDefault();
     try {
       await login(loginData);
-      navigate("/dashboard");
+      navigate("/dashboard",{replace:true});
     } catch (error) {
       alert(error.response?.data?.error || "Login failed");
     }
