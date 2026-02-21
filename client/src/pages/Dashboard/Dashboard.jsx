@@ -39,7 +39,7 @@ const Dashboard = () => {
   return (
     <div className="hc-dashboard">
       <header className="hc-dashboard__header">
-        <h1 className="hc-dashboard__title">Dashboard Overview</h1>
+        <h1 className="hc-dashboard__title">Problems For You</h1>
         <button 
           className="hc-btn-primary" 
           onClick={() => navigate('/ProblemForm')}

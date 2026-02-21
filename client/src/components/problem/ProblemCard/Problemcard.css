@@ -1,33 +1,23 @@
 /* ============================================
-   CARD — Auth-Matched Indigo Theme
-   Primary:   #3f51b5 | Mid: #5c6bc0
-   Light:     #7986cb | Wash: #c5cae9
-   Soft bg:   #e8eaf6 | Text: #2b2d42
+   CARD — Compact Indigo Theme
    ============================================ */
 
 .hc-card {
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: 10px;
   border: 1px solid #c5cae9;
-  transition: all 0.3s ease;
-  box-shadow:
-    0 2px 8px rgba(63, 81, 181, 0.06),
-    0 1px 3px rgba(63, 81, 181, 0.04);
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 4px rgba(63, 81, 181, 0.06);
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
   cursor: pointer;
   overflow: hidden;
-
-  /* Faint top tint matching auth page ambient */
-  background-image: linear-gradient(180deg, rgba(232, 234, 246, 0.3) 0%, transparent 60px);
 }
 
 .hc-card:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 10px 24px rgba(63, 81, 181, 0.12),
-    0 3px 8px rgba(63, 81, 181, 0.07);
-  border-color: #7986cb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(63, 81, 181, 0.10);
+  border-color: #9fa8da;
 }
 
 /* ── Content Grid ─────────────────────────── */
@@ -35,15 +25,14 @@
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: stretch;
-  gap: 0;
-  min-height: 120px;
 }
 
 /* ── Left Side ────────────────────────────── */
 .hc-card__left {
   display: flex;
   flex-direction: column;
-  padding: 16px 20px;
+  padding: 10px 14px;
+  gap: 5px;
   min-width: 0;
 }
 
@@ -51,14 +40,12 @@
 .hc-card__uploader {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 6px;
 }
 
-/* Avatar — auth btn gradient */
 .hc-card__uploader-avatar {
-  width: 32px;
-  height: 32px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: linear-gradient(135deg, #5c6bc0 0%, #3f51b5 100%);
   color: #ffffff;
@@ -66,65 +53,63 @@
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.7rem;
   flex-shrink: 0;
-  box-shadow:
-    0 2px 6px rgba(63, 81, 181, 0.30),
-    0 0 0 2px rgba(197, 202, 233, 0.4);
 }
 
 .hc-card__uploader-name {
-  font-size: 0.875rem;
-  color: #2b2d42;
-  font-weight: 600;
+  font-size: 0.75rem;
+  color: #6b6b7e;
+  font-weight: 500;
 }
 
 /* ── Body ─────────────────────────────────── */
-.hc-card__body {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1;
-}
-
 .hc-card__title {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #2b2d42;
   margin: 0;
   line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .hc-card__description {
-  font-size: 0.875rem;
+  font-size: 0.775rem;
   color: #6b6b7e;
-  line-height: 1.5;
+  line-height: 1.4;
   margin: 0;
   display: -webkit-box;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  flex: 1;
 }
 
-/* ── Tags ─────────────────────────────────── */
+/* ── Tags + Footer Row ────────────────────── */
+.hc-card__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .hc-card__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: auto;
+  gap: 4px;
 }
 
-/* Tag — auth wash bg + indigo text */
 .hc-card__tag {
   background: #e8eaf6;
   color: #3f51b5;
-  padding: 4px 10px;
-  border-radius: 16px;
-  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 0.65rem;
   font-weight: 600;
   white-space: nowrap;
   border: 1px solid #c5cae9;
-  transition: all 0.2s ease;
 }
 
 .hc-card:hover .hc-card__tag {
@@ -132,33 +117,20 @@
   border-color: #9fa8da;
 }
 
-/* ── Footer Info ──────────────────────────── */
-.hc-card__footer-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-top: 8px;
-  margin-top: auto;
-}
-
-/* Solutions count — indigo mid */
 .hc-card__solutions-count {
-  font-size: 0.875rem;
+  font-size: 0.72rem;
   color: #5c6bc0;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 /* ── Right Image Panel ────────────────────── */
 .hc-card__right {
-  width: 160px;
-  height: 100%;
-  min-height: 120px;
+  width: 90px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-
-  /* Auth wash as placeholder bg */
   background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%);
   border-left: 1px solid #c5cae9;
 }
@@ -170,30 +142,15 @@
 }
 
 /* ── Responsive ───────────────────────────── */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .hc-card__content {
     grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
   }
 
   .hc-card__right {
     width: 100%;
-    height: 160px;
+    height: 100px;
     border-left: none;
     border-top: 1px solid #c5cae9;
-  }
-}
-
-@media (max-width: 480px) {
-  .hc-card__left {
-    padding: 14px 16px;
-  }
-
-  .hc-card__title {
-    font-size: 1rem;
-  }
-
-  .hc-card__description {
-    font-size: 0.8rem;
   }
 }
