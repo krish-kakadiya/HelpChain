@@ -1,13 +1,14 @@
 import express from "express";
 import upload from "../middlewares/multer.js";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
-import { createProblem } from "../controller/problem.controller.js";
+import { createProblem , myProblems } from "../controller/problem.controller.js";
 import { auth } from "../middlewares/auth.middleware.js";
 import fs from "fs";
 
 const router = express.Router();
 
 router.post("/",auth,createProblem);
+router.get("/myproblems",auth,myProblems);
 
 router.post("/upload",upload.single("image"),async (req, res) => {
     try {
