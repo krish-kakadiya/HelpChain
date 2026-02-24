@@ -12,7 +12,7 @@
   width: 100%;
   max-width: 100vw;
   overflow: hidden;
-  padding: 30px 0;          /* Increased padding for bigger badges */
+  padding: 15px 0;          /* Increased padding for bigger badges */
   position: relative;
   display: flex;
   align-items: center;
