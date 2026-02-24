@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Editor from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "./ProblemForm.css";
+import api from "../../../api/axios.js";   // axios instance
 
 export default function ProblemForm() {
   const editorRef = useRef(null);
@@ -9,6 +10,7 @@ export default function ProblemForm() {
 
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!editorInstance.current) {
@@ -31,20 +33,22 @@ export default function ProblemForm() {
         hooks: {
           addImageBlobHook: async (blob, callback) => {
             try {
-              if (!blob || !blob.type.startsWith("image/")) return;
+              const formData = new FormData();
+              formData.append("image", blob);
 
-              const fakeUrl = URL.createObjectURL(blob);
-              callback(fakeUrl, blob.name);
+              const res = await api.post(
+                "/problem/upload",
+                formData,
+                {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                  },
+                }
+              );
 
-              // Replace with Cloudinary upload when ready:
-              // const formData = new FormData();
-              // formData.append("file", blob);
-              // formData.append("upload_preset", "your_preset");
-              // const res = await fetch(`https://api.cloudinary.com/v1_1/your_cloud/image/upload`, { method: "POST", body: formData });
-              // const data = await res.json();
-              // callback(data.secure_url, blob.name);
+              callback(res.data.url, blob.name);
             } catch (error) {
-              console.error("Image upload failed", error);
+              console.error("Image upload failed:", error);
               alert("Image upload failed");
             }
           },
@@ -58,22 +62,50 @@ export default function ProblemForm() {
     };
   }, []);
 
-  const handleSubmit = () => {
-    const body = editorInstance.current.getMarkdown();
+  const handleSubmit = async () => {
+    try {
+      const body = editorInstance.current.getMarkdown();
 
-    const payload = {
-      title: title.trim(),
-      tags: tags.split(",").map((t) => t.trim()).filter(Boolean),
-      body,
-    };
+      // 🔒 Basic Validation
+      if (title.trim().length < 10) {
+        return alert("Title must be at least 10 characters");
+      }
 
-    console.log("POST DATA →", payload);
+      if (body.trim().length < 20) {
+        return alert("Description must be at least 20 characters");
+      }
 
-    // fetch("/api/problems", {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify(payload),
-    // });
+      const payload = {
+        title: title.trim(),
+        tags: tags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean),
+        body,
+      };
+
+      setLoading(true);
+
+      const res = await api.post("/problem", payload);
+
+      alert("Question posted successfully 🎉");
+
+      console.log(res.data);
+
+      // 🔄 Reset Form
+      setTitle("");
+      setTags("");
+      editorInstance.current.setMarkdown("");
+
+    } catch (error) {
+      console.error(error);
+      alert(
+        error.response?.data?.message ||
+        "Failed to post question"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -91,7 +123,9 @@ export default function ProblemForm() {
       />
 
       {/* Editor */}
-      <label className="pf-label">What are the details of your problem?</label>
+      <label className="pf-label">
+        What are the details of your problem?
+      </label>
       <div ref={editorRef} className="pf-editor" />
 
       {/* Tags */}
@@ -107,8 +141,12 @@ export default function ProblemForm() {
       />
 
       {/* Submit */}
-      <button className="pf-submit" onClick={handleSubmit}>
-        Post your question
+      <button
+        className="pf-submit"
+        onClick={handleSubmit}
+        disabled={loading}
+      >
+        {loading ? "Posting..." : "Post your question"}
       </button>
     </div>
   );
