@@ -27,6 +27,12 @@ const problemSchema = new mongoose.Schema(
       required: true,
     },
 
+    difficulty: {
+      type: String,
+      enum: ["Easy", "Medium", "Hard"],
+      default: "Medium",
+    },
+
     votes: {
       type: Number,
       default: 0,
