@@ -5,7 +5,7 @@ const ProblemCard = ({ problem }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="hc-card" onClick={() => navigate(`/question/${problem.id}`)} style={{ cursor: "pointer" }}>
+    <div className="hc-card" onClick={() => navigate(`/question/${problem._id}`)} style={{ cursor: "pointer" }}>
       <div className="hc-card__content">
         <div className="hc-card__left">
 
@@ -19,8 +19,6 @@ const ProblemCard = ({ problem }) => {
           </div>
 
           <h3 className="hc-card__title">{problem.title}</h3>
-          <p className="hc-card__description">{problem.description}</p>
-
           <div className="hc-card__bottom">
             <div className="hc-card__tags">
               {problem.tags && problem.tags.map((tag, index) => (
@@ -34,7 +32,7 @@ const ProblemCard = ({ problem }) => {
 
         </div>
 
-        {problem.image && (
+        {/* {problem.image && (
           <div className="hc-card__right">
             <img
               src={problem.image}
@@ -42,7 +40,7 @@ const ProblemCard = ({ problem }) => {
               className="hc-card__image"
             />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

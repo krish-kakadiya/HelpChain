@@ -5,7 +5,7 @@ import './Dashboard.css';
 
 export const problemsData = [
   {
-    id: 1,
+    _id: 1,
     title: "Sample Problem",
     description: "Fixing the UI layout for Helpchain to ensure components don't overlap.",
     tags: ["React", "CSS"],
@@ -14,7 +14,7 @@ export const problemsData = [
     image: null
   },
   {
-    id: 2,
+    _id: 2,
     title: "Logo Scaling",
     description: "Ensuring the SVG logo stays rounded and properly sized in the Navbar.",
     tags: ["Frontend", "UI/UX"],
@@ -23,7 +23,7 @@ export const problemsData = [
     image: "https://res.cloudinary.com/dvicbvpsu/image/upload/v1759394775/profile_photos/user_68dc05661665895120636210_1759394771582.jpg"
   },
   {
-    id: 3,
+    _id: 3,
     title: "Database Performance Issue",
     description: "Optimizing slow queries that are affecting the application response time during peak hours.",
     tags: ["Backend", "Database", "Performance"],
