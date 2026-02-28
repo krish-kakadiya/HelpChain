@@ -20,5 +20,6 @@ export const createProblemService = async (problemData, userId) => {
 
 export const myProblemsService = async (userId) => {
     const myProblem = await Problem.find({user: userId})
+    .populate('user','username');
     return myProblem;
 } 

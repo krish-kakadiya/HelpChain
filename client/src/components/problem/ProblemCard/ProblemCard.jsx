@@ -11,10 +11,12 @@ const ProblemCard = ({ problem }) => {
 
           <div className="hc-card__uploader">
             <div className="hc-card__uploader-avatar">
-              {problem.uploaderName ? problem.uploaderName.charAt(0).toUpperCase() : 'U'}
+              {problem.user?.username
+                ? problem.user.username.charAt(0).toUpperCase()
+                : "U"}
             </div>
             <span className="hc-card__uploader-name">
-              {problem.uploaderName || 'Anonymous'}
+              {problem.user?.username || 'Anonymous'}
             </span>
           </div>
 
