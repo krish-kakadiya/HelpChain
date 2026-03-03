@@ -28,7 +28,13 @@ export default function AnswerCard({
         <MarkdownRenderer content={answer.body} />
 
         <div className="meta">
-          Answered by {answer.author} on {answer.createdAt}
+          Answered by {answer.user.username} on {new Date(answer.createdAt).toLocaleString("en-IN", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
         </div>
       </div>
     </div>
