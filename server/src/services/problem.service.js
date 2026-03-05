@@ -41,8 +41,10 @@ export const myProblemsService = async (userId) => {
   return problemsWithSolutions;
 };
 
-export const allProblemsService = async () => {
-  const problems = await Problem.find()
+export const allProblemsService = async (currentUserId) => {
+  const problems = await Problem.find({
+    user: { $ne: currentUserId },
+  })
     .populate("user", "username")
     .lean(); // convert to plain JS object
   // Add solutions count

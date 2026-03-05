@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post("/",auth,createProblem);
 router.get("/myproblems",auth,myProblems);
-router.get("/allproblems",allProblems);
+router.get("/allproblems",auth,allProblems);
 router.get("/:id",auth,getSingleProblem);
 router.post("/upload",upload.single("image"),async (req, res) => {
     try {

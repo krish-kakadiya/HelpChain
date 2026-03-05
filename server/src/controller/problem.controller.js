@@ -32,7 +32,7 @@ export const myProblems = async (req,res) => {
 
 export const allProblems = async (req,res) => {
   try {
-    const allProblems = await allProblemsService();
+    const allProblems = await allProblemsService(req.user.userId);
     console.log("All Problems:", allProblems);
     res.status(200).json({
       success: true,
