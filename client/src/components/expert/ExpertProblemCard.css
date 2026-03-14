@@ -1,0 +1,227 @@
+/* ExpertProblemCard.css
+   Mirrors your existing ProblemCard / hc-card design exactly.
+   Prefix ec-hc- to avoid any conflicts with your existing CSS.
+*/
+
+.ec-hc-card {
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #c5cae9;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 4px rgba(63, 81, 181, 0.06);
+  width: 100%;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.ec-hc-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(63, 81, 181, 0.10);
+  border-color: #9fa8da;
+}
+
+/* ── Content grid ── */
+.ec-hc-card__content {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+/* ── Left ── */
+.ec-hc-card__left {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 14px;
+  gap: 5px;
+  min-width: 0;
+}
+
+/* ── Uploader ── */
+.ec-hc-card__uploader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ec-hc-card__uploader-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5c6bc0 0%, #3f51b5 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.ec-hc-card__uploader-name {
+  font-size: 0.75rem;
+  color: #6b6b7e;
+  font-weight: 500;
+}
+
+/* ── Title ── */
+.ec-hc-card__title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #2b2d42;
+  margin: 0;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Bottom row ── */
+.ec-hc-card__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ec-hc-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+}
+
+/* Tag — same as existing hc-card__tag */
+.ec-hc-card__tag {
+  background: #e8eaf6;
+  color: #3f51b5;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid #c5cae9;
+}
+.ec-hc-card:hover .ec-hc-card__tag {
+  background: #c5cae9;
+  border-color: #9fa8da;
+}
+
+/* ── Difficulty badge ── */
+.ec-hc-card__difficulty {
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.ec-hc-card__difficulty--easy {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+.ec-hc-card__difficulty--medium {
+  background: #fffbeb;
+  color: #b45309;
+  border-color: #fde68a;
+}
+.ec-hc-card__difficulty--hard {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+/* ── Coin cost ── */
+.ec-hc-card__cost {
+  background: #fffbeb;
+  color: #92400e;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  white-space: nowrap;
+  border: 1px solid #fde68a;
+}
+
+/* ── Solutions count ── */
+.ec-hc-card__solutions-count {
+  font-size: 0.72rem;
+  color: #5c6bc0;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ── Right action column ── */
+.ec-hc-card__action {
+  padding: 0 14px 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.ec-hc-card__btn {
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.ec-hc-card__btn:hover {
+  background: #4338ca;
+  transform: translateY(-1px);
+}
+
+/* Status badges */
+.ec-hc-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 20px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.ec-hc-card__status--pending {
+  background: #fffbeb;
+  color: #b45309;
+  border-color: #fde68a;
+}
+.ec-hc-card__status--active {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.ec-hc-card__status--active:hover { background: #dcfce7; }
+
+.ec-hc-card__status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: ec-pulse 1.8s ease-in-out infinite;
+}
+@keyframes ec-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  .ec-hc-card__content { grid-template-columns: 1fr; }
+  .ec-hc-card__action {
+    padding: 0 14px 10px;
+    justify-content: flex-start;
+  }
+}

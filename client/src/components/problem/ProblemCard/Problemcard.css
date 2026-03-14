@@ -1,5 +1,7 @@
 /* ============================================
    CARD — Compact Indigo Theme
+   Only addition: .hc-card__difficulty badges
+   Everything else is your original CSS untouched.
    ============================================ */
 
 .hc-card {
@@ -99,6 +101,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
+  align-items: center;
 }
 
 .hc-card__tag {
@@ -117,6 +120,35 @@
   border-color: #9fa8da;
 }
 
+/* ── Difficulty badge — NEW, reads from problem.difficulty ── */
+.hc-card__difficulty {
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.hc-card__difficulty--easy {
+  background: #f0fdf4;
+  color: #15803d;
+  border-color: #bbf7d0;
+}
+
+.hc-card__difficulty--medium {
+  background: #fffbeb;
+  color: #b45309;
+  border-color: #fde68a;
+}
+
+.hc-card__difficulty--hard {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+/* ── Solutions count ─────────────────────── */
 .hc-card__solutions-count {
   font-size: 0.72rem;
   color: #5c6bc0;

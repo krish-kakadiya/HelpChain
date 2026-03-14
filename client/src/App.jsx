@@ -15,8 +15,7 @@ import NotificationsPage from "./pages/notification/NotificationPage.jsx";
 import SolutionsPage from "./pages/Solutions/SolutionsPage.jsx";
 import ProfileSetup from "./pages/Profile/ProfileSetup.jsx";
 import MyProblems from "./pages/MyProblems/MyProblems.jsx";
-
-const Experts = () => <div>Expert Connect</div>;
+import Experts from "./pages/Expert/ExpertConnect.jsx";
 const Settings = () => <div>Settings</div>;
 
 function App() {
