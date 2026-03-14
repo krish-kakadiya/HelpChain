@@ -1,159 +1,126 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { problemsData } from "../Dashboard/Dashboard";
 import "./QuestionPage.css";
 import QuestionCard from "../../components/question/QuestionCard";
 import AnswerCard from "../../components/question/AnswerCard";
 import AnswerForm from "../../components/question/AnswerForm";
+import api from "../../api/axios";
 
 export default function QuestionPage() {
   const { id } = useParams();
 
-  const currentUser = "KK";
-  const currentUserId = 1; // This should come from your auth context/backend
-
-  const question = problemsData.find(
-    (p) => p.id === parseInt(id)
-  );
-
+  // ================= STATE =================
+  const [question, setQuestion] = useState(null);
   const [answers, setAnswers] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Track user votes - stores 'up', 'down', or null for each answer
-  const [userVotes, setUserVotes] = useState(() => {
-    const saved = localStorage.getItem(`user_${currentUserId}_votes`);
-    return saved ? JSON.parse(saved) : {};
-  });
+  const currentUserId = localStorage.getItem("userId");
 
-  // Persist votes to localStorage
+  // ================= FETCH QUESTION =================
   useEffect(() => {
-    localStorage.setItem(`user_${currentUserId}_votes`, JSON.stringify(userVotes));
-  }, [userVotes, currentUserId]);
-
-  const handleVote = async (answerId, voteType) => {
-    const currentVote = userVotes[answerId];
-    let newVoteCount = 0;
-    let newUserVote = null;
-
-    // Logic: clicking same button removes vote, clicking different button changes vote
-    if (currentVote === voteType) {
-      // Remove vote
-      newUserVote = null;
-      newVoteCount = voteType === 'up' ? -1 : 1;
-    } else if (currentVote) {
-      // Change vote
-      newUserVote = voteType;
-      newVoteCount = voteType === 'up' ? 2 : -2;
-    } else {
-      // New vote
-      newUserVote = voteType;
-      newVoteCount = voteType === 'up' ? 1 : -1;
-    }
-
-    // Optimistic update
-    setUserVotes(prev => ({ ...prev, [answerId]: newUserVote }));
-    setAnswers(prev =>
-      prev.map(a => a.id === answerId ? { ...a, votes: a.votes + newVoteCount } : a)
-    );
-
-    // Backend API call (uncomment when ready)
-    // try {
-    //   const response = await fetch(`/api/answers/${answerId}/vote`, {
-    //     method: 'POST',
-    //     headers: { 
-    //       'Content-Type': 'application/json',
-    //       'Authorization': `Bearer ${token}`
-    //     },
-    //     body: JSON.stringify({ userId: currentUserId, voteType: newUserVote })
-    //   });
-    //   
-    //   if (!response.ok) throw new Error('Vote failed');
-    // } catch (error) {
-    //   // Revert on error
-    //   setUserVotes(prev => ({ ...prev, [answerId]: currentVote }));
-    //   setAnswers(prev =>
-    //     prev.map(a => a.id === answerId ? { ...a, votes: a.votes - newVoteCount } : a)
-    //   );
-    //   alert('Failed to vote. Please try again.');
-    // }
-  };
-
-  const handleAccept = async (answerId) => {
-    if (question.authorId !== currentUserId) return;
-
-    const answer = answers.find(a => a.id === answerId);
-    const newAcceptedState = !answer.isAccepted;
-
-    setAnswers(prev =>
-      prev.map(a =>
-        a.id === answerId
-          ? { ...a, isAccepted: newAcceptedState }
-          : { ...a, isAccepted: false }
-      )
-    );
-
-    // Backend API call (uncomment when ready)
-    // await fetch(`/api/answers/${answerId}/accept`, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ questionId: question.id, isAccepted: newAcceptedState })
-    // });
-  };
-
-  const handleAddAnswer = async (payload) => {
-    const newAnswer = {
-      id: Date.now(),
-      author: currentUser,
-      authorId: currentUserId,
-      votes: 0,
-      isAccepted: false,
-      createdAt: new Date().toISOString(),
-      ...payload
+    const fetchQuestion = async () => {
+      try {
+        const res = await api.get(`/problem/${id}`);
+        setQuestion(res.data.problem);
+        setAnswers(res.data.answers || []);
+      } catch (error) {
+        console.error("Failed to fetch question:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    setAnswers(prev => [newAnswer, ...prev]);
+    fetchQuestion();
+  }, [id]);
 
-    // Backend API call (uncomment when ready)
-    // const response = await fetch(`/api/questions/${question.id}/answers`, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ body: payload.body, authorId: currentUserId })
-    // });
-    // const savedAnswer = await response.json();
-    // setAnswers(prev => [savedAnswer, ...prev.slice(1)]);
+  // ================= VOTE HANDLER =================
+  const handleVote = async (answerId, voteValue) => {
+    try {
+      setAnswers(prev =>
+        prev.map(answer =>
+          answer._id === answerId
+            ? { ...answer, votes: answer.votes + voteValue }
+            : answer
+        )
+      );
+
+      // Future backend call:
+      // await api.post(`/answer/${answerId}/vote`, { value: voteValue });
+    } catch (error) {
+      console.error("Vote failed:", error);
+    }
   };
 
-  // Sort: accepted first, then by votes
+  // ================= ACCEPT HANDLER =================
+  const handleAccept = async (answerId) => {
+    if (!question?.user?._id || question.user._id !== currentUserId)
+      return;
+
+    try {
+      setAnswers(prev =>
+        prev.map(answer => ({
+          ...answer,
+          isAccepted: answer._id === answerId
+        }))
+      );
+
+      // Future backend:
+      // await api.post(`/answer/${answerId}/accept`);
+    } catch (error) {
+      console.error("Accept failed:", error);
+    }
+  };
+
+  // ================= ADD ANSWER (REAL BACKEND DATA) =================
+  const handleAddAnswer = (newAnswer) => {
+    setAnswers(prev => [newAnswer, ...prev]);
+  };
+
+  // ================= SORT ANSWERS =================
   const sortedAnswers = [...answers].sort((a, b) => {
     if (a.isAccepted) return -1;
     if (b.isAccepted) return 1;
-    return b.votes - a.votes;
+    return (b.votes || 0) - (a.votes || 0);
   });
 
-  if (!question) {
-    return <div>Question not found</div>;
+  // ================= RENDER STATES =================
+  if (loading) {
+    return <div className="page-wrapper">Loading...</div>;
   }
 
+  if (!question) {
+    return <div className="page-wrapper">Question not found</div>;
+  }
+
+  // ================= UI =================
   return (
     <div className="page-wrapper">
       <div className="qp-container">
+
         <QuestionCard question={question} />
-        
+
         <div className="answers-section">
-          <h2 className="answers-header">{answers.length} Answer{answers.length !== 1 ? 's' : ''}</h2>
+          <h2 className="answers-header">
+            {answers.length} Answer{answers.length !== 1 ? "s" : ""}
+          </h2>
 
           {sortedAnswers.map(answer => (
             <AnswerCard
-              key={answer.id}
+              key={answer._id}
               answer={answer}
               onVote={handleVote}
               onAccept={handleAccept}
-              isOwner={question.authorId === currentUserId}
-              userVote={userVotes[answer.id]}
+              isOwner={question?.user?._id === currentUserId}
             />
           ))}
         </div>
 
-        <AnswerForm onSubmit={handleAddAnswer} />
+        {/* ✅ PASS QUESTION ID */}
+        <AnswerForm
+          questionId={question._id}
+          onSubmit={handleAddAnswer}
+        />
+
       </div>
     </div>
   );

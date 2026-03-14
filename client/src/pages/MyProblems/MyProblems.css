@@ -1,0 +1,33 @@
+.myproblems-container {
+  
+  background-color: #f5f7fa;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-family: 'Poppins', sans-serif;
+}
+
+.myproblems-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: #2c3e50;
+}
+
+.myproblems-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+}
+
+.loading-text,
+.no-problems {
+  font-size: 18px;
+  color: #777;
+  text-align: center;
+  margin-top: 50px;
+}

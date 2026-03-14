@@ -1,41 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProblemCard from '../../components/problem/ProblemCard/ProblemCard';
 import './Dashboard.css';
+import api from '../../api/axios';
 
-export const problemsData = [
-  {
-    id: 1,
-    title: "Sample Problem",
-    description: "Fixing the UI layout for Helpchain to ensure components don't overlap.",
-    tags: ["React", "CSS"],
-    solutions: 3,
-    uploaderName: "John Doe",
-    image: null
-  },
-  {
-    id: 2,
-    title: "Logo Scaling",
-    description: "Ensuring the SVG logo stays rounded and properly sized in the Navbar.",
-    tags: ["Frontend", "UI/UX"],
-    solutions: 5,
-    uploaderName: "Jane Smith",
-    image: "https://res.cloudinary.com/dvicbvpsu/image/upload/v1759394775/profile_photos/user_68dc05661665895120636210_1759394771582.jpg"
-  },
-  {
-    id: 3,
-    title: "Database Performance Issue",
-    description: "Optimizing slow queries that are affecting the application response time during peak hours.",
-    tags: ["Backend", "Database", "Performance"],
-    solutions: 8,
-    uploaderName: "Mike Johnson",
-    image: "https://res.cloudinary.com/dvicbvpsu/image/upload/v1759394775/profile_photos/user_68dc05661665895120636210_1759394771582.jpg"
-  }
-];
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const [problemsData,setProblemsData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  const getProblemData = async () => {
+    try {
+      const res = await api.get("/problem/allproblems");
+      console.log(res.data.allProblems);
+      setProblemsData(res.data.allProblems);
+    } catch (error) {
+      console.log("failed to fetch error", error);
+      alert("Failed to fetch problems");
+    }
+    finally{
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+      getProblemData();
+    }, []);
+  
   return (
     <div className="hc-dashboard">
       <header className="hc-dashboard__header">
@@ -50,7 +42,7 @@ const Dashboard = () => {
 
       <div className="hc-dashboard__grid">
         {problemsData.map((problem) => (
-          <ProblemCard key={problem.id} problem={problem} />
+          <ProblemCard key={problem._id} problem={problem} />
         ))}
       </div>
     </div>

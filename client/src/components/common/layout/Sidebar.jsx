@@ -19,7 +19,7 @@ const Sidebar = () => {
 
   const mainMenu = [
     { name: 'Dashboard Home', path: '/dashboard', icon: LayoutDashboard },
-    { name: 'My Problems', path: '/problems', icon: HelpCircle },
+    { name: 'My Problems', path: '/myproblems', icon: HelpCircle },
     { name: 'Rewards & Badges', path: '/rewards', icon: Award },
     { name: 'My Solutions', path: '/solutions', icon: Users },
     { name: 'Expert Connect', path: '/experts', icon: Users }

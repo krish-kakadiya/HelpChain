@@ -5,22 +5,22 @@ const ProblemCard = ({ problem }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="hc-card" onClick={() => navigate(`/question/${problem.id}`)} style={{ cursor: "pointer" }}>
+    <div className="hc-card" onClick={() => navigate(`/question/${problem._id}`)} style={{ cursor: "pointer" }}>
       <div className="hc-card__content">
         <div className="hc-card__left">
 
           <div className="hc-card__uploader">
             <div className="hc-card__uploader-avatar">
-              {problem.uploaderName ? problem.uploaderName.charAt(0).toUpperCase() : 'U'}
+              {problem.user?.username
+                ? problem.user.username.charAt(0).toUpperCase()
+                : "U"}
             </div>
             <span className="hc-card__uploader-name">
-              {problem.uploaderName || 'Anonymous'}
+              {problem.user?.username || 'Anonymous'}
             </span>
           </div>
 
           <h3 className="hc-card__title">{problem.title}</h3>
-          <p className="hc-card__description">{problem.description}</p>
-
           <div className="hc-card__bottom">
             <div className="hc-card__tags">
               {problem.tags && problem.tags.map((tag, index) => (
@@ -34,7 +34,7 @@ const ProblemCard = ({ problem }) => {
 
         </div>
 
-        {problem.image && (
+        {/* {problem.image && (
           <div className="hc-card__right">
             <img
               src={problem.image}
@@ -42,7 +42,7 @@ const ProblemCard = ({ problem }) => {
               className="hc-card__image"
             />
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
