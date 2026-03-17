@@ -1,19 +1,19 @@
 import Problem from "../models/problem.model.js";
-import { analyzeDifficulty } from "./ai/difficulty.service.js";
+import { analyzeProblem } from "./ai/difficulty.service.js";
 import Answer from "../models/answer.model.js";
 
 export const createProblemService = async (problemData, userId) => {
 
-  const difficulty = await analyzeDifficulty(
+  const { difficulty, tags } = await analyzeProblem(
     problemData.title,
     problemData.body,
-    problemData.tags
   );
 
   const problem = await Problem.create({
     ...problemData,
     user: userId,
     difficulty,
+    tags,
   });
 
   return problem;
