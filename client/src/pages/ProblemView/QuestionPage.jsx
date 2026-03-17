@@ -5,16 +5,19 @@ import QuestionCard from "../../components/question/QuestionCard";
 import AnswerCard from "../../components/question/AnswerCard";
 import AnswerForm from "../../components/question/AnswerForm";
 import api from "../../api/axios";
+import { useAuth } from "../../context/AuthContext";
 
 export default function QuestionPage() {
   const { id } = useParams();
+  const { user } = useAuth();
 
   // ================= STATE =================
   const [question, setQuestion] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const currentUserId = localStorage.getItem("userId");
+  console.log("it's me:",user);
+  const currentUserId = user?._id ?? user?.id;
 
   // ================= FETCH QUESTION =================
   useEffect(() => {
@@ -35,19 +38,43 @@ export default function QuestionPage() {
 
   // ================= VOTE HANDLER =================
   const handleVote = async (answerId, voteValue) => {
+    let previousVotes = 0;
+
     try {
+      // store previous value (for rollback)
+      setAnswers(prev =>
+        prev.map(answer => {
+          if (answer._id === answerId) {
+            previousVotes = answer.votes;
+            return { ...answer, votes: answer.votes + voteValue };
+          }
+          return answer;
+        })
+      );
+
+      const res = await api.post(`/answer/${answerId}/vote`, {
+        value: voteValue,
+      });
+
+      // sync with backend
       setAnswers(prev =>
         prev.map(answer =>
           answer._id === answerId
-            ? { ...answer, votes: answer.votes + voteValue }
+            ? { ...answer, votes: res.data.votes }
             : answer
         )
       );
-
-      // Future backend call:
-      // await api.post(`/answer/${answerId}/vote`, { value: voteValue });
     } catch (error) {
       console.error("Vote failed:", error);
+
+      // rollback to exact previous value
+      setAnswers(prev =>
+        prev.map(answer =>
+          answer._id === answerId
+            ? { ...answer, votes: previousVotes }
+            : answer
+        )
+      );
     }
   };
 
@@ -64,14 +91,14 @@ export default function QuestionPage() {
         }))
       );
 
-      // Future backend:
+      // backend later
       // await api.post(`/answer/${answerId}/accept`);
     } catch (error) {
       console.error("Accept failed:", error);
     }
   };
 
-  // ================= ADD ANSWER (REAL BACKEND DATA) =================
+  // ================= ADD ANSWER =================
   const handleAddAnswer = (newAnswer) => {
     setAnswers(prev => [newAnswer, ...prev]);
   };
@@ -115,7 +142,6 @@ export default function QuestionPage() {
           ))}
         </div>
 
-        {/* ✅ PASS QUESTION ID */}
         <AnswerForm
           questionId={question._id}
           onSubmit={handleAddAnswer}
