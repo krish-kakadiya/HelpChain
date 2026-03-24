@@ -16,6 +16,8 @@ import SolutionsPage from "./pages/Solutions/SolutionsPage.jsx";
 import ProfileSetup from "./pages/Profile/ProfileSetup.jsx";
 import MyProblems from "./pages/MyProblems/MyProblems.jsx";
 import Experts from "./pages/Expert/ExpertConnect.jsx";
+import HelpChainLanding from "./pages/introduction/Helpchainlanding.jsx";
+
 const Settings = () => <div>Settings</div>;
 
 function App() {
@@ -25,7 +27,13 @@ function App() {
         <SidebarProvider>
           <Routes>
 
-            {/* Public Route */}
+            {/* Landing page — public, shown first */}
+            <Route
+              path="/"
+              element={<HelpChainLanding onGetStarted={() => window.location.href = '/login'} />}
+            />
+
+            {/* Login page — public */}
             <Route
               path="/login"
               element={
@@ -37,25 +45,24 @@ function App() {
 
             {/* Protected Routes */}
             <Route
-              path="/"
+              path="/app"
               element={
                 <ProtectedRoute>
                   <MainLayout />
                 </ProtectedRoute>
               }
             >
-              <Route index element={<Navigate to="/dashboard" />} />
+              <Route index element={<Navigate to="/app/dashboard" />} />
               <Route path="dashboard" element={<Dashboard />} />
-              <Route path="profile-setup" element={<ProfileSetup/>} />
+              <Route path="profile-setup" element={<ProfileSetup />} />
               <Route path="ProblemForm" element={<ProblemForm />} />
-              <Route path="/question/:id" element={<QuestionPage />} />
+              <Route path="question/:id" element={<QuestionPage />} />
               <Route path="myproblems" element={<MyProblems />} />
               <Route path="rewards" element={<Rewards />} />
               <Route path="solutions" element={<SolutionsPage />} />
               <Route path="experts" element={<Experts />} />
               <Route path="settings" element={<Settings />} />
               <Route path="notifications" element={<NotificationsPage />} />
-
             </Route>
 
           </Routes>
