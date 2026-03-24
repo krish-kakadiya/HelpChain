@@ -80,21 +80,24 @@ export default function QuestionPage() {
 
   // ================= ACCEPT HANDLER =================
   const handleAccept = async (answerId) => {
-    if (!question?.user?._id || question.user._id !== currentUserId)
+    // prevent non-owner
+    if (!question?.user?._id || question.user._id !== currentUserId) {
+      alert("Only question owner can accept an answer");
       return;
+    }
 
     try {
-      setAnswers(prev =>
-        prev.map(answer => ({
-          ...answer,
-          isAccepted: answer._id === answerId
-        }))
-      );
+      // ✅ 1. Call backend first
+      await api.post(`/answer/${answerId}/accept`);
 
-      // backend later
-      // await api.post(`/answer/${answerId}/accept`);
+      // ✅ 2. Refetch updated data (BEST PRACTICE)
+      const res = await api.get(`/problem/${id}`);
+
+      setQuestion(res.data.problem);
+      setAnswers(res.data.answers || []);
+
     } catch (error) {
-      console.error("Accept failed:", error);
+      console.error("Accept failed:", error.response?.data || error.message);
     }
   };
 

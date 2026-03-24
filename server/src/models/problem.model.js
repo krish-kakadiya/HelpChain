@@ -42,6 +42,12 @@ const problemSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+
+    acceptedAnswer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Answer",
+      default: null
+    }
   },
   { timestamps: true }
 );

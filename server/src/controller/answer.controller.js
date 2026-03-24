@@ -1,4 +1,4 @@
-import { createAnswerService, voteAnswerService } from "../services/answer.service.js";
+import { createAnswerService, voteAnswerService, acceptAnswerService } from "../services/answer.service.js";
 
 export const createAnswer = async (req, res) => {
   try {
@@ -32,6 +32,27 @@ export const voteAnswer = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export const acceptAnswer = async (req, res) => {
+  try {
+    const answer = await acceptAnswerService(
+      req.params.id,
+      req.user.userId
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Answer accepted successfully",
+      answer
+    });
+
+  } catch (error) {
+    res.status(400).json({
       success: false,
       message: error.message
     });

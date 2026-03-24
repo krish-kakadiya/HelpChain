@@ -1,4 +1,5 @@
 import Answer from "../models/answer.model.js";
+import Problem from "../models/problem.model.js";
 
 export const createAnswerService = async (questionId, body, userId) => {
   const answer = await Answer.create({
@@ -48,4 +49,40 @@ export const voteAnswerService = async (answerId, userId, value) => {
   await answer.save();
 
   return answer.votes;
+};
+
+export const acceptAnswerService = async (answerId, userId) => {
+  const answer = await Answer.findById(answerId);
+
+  if (!answer) {
+    throw new Error("Answer not found");
+  }
+
+  const problem = await Problem.findById(answer.question);
+
+  if (!problem) {
+    throw new Error("Problem not found");
+  }
+
+  // ❌ Only owner can accept
+  if (problem.user.toString() !== userId) {
+    throw new Error("Unauthorized");
+  }
+
+  // 🔁 Remove previous accepted answer
+  if (problem.acceptedAnswer) {
+    await Answer.findByIdAndUpdate(problem.acceptedAnswer, {
+      isAccepted: false,
+    });
+  }
+
+  // ✅ Set new accepted answer
+  answer.isAccepted = true;
+  await answer.save();
+
+  // ✅ Update problem
+  problem.acceptedAnswer = answer._id;
+  await problem.save();
+
+  return answer;
 };
