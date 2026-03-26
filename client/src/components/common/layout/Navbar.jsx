@@ -4,10 +4,12 @@ import logo from '../../../assets/logo/logo.png';
 import './Navbar.css';
 import goldIcon from '../../../assets/gold.svg';
 import { useNavigate } from "react-router-dom";
+import { useAuth } from '../../../context/AuthContext';
 
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   return (
     <nav className="hc-navbar">
@@ -26,7 +28,7 @@ const Navbar = () => {
       <div className="hc-navbar__actions">
         <div className="hc-navbar__points">
           <img src={goldIcon} alt="Gold points" width={20} height={20} />
-          <span>1,250</span>
+          <span>{(user?.points || 0).toLocaleString()}</span>
         </div>
 
         
@@ -36,7 +38,9 @@ const Navbar = () => {
         </button>
         
         <div className="hc-navbar__profile">
-          <div className="hc-navbar__profile-avatar">JS</div>
+          <div className="hc-navbar__profile-avatar">
+            {user?.username ? user.username.substring(0, 2).toUpperCase() : 'U'}
+          </div>
           <ChevronDown size={16} className="hc-navbar__profile-chevron" />
         </div>
       </div>
