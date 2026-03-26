@@ -1,20 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Crown, TrendingUp, Award, TrendingDown, Minus } from 'lucide-react';
 import './Leaderboard.css';
-
-// ─── Data — replace with your API response ────────────────────────────────────
-const leaderboardData = [
-  { rank: 1,  name: 'Alex Johnson',    username: '@alexj',       points: 3850, avatar: 'AJ', trend: 'up',   badges: 15 },
-  { rank: 2,  name: 'Sarah Williams',  username: '@sarah_w',     points: 3420, avatar: 'SW', trend: 'up',   badges: 12 },
-  { rank: 3,  name: 'Mike Chen',       username: '@mikechen',    points: 3180, avatar: 'MC', trend: 'down', badges: 11 },
-  { rank: 4,  name: 'Emily Davis',     username: '@emily_d',     points: 2950, avatar: 'ED', trend: 'up',   badges: 10 },
-  { rank: 5,  name: 'David Martinez',  username: '@dmartinez',   points: 2740, avatar: 'DM', trend: 'same', badges: 9  },
-  { rank: 6,  name: 'Lisa Anderson',   username: '@lisa_a',      points: 2580, avatar: 'LA', trend: 'up',   badges: 8  },
-  { rank: 7,  name: 'James Taylor',    username: '@jtaylor',     points: 2410, avatar: 'JT', trend: 'down', badges: 8  },
-  { rank: 8,  name: 'Anna White',      username: '@anna_w',      points: 2250, avatar: 'AW', trend: 'up',   badges: 7  },
-  { rank: 9,  name: 'Chris Brown',     username: '@chrisbrown',  points: 2090, avatar: 'CB', trend: 'up',   badges: 7  },
-  { rank: 10, name: 'Rachel Green',    username: '@rachel_g',    points: 1950, avatar: 'RG', trend: 'same', badges: 6  },
-];
+import api from '../../api/axios';
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 const MedalIcon = ({ rank }) => {
@@ -37,7 +24,29 @@ const TrendBadge = ({ trend }) => {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 const Leaderboard = () => {
-  const maxPoints = leaderboardData[0].points;
+  const [leaderboardData, setLeaderboardData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchLeaderboard = async () => {
+      try {
+        const res = await api.get('/leaderboard');
+        if (res.data && res.data.success) {
+          setLeaderboardData(res.data.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch leaderboard", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchLeaderboard();
+  }, []);
+
+  if (loading) return <div className="lb" style={{ padding: 20 }}>Loading leaderboard...</div>;
+  if (!leaderboardData || leaderboardData.length === 0) return <div className="lb" style={{ padding: 20 }}>No leaderboard data available completely yet. Be the first!</div>;
+
+  const maxPoints = leaderboardData[0]?.points || 1;
 
   return (
     <div className="lb">

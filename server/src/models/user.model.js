@@ -35,7 +35,17 @@ const userSchema = new mongoose.Schema(
     isProfileCompleted: {
       type: Boolean,
       default: false
-    }
+    },
+    points: {
+      type: Number,
+      default: 0
+    },
+    badges: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Badge"
+      }
+    ]
   },
   { timestamps: true }
 );

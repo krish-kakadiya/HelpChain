@@ -63,6 +63,18 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  // 🔥 Reload user data without full screen loaders (for real-time point updates)
+  const refreshUser = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      const res = await getMe();
+      setUser(res.data);
+    } catch (err) {
+      console.error("Failed to refresh user:", err);
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -71,6 +83,7 @@ export const AuthProvider = ({ children }) => {
         login,
         otpLogin,
         logout,
+        refreshUser,
         loading
       }}
     >

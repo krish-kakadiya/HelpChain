@@ -45,24 +45,22 @@ function App() {
 
             {/* Protected Routes */}
             <Route
-              path="/app"
               element={
                 <ProtectedRoute>
                   <MainLayout />
                 </ProtectedRoute>
               }
             >
-              <Route index element={<Navigate to="/app/dashboard" />} />
-              <Route path="dashboard" element={<Dashboard />} />
-              <Route path="profile-setup" element={<ProfileSetup />} />
-              <Route path="ProblemForm" element={<ProblemForm />} />
-              <Route path="question/:id" element={<QuestionPage />} />
-              <Route path="myproblems" element={<MyProblems />} />
-              <Route path="rewards" element={<Rewards />} />
-              <Route path="solutions" element={<SolutionsPage />} />
-              <Route path="experts" element={<Experts />} />
-              <Route path="settings" element={<Settings />} />
-              <Route path="notifications" element={<NotificationsPage />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/profile-setup" element={<ProfileSetup />} />
+              <Route path="/ProblemForm" element={<ProblemForm />} />
+              <Route path="/question/:id" element={<QuestionPage />} />
+              <Route path="/myproblems" element={<MyProblems />} />
+              <Route path="/rewards" element={<Rewards />} />
+              <Route path="/solutions" element={<SolutionsPage />} />
+              <Route path="/experts" element={<Experts />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/notifications" element={<NotificationsPage />} />
             </Route>
 
           </Routes>

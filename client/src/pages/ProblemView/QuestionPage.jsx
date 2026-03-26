@@ -9,7 +9,7 @@ import { useAuth } from "../../context/AuthContext";
 
 export default function QuestionPage() {
   const { id } = useParams();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
 
   // ================= STATE =================
   const [question, setQuestion] = useState(null);
@@ -64,6 +64,8 @@ export default function QuestionPage() {
             : answer
         )
       );
+      
+      refreshUser(); // update context points automatically
     } catch (error) {
       console.error("Vote failed:", error);
 
@@ -96,6 +98,8 @@ export default function QuestionPage() {
       setQuestion(res.data.problem);
       setAnswers(res.data.answers || []);
 
+      refreshUser();
+
     } catch (error) {
       console.error("Accept failed:", error.response?.data || error.message);
     }
@@ -104,6 +108,7 @@ export default function QuestionPage() {
   // ================= ADD ANSWER =================
   const handleAddAnswer = (newAnswer) => {
     setAnswers(prev => [newAnswer, ...prev]);
+    refreshUser();
   };
 
   // ================= SORT ANSWERS =================

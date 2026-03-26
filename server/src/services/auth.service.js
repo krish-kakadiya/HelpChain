@@ -3,6 +3,8 @@ import { User } from "../models/user.model.js";
 import { createAccessToken, createRefreshToken } from "../utils/token.util.js";
 import Otp from "../models/otp.model.js";
 import sendEmail from "../utils/sendEmail.js";
+import Problem from "../models/problem.model.js";
+import Answer from "../models/answer.model.js";
 
 export const verifyOtpService = async ({ email, otp }) => {
 
@@ -151,7 +153,9 @@ export const refreshTokenService = async (refreshToken) => {
 };
 
 export const getMeservices = async (userId) => {
-  const user  = await User.findById(userId).select("-password -refreshTokenHash");
+  const user  = await User.findById(userId)
+    .populate("badges", "name icon description minPoints")
+    .select("-password -refreshTokenHash");
 
   if(!user){
     throw new Error("User not found");
@@ -159,11 +163,18 @@ export const getMeservices = async (userId) => {
 
   console.log("isProfileCompleted from DB:", user.isProfileCompleted);
 
+  const problemCount = await Problem.countDocuments({ user: userId });
+  const answerCount = await Answer.countDocuments({ user: userId });
+
   return {
     id: user._id.toString(),
     username: user.username,
     email: user.email,
     isVerified: user.isVerified,
-    isProfileCompleted: user.isProfileCompleted
+    isProfileCompleted: user.isProfileCompleted,
+    points: user.points,
+    badges: user.badges,
+    problemCount,
+    answerCount
   }
 }

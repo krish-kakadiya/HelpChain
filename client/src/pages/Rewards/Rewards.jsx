@@ -11,14 +11,16 @@ import StatsCard           from '../../components/reward/StatsCard';
 import Leaderboard         from '../../components/reward/Leaderboard';
 import './Rewards.css';
 import BadgeCollection from '../../components/reward/Badgecollection';
+import { useAuth } from '../../context/AuthContext';
 
 const Rewards = () => {
+  const { user } = useAuth();
   const [leaderboardExpanded, setLeaderboardExpanded] = useState(false);
 
   // ── Badge collection state ───────────────────────────────────────────────
-  // Pre-populate collectedBadges from your backend on mount, e.g.:
-  //   const [collectedBadges, setCollectedBadges] = useState(user.collectedBadgeIds ?? []);
-  const [collectedBadges, setCollectedBadges] = useState([]);
+  // Pre-populate collectedBadges from your backend on mount:
+  const initialBadges = user?.badges?.map(b => typeof b === 'object' ? b.code : b) || [];
+  const [collectedBadges, setCollectedBadges] = useState(initialBadges);
 
   const handleBadgeCollect = (badgeId) => {
     setCollectedBadges(prev => [...prev, badgeId]);
@@ -26,14 +28,17 @@ const Rewards = () => {
     // await api.post('/badges/collect', { badgeId });
   };
 
+  const problemPoints = (user?.problemCount || 0) * 5;
+  const answerPoints = (user?.answerCount || 0) * 10;
+  const totalUploadedPoints = problemPoints + answerPoints;
+
   // ── Stats ────────────────────────────────────────────────────────────────
   const statsData = {
-    totalPoints:    1250,
-    uploadedPoints: 850,
+    totalPoints:    user?.points || 0,
+    uploadedPoints: totalUploadedPoints,
   };
 
-  // ← Replace with real user points from API / auth context
-  const userPoints = 120;
+  const userPoints = user?.points || 0;
 
   return (
     <div className="rewards-page">
@@ -51,6 +56,7 @@ const Rewards = () => {
           icon={Upload}
           label="Uploaded Points"
           value={statsData.uploadedPoints}
+          details={{ problemPoints, answerPoints }}
           color="blue"
           clickable
         />

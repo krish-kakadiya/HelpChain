@@ -2,9 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import Editor from "@toast-ui/editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "./ProblemForm.css";
-import api from "../../../api/axios.js";   // axios instance
+import api from "../../../api/axios.js";
+import { useAuth } from "../../../context/AuthContext.jsx";
 
 export default function ProblemForm() {
+  const { refreshUser } = useAuth();
   const editorRef = useRef(null);
   const editorInstance = useRef(null);
 
@@ -91,6 +93,7 @@ export default function ProblemForm() {
       alert("Question posted successfully 🎉");
 
       console.log(res.data);
+      refreshUser(); // Update points automatically
 
       // 🔄 Reset Form
       setTitle("");

@@ -1,6 +1,7 @@
 import Problem from "../models/problem.model.js";
 import { analyzeProblem } from "./ai/difficulty.service.js";
 import Answer from "../models/answer.model.js";
+import { awardPoints, checkAndAssignBadges } from "../utils/rewards.js";
 
 export const createProblemService = async (problemData, userId) => {
 
@@ -15,6 +16,10 @@ export const createProblemService = async (problemData, userId) => {
     difficulty,
     tags,
   });
+
+  // Reward points for creating a question
+  await awardPoints(userId, 5);
+  await checkAndAssignBadges(userId);
 
   return problem;
 };

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import './StatsCard.css';
 
-const StatsCard = ({ icon: Icon, label, value, subtitle, badge, color, clickable }) => {
+const StatsCard = ({ icon: Icon, label, value, subtitle, badge, color, clickable, details }) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleClick = () => {
@@ -54,15 +54,15 @@ const StatsCard = ({ icon: Icon, label, value, subtitle, badge, color, clickable
               <div className="points-breakdown">
                 <div className="breakdown-item">
                   <span className="breakdown-label">Problems Posted</span>
-                  <span className="breakdown-value">350 pts</span>
+                  <span className="breakdown-value">{details?.problemPoints || 0} pts</span>
                 </div>
                 <div className="breakdown-item">
                   <span className="breakdown-label">Solutions Provided</span>
-                  <span className="breakdown-value">500 pts</span>
+                  <span className="breakdown-value">{details?.answerPoints || 0} pts</span>
                 </div>
                 <div className="breakdown-item breakdown-item--total">
                   <span className="breakdown-label">Total Uploaded</span>
-                  <span className="breakdown-value">850 pts</span>
+                  <span className="breakdown-value">{value} pts</span>
                 </div>
               </div>
             </div>
