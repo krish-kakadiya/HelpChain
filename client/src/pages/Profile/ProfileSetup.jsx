@@ -26,26 +26,54 @@ const ProfileSetup = () => {
   const [selectedStacks, setSelectedStacks] = useState([]);
 
   const technologies = [
-    "React", "HTML", "CSS", "JavaScript", "TypeScript",
-    "Python", "Java", "C++", "C", "Node.js",
-    "Angular", "Vue.js", "PHP", "Ruby", "Go",
-    "Swift", "Kotlin", "SQL", "MongoDB", "Docker"
+    "React","HTML","CSS","JavaScript","TypeScript",
+    "Python","Java","C++","C","Node.js",
+    "Angular","Vue.js","PHP","Ruby","Go",
+    "Swift","Kotlin","SQL","MongoDB","Docker"
   ];
 
   const techStacks = [
-    "Web Developer", "App Developer", "Frontend Developer",
-    "Backend Developer", "Full Stack Developer", "ML/DL Engineer",
-    "Data Scientist", "DevOps Engineer", "Debugging", "Bug Solving",
-    "Logical Problem Solving", "Cybersecurity", "Cloud Computing",
-    "UI/UX Design", "Database Management", "API Development"
+    "Web Developer","App Developer","Frontend Developer",
+    "Backend Developer","Full Stack Developer","ML/DL Engineer",
+    "Data Scientist","DevOps Engineer","Debugging","Bug Solving",
+    "Logical Problem Solving","Cybersecurity","Cloud Computing",
+    "UI/UX Design","Database Management","API Development"
   ];
 
-  // 🔥 Safe redirect (no render navigation)
+  // ✅ Redirect only if coming from profile-setup (first time)
   useEffect(() => {
-    if (!loading && user?.isProfileCompleted) {
+    if (!loading && user?.isProfileCompleted && window.location.pathname === "/profile-setup") {
       navigate("/dashboard");
     }
   }, [user, loading, navigate]);
+
+  // ✅ AUTO-FILL PROFILE (EDIT MODE)
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        if (user?.isProfileCompleted) {
+          const res = await api.get("/profile/getProfile");
+          const profile = res.data.profile;
+          console.log(profile);
+          setFormData({
+            name: profile.name || "",
+            age: profile.age || "",
+            graduation: profile.graduation || "",
+            github: profile.github || "",
+            linkedin: profile.linkedin || "",
+          });
+
+          setSelectedTechnologies(profile.technologies || []);
+          setSelectedStacks(profile.techStacks || []);
+          setProfilePhotoPreview(profile.profilePhoto || null);
+        }
+      } catch (err) {
+        console.error("Profile fetch failed", err);
+      }
+    };
+
+    fetchProfile();
+  }, [user]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -80,53 +108,62 @@ const ProfileSetup = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!formData.name || !formData.age || !formData.graduation) {
-      alert("Please fill in all required fields");
-      return;
+  if (!formData.name || !formData.age || !formData.graduation) {
+    alert("Please fill in all required fields");
+    return;
+  }
+
+  if (selectedTechnologies.length === 0) {
+    alert("Please select at least one technology");
+    return;
+  }
+
+  if (selectedStacks.length === 0) {
+    alert("Please select at least one tech stack");
+    return;
+  }
+
+  try {
+    setSubmitting(true);
+
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("age", formData.age);
+    data.append("graduation", formData.graduation);
+    data.append("github", formData.github);
+    data.append("linkedin", formData.linkedin);
+    data.append("technologies", JSON.stringify(selectedTechnologies));
+    data.append("techStacks", JSON.stringify(selectedStacks));
+
+    if (profileFile) {
+      data.append("profilePhoto", profileFile);
     }
 
-    if (selectedTechnologies.length === 0) {
-      alert("Please select at least one technology");
-      return;
+    // 🔥 SWITCH API BASED ON MODE
+    const isEditMode = user?.isProfileCompleted;
+
+    if (isEditMode) {
+      await api.put("/profile/update", data);   // ✅ UPDATE
+    } else {
+      await api.post("/profile/create", data);  // ✅ CREATE
     }
 
-    if (selectedStacks.length === 0) {
-      alert("Please select at least one tech stack");
-      return;
-    }
+    // 🔄 Refresh user data
+    const meRes = await getMe();
+    setUser(meRes.data);
 
-    try {
-      setSubmitting(true);
+    // ✅ Redirect
+    navigate("/dashboard");
 
-      const data = new FormData();
-      data.append("name", formData.name);
-      data.append("age", formData.age);
-      data.append("graduation", formData.graduation);
-      data.append("github", formData.github);
-      data.append("linkedin", formData.linkedin);
-      data.append("technologies", JSON.stringify(selectedTechnologies));
-      data.append("techStacks", JSON.stringify(selectedStacks));
-
-      if (profileFile) {
-        data.append("profilePhoto", profileFile);
-      }
-
-      await api.post("/profile/create", data);
-
-      // 🔥 Refresh user state after profile completion
-      const meRes = await getMe();
-      setUser(meRes.data);
-
-      navigate("/dashboard");
-
-    } catch (error) {
-      alert(error.response?.data?.message || "Profile creation failed");
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  } catch (error) {
+    console.error(error);
+    alert(error.response?.data?.message || "Profile save failed");
+  } finally {
+    setSubmitting(false);
+  }
+};
 
   return (
     <div className="profile-overlay">
@@ -136,11 +173,7 @@ const ProfileSetup = () => {
           <div className="profile-photo-wrap">
             <div className="profile-photo-ring">
               {profilePhotoPreview ? (
-                <img
-                  src={profilePhotoPreview}
-                  alt="Profile"
-                  className="profile-photo-img"
-                />
+                <img src={profilePhotoPreview} alt="Profile" className="profile-photo-img" />
               ) : (
                 <div className="profile-photo-placeholder">
                   <i className="bx bxs-user"></i>
@@ -173,7 +206,7 @@ const ProfileSetup = () => {
             </button>
           </div>
 
-          <h2>Complete Your Profile</h2>
+          <h2>{user?.isProfileCompleted ? "Edit Profile" : "Complete Your Profile"}</h2>
           <p>Tell us about yourself to personalize your experience</p>
         </div>
 
@@ -220,7 +253,6 @@ const ProfileSetup = () => {
             </div>
           </div>
 
-          {/* Technologies */}
           <div className="form-section">
             <h3>Technology Languages *</h3>
             <div className="tags-container">
@@ -232,15 +264,12 @@ const ProfileSetup = () => {
                   onClick={() => toggleTechnology(tech)}
                 >
                   {tech}
-                  {selectedTechnologies.includes(tech) && (
-                    <span className="tag-check">✓</span>
-                  )}
+                  {selectedTechnologies.includes(tech) && <span className="tag-check">✓</span>}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Tech Stack */}
           <div className="form-section">
             <h3>Tech Stack / Expertise *</h3>
             <div className="tags-container">
@@ -252,15 +281,12 @@ const ProfileSetup = () => {
                   onClick={() => toggleStack(stack)}
                 >
                   {stack}
-                  {selectedStacks.includes(stack) && (
-                    <span className="tag-check">✓</span>
-                  )}
+                  {selectedStacks.includes(stack) && <span className="tag-check">✓</span>}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Social Links */}
           <div className="form-section">
             <h3>Social Links</h3>
 
@@ -286,8 +312,11 @@ const ProfileSetup = () => {
           </div>
 
           <button type="submit" className="submit-btn" disabled={submitting}>
-            {submitting ? "Saving..." : "Complete Profile"}
-            <i className="bx bx-right-arrow-alt"></i>
+            {submitting
+              ? "Saving..."
+              : user?.isProfileCompleted
+                ? "Update Profile"
+                : "Complete Profile"}
           </button>
 
         </form>

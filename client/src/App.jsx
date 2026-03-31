@@ -53,6 +53,7 @@ function App() {
             >
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile-setup" element={<ProfileSetup />} />
+              <Route path="/profile" element={<ProfileSetup />} /> {/* ✅ ADD THIS */}
               <Route path="/ProblemForm" element={<ProblemForm />} />
               <Route path="/question/:id" element={<QuestionPage />} />
               <Route path="/myproblems" element={<MyProblems />} />

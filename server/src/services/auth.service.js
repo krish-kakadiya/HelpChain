@@ -5,6 +5,7 @@ import Otp from "../models/otp.model.js";
 import sendEmail from "../utils/sendEmail.js";
 import Problem from "../models/problem.model.js";
 import Answer from "../models/answer.model.js";
+import Profile from "../models/profile.model.js";
 
 export const verifyOtpService = async ({ email, otp }) => {
 
@@ -153,16 +154,15 @@ export const refreshTokenService = async (refreshToken) => {
 };
 
 export const getMeservices = async (userId) => {
-  const user  = await User.findById(userId)
+  const user = await User.findById(userId)
     .populate("badges", "name icon description minPoints")
     .select("-password -refreshTokenHash");
 
-  if(!user){
+  if (!user) {
     throw new Error("User not found");
   }
 
-  console.log("isProfileCompleted from DB:", user.isProfileCompleted);
-
+  const profile = await Profile.findOne({ user: userId });
   const problemCount = await Problem.countDocuments({ user: userId });
   const answerCount = await Answer.countDocuments({ user: userId });
 
@@ -175,6 +175,7 @@ export const getMeservices = async (userId) => {
     points: user.points,
     badges: user.badges,
     problemCount,
-    answerCount
-  }
-}
+    answerCount,
+    profilePhoto: profile?.profilePhoto || null,
+  };
+};

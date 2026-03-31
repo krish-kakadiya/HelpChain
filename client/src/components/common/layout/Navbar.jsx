@@ -37,11 +37,24 @@ const Navbar = () => {
           <span className="hc-navbar__notification-badge">3</span>
         </button>
         
-        <div className="hc-navbar__profile">
-          <div className="hc-navbar__profile-avatar">
-            {user?.username ? user.username.substring(0, 2).toUpperCase() : 'U'}
-          </div>
-          <ChevronDown size={16} className="hc-navbar__profile-chevron" />
+        <div 
+            className="hc-navbar__profile"
+            onClick={() => navigate("/profile")} // ✅ Navigate on click
+            style={{ cursor: "pointer" }}
+          >
+            <div className="hc-navbar__profile-avatar">
+              {user?.profilePhoto ? (
+                <img
+                  src={user.profilePhoto}
+                  alt="Profile"
+                  className="hc-navbar__profile-img"
+                />
+              ) : (
+                user?.username
+                  ? user.username.substring(0, 2).toUpperCase()
+                  : "U"
+              )}
+            </div>
         </div>
       </div>
     </nav>
