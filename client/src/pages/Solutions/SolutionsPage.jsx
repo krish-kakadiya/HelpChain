@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./SolutionsPage.css";
-import api from "../../api/axios";
+import api from "../../api/axios"; // ← your existing axios instance (port 3000, token handled)
 
 /* ─────────────────────────────────────────────
    ICONS
@@ -44,10 +44,8 @@ const fmt = (d) =>
 /* ─────────────────────────────────────────────
    SOLUTION CARD
 ───────────────────────────────────────────── */
-function SolutionCard({ sol, onVote }) {
+function SolutionCard({ sol }) {
   const isAccepted = sol.isAccepted;
-  const votes      = sol.votes ?? 0;
-  const userVoted  = sol.userVoted ?? false;
   const question   = sol.question || {};
   const tags       = question.tags || [];
   const solCount   = question.solutionsCount ?? question.answers?.length ?? 0;
@@ -100,18 +98,7 @@ function SolutionCard({ sol, onVote }) {
           </div>
         </div>
 
-        {/* ── Vote column ── */}
-        <div className="sp-vote">
-          <button
-            className={`sp-vote__btn${userVoted ? " sp-vote__btn--on" : ""}`}
-            onClick={() => onVote(sol._id)}
-            aria-label="Upvote"
-          >
-            <UpIcon />
-          </button>
-          <span className="sp-vote__count">{votes}</span>
-          <span className="sp-vote__label">votes</span>
-        </div>
+
       </div>
     </div>
   );
@@ -262,7 +249,7 @@ export default function SolutionsPage() {
         ) : (
           visible.map((sol, i) => (
             <div key={sol._id} className="sp-card-wrap" style={{ animationDelay: `${i * 40}ms` }}>
-              <SolutionCard sol={sol} onVote={handleVote} />
+              <SolutionCard sol={sol} />
             </div>
           ))
         )}
