@@ -1,87 +1,61 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "./NotificationPage.css";
+import api from "../../api/axios"; // ✅ same as Dashboard.jsx
 
-const mockNotifications = [
-  {
-    id: 1,
-    type: "solution",
-    seen: false,
-    time: "2m ago",
-    actor: "Priya Sharma",
-    actorAvatar: "PS",
-    avatarColor: "#e67e22",
-    action: "added a solution to your problem",
-    problemTitle: "Fixing the UI layout for Helpchain to ensure components don't overlap.",
-    tags: ["React", "CSS"],
-    meta: "3 solutions total",
-  },
-  {
-    id: 2,
-    type: "reaction",
-    seen: false,
-    time: "1h ago",
-    actor: "Rahul Mehta",
-    actorAvatar: "RM",
-    avatarColor: "#2980b9",
-    action: "and 4 others reacted to your problem",
-    problemTitle: "How to implement real-time chat in a React app using WebSockets?",
-    tags: ["React", "WebSocket"],
-    meta: "12 reactions • 2 comments",
-  },
-  {
-    id: 3,
-    type: "solution",
-    seen: false,
-    time: "3h ago",
-    actor: "Neha Gupta",
-    actorAvatar: "NG",
-    avatarColor: "#27ae60",
-    action: "added a solution to your problem",
-    problemTitle: "Sample Problem: Fixing the UI layout for Helpchain to ensure components don't overlap.",
-    tags: ["React", "CSS"],
-    meta: "5 solutions total",
-  },
-  {
-    id: 4,
-    type: "comment",
-    seen: true,
-    time: "5h ago",
-    actor: "Dev Community",
-    actorAvatar: "DC",
-    avatarColor: "#8e44ad",
-    action: "People with similar interests are following your problem",
-    problemTitle: "Best practices for state management in large React applications.",
-    tags: ["React", "Redux"],
-    meta: "18 followers",
-  },
-  {
-    id: 5,
-    type: "solution",
-    seen: true,
-    time: "1d ago",
-    actor: "Arjun Patel",
-    actorAvatar: "AP",
-    avatarColor: "#c0392b",
-    action: "added a solution to your problem",
-    problemTitle: "Database indexing strategies for high-traffic applications.",
-    tags: ["SQL", "Performance"],
-    meta: "2 solutions total",
-  },
-  {
-    id: 6,
-    type: "reaction",
-    seen: true,
-    time: "2d ago",
-    actor: "Anjali Singh",
-    actorAvatar: "AS",
-    avatarColor: "#16a085",
-    action: "and 7 others reacted to your problem",
-    problemTitle: "How to handle async errors gracefully in JavaScript?",
-    tags: ["JavaScript", "Error Handling"],
-    meta: "30 reactions • 5 comments",
-  },
+// ─────────────────────────────────────────────
+// Helper: format createdAt timestamp → "2m ago"
+// ─────────────────────────────────────────────
+function timeAgo(dateString) {
+  const now = new Date();
+  const date = new Date(dateString);
+  const diff = Math.floor((now - date) / 1000);
+
+  if (diff < 60) return `${diff}s ago`;
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+  if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`;
+  return date.toLocaleDateString();
+}
+
+// ─────────────────────────────────────────────
+// Helper: avatar initials from username
+// ─────────────────────────────────────────────
+function getInitials(username = "") {
+  return username
+    .split(" ")
+    .map((w) => w[0]?.toUpperCase())
+    .slice(0, 2)
+    .join("");
+}
+
+// ─────────────────────────────────────────────
+// Helper: consistent color per username
+// ─────────────────────────────────────────────
+const AVATAR_COLORS = [
+  "#e67e22", "#2980b9", "#27ae60", "#8e44ad",
+  "#c0392b", "#16a085", "#d35400", "#2c3e50",
 ];
+function getAvatarColor(username = "") {
+  let hash = 0;
+  for (const ch of username) hash += ch.charCodeAt(0);
+  return AVATAR_COLORS[hash % AVATAR_COLORS.length];
+}
 
+// ─────────────────────────────────────────────
+// Helper: action text from notification type
+// ─────────────────────────────────────────────
+function actionText(type) {
+  switch (type) {
+    case "solution": return "added a solution to your problem";
+    case "reaction": return "reacted to your problem";
+    case "comment":  return "commented on your problem";
+    default:         return "interacted with your problem";
+  }
+}
+
+// ─────────────────────────────────────────────
+// SVG icons per notification type
+// ─────────────────────────────────────────────
 const typeIcons = {
   solution: (
     <svg viewBox="0 0 24 24" fill="currentColor">
@@ -100,25 +74,105 @@ const typeIcons = {
   ),
 };
 
+// =============================================
+// MAIN COMPONENT
+// =============================================
 export default function NotificationsPage() {
   const [activeTab, setActiveTab] = useState("all");
-  const [notifications, setNotifications] = useState(mockNotifications);
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // ─── Fetch notifications — same pattern as Dashboard ───
+  const fetchNotifications = useCallback(async () => {
+    try {
+      const res = await api.get("/notifications");
+      console.log("Notifications:", res.data.notifications);
+
+      // Transform API shape → display shape
+      const transformed = res.data.notifications.map((n) => {
+        const actorUsername = n.actor?.username || "Someone";
+        return {
+          id: n._id,
+          type: n.type,
+          seen: n.seen,
+          time: timeAgo(n.createdAt),
+          actor: actorUsername,
+          actorAvatar: getInitials(actorUsername),
+          avatarColor: getAvatarColor(actorUsername),
+          action: n.message || actionText(n.type),
+          problemTitle: n.problem?.title || "a problem",
+          tags: n.problem?.tags || [],
+          problemId: n.problem?._id,
+          answerId: n.answer?._id,
+        };
+      });
+
+      setNotifications(transformed);
+    } catch (error) {
+      console.log("Failed to fetch notifications", error);
+      alert("Failed to fetch notifications");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchNotifications();
+  }, [fetchNotifications]);
+
+  // ─── Derived state ───
   const myPostNotifications = notifications.filter((n) => n.type === "solution");
   const displayed = activeTab === "all" ? notifications : myPostNotifications;
   const unseenCount = notifications.filter((n) => !n.seen).length;
   const unseenMyPosts = myPostNotifications.filter((n) => !n.seen).length;
 
-  const markAllSeen = () => {
+  // ─── Mark ALL as seen ───
+  const markAllSeen = async () => {
+    // Optimistic update
     setNotifications((prev) => prev.map((n) => ({ ...n, seen: true })));
+    try {
+      await api.patch("/notifications/mark-all-seen");
+    } catch (error) {
+      console.log("Failed to mark all seen", error);
+      fetchNotifications(); // re-sync on failure
+    }
   };
 
-  const markSeen = (id) => {
+  // ─── Mark ONE as seen ───
+  const markSeen = async (id) => {
+    const notif = notifications.find((n) => n.id === id);
+    if (!notif || notif.seen) return; // skip if already seen
+
+    // Optimistic update
     setNotifications((prev) =>
       prev.map((n) => (n.id === id ? { ...n, seen: true } : n))
     );
+    try {
+      await api.patch(`/notifications/${id}/seen`);
+    } catch (error) {
+      console.log("Failed to mark seen", error);
+      // Revert on failure
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, seen: false } : n))
+      );
+    }
   };
 
+  // ─── Loading state ───
+  if (loading) {
+    return (
+      <div className="notifications-page">
+        <div className="notifications-container">
+          <div className="empty-state">
+            <div className="empty-icon">⏳</div>
+            <p className="empty-text">Loading notifications...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ─── Main render ───
   return (
     <div className="notifications-page">
       <div className="notifications-container">
@@ -165,15 +219,12 @@ export default function NotificationsPage() {
               className={`notif-card ${notif.seen ? "seen" : "unseen"}`}
               onClick={() => markSeen(notif.id)}
             >
-              {/* Unseen dot */}
+              {/* Unseen blue dot */}
               {!notif.seen && <div className="unseen-dot" />}
 
-              {/* Avatar */}
+              {/* Avatar + type icon badge */}
               <div className="avatar-wrap">
-                <div
-                  className="avatar"
-                  style={{ background: notif.avatarColor }}
-                >
+                <div className="avatar" style={{ background: notif.avatarColor }}>
                   {notif.actorAvatar}
                 </div>
                 <div className={`type-icon ${notif.type}`}>
@@ -181,7 +232,7 @@ export default function NotificationsPage() {
                 </div>
               </div>
 
-              {/* Content */}
+              {/* Main content */}
               <div className="notif-content">
                 <p className="notif-text">
                   <span className="actor-name">{notif.actor}</span>{" "}
@@ -192,27 +243,22 @@ export default function NotificationsPage() {
                 <p className="problem-title">"{notif.problemTitle}"</p>
                 <div className="tag-row">
                   {notif.tags.map((tag) => (
-                    <span key={tag} className="tag">
-                      {tag}
-                    </span>
+                    <span key={tag} className="tag">{tag}</span>
                   ))}
                 </div>
-                <p className="notif-meta">{notif.meta}</p>
               </div>
 
-              {/* Time */}
+              {/* Timestamp + more button */}
               <div className="time-wrap">
                 <span className="notif-time">{notif.time}</span>
-                <button
-                  className="more-btn"
-                  onClick={(e) => e.stopPropagation()}
-                >
+                <button className="more-btn" onClick={(e) => e.stopPropagation()}>
                   •••
                 </button>
               </div>
             </div>
           ))}
 
+          {/* Empty state */}
           {displayed.length === 0 && (
             <div className="empty-state">
               <div className="empty-icon">🔔</div>
