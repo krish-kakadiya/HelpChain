@@ -36,6 +36,12 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false
     },
+    tagReputation: [
+      {
+        tag: { type: String, lowercase: true, trim: true },
+        points: { type: Number, default: 0 }
+      }
+    ],
     points: {
       type: Number,
       default: 0

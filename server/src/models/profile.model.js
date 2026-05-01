@@ -40,6 +40,10 @@ const profileSchema = new mongoose.Schema(
       type: [String],
       required: true,
     },
+    expertTags: {
+      type: [String],
+      default: [],
+    },
     profilePhoto: {
       type: String, // Cloudinary URL
       default: "",

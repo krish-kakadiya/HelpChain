@@ -13,10 +13,11 @@ export const createAnswerService = async (questionId, body, userId) => {
     user: userId,
   });
 
-  await awardPoints(userId, 10);
+  const problem = await Problem.findById(questionId).select("user title tags");
+  
+  await awardPoints(userId, 10, problem?.tags || []);
   await checkAndAssignBadges(userId);
 
-  const problem = await Problem.findById(questionId).select("user title");
   if (problem) {
     await createNotificationService({
       recipientId: problem.user,
@@ -40,6 +41,7 @@ export const voteAnswerService = async (answerId, userId, value) => {
 
   if (answer.user.toString() === userId) throw new Error("You can't vote your own answer");
 
+  const problem = await Problem.findById(answer.question).select("tags");
   const existingVote = answer.voters.find((v) => v.user.toString() === userId);
 
   if (existingVote) {
@@ -47,20 +49,20 @@ export const voteAnswerService = async (answerId, userId, value) => {
       answer.votes -= value;
       answer.voters = answer.voters.filter((v) => v.user.toString() !== userId);
       const correction = value === 1 ? -2 : 1;
-      await awardPoints(answer.user, correction);
+      await awardPoints(answer.user, correction, problem?.tags || []);
       await checkAndAssignBadges(answer.user);
     } else {
       answer.votes += value * 2;
       existingVote.value = value;
       const change = value === 1 ? 3 : -3;
-      await awardPoints(answer.user, change);
+      await awardPoints(answer.user, change, problem?.tags || []);
       await checkAndAssignBadges(answer.user);
     }
   } else {
     answer.votes += value;
     answer.voters.push({ user: userId, value });
     const addition = value === 1 ? 2 : -1;
-    await awardPoints(answer.user, addition);
+    await awardPoints(answer.user, addition, problem?.tags || []);
     await checkAndAssignBadges(answer.user);
 
     if (value === 1) {
@@ -95,7 +97,7 @@ export const acceptAnswerService = async (answerId, userId) => {
       isAccepted: false,
     });
     if (prevAnswer) {
-      await awardPoints(prevAnswer.user, -15);
+      await awardPoints(prevAnswer.user, -15, problem?.tags || []);
       await checkAndAssignBadges(prevAnswer.user);
     }
   }
@@ -103,7 +105,7 @@ export const acceptAnswerService = async (answerId, userId) => {
   answer.isAccepted = true;
   await answer.save();
 
-  await awardPoints(answer.user, 15);
+  await awardPoints(answer.user, 15, problem?.tags || []);
   await checkAndAssignBadges(answer.user);
 
   problem.acceptedAnswer = answer._id;

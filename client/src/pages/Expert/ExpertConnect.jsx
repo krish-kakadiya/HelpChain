@@ -5,19 +5,17 @@
  *   • "Need Help" tab  → browse problems, connect to experts (existing flow)
  *   • "My Sessions" tab → problems where YOU are the assigned expert
  *
- * AI chatbot is powered by Anthropic API (claude-sonnet-4-20250514).
- * The simulated "aiAssignExpert" is replaced with a real Claude API call.
+ * AI chatbot is powered by Anthropic API (claude-sonnet-4-20250514) on the backend.
  *
  * Drop-in replacement for ExpertConnectPage.jsx + all sub-components.
  * No separate CSS files — all styles are scoped inline / CSS-in-JS style
  * using a single <style> tag injected once at the top.
- *
- * Backend contract (unchanged from original schema):
- *   Problem  { _id, title, tags[], difficulty, solutions, user: { username } }
- *   Expert   { name, initial, badge, specialty }
  */
 
 import { useState, useEffect, useRef } from "react";
+import api from "../../api/axios.js";
+import { io } from "socket.io-client";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 /* ─── Design tokens ─────────────────────────────────────────────────── */
 const T = {
@@ -42,47 +40,6 @@ const T = {
   redLt:    "#fef2f2",
   redBd:    "#fecaca",
 };
-
-/* ─── Mock data ─────────────────────────────────────────────────────── */
-const EXPERT_POOL = [
-  { name: "Arjun K.",  initial: "AK", badge: "React Expert",  specialty: "React · NodeJS · 3 yrs" },
-  { name: "Sneha R.",  initial: "SR", badge: "Redux Expert",  specialty: "React · Redux · 4 yrs" },
-  { name: "Dev M.",    initial: "DM", badge: "C++ Expert",    specialty: "C++ · DSA · 5 yrs" },
-  { name: "Priya S.",  initial: "PS", badge: "C++ Expert",    specialty: "C++ · Algorithms · 3 yrs" },
-  { name: "Vikram N.", initial: "VN", badge: "DB Expert",     specialty: "SQL · MongoDB · 4 yrs" },
-  { name: "Leena V.",  initial: "LV", badge: "CSS Expert",    specialty: "CSS · HTML · UI · 3 yrs" },
-];
-
-const MOCK_PROBLEMS = [
-  { _id: "p1", title: "I Have One React Problem",          tags: ["NodeJS","React"],       difficulty: "Medium", solutions: 0, user: { username: "hardik21" } },
-  { _id: "p2", title: "React JS redux toolkit",            tags: ["react","NodeJS"],       difficulty: "Hard",   solutions: 0, user: { username: "hardik21" } },
-  { _id: "p3", title: "Dynamic Programming",               tags: ["C++"],                  difficulty: "Hard",   solutions: 0, user: { username: "hardik21" } },
-  { _id: "p4", title: "C++ language",                      tags: ["C++"],                  difficulty: "Easy",   solutions: 2, user: { username: "hardik21" } },
-  { _id: "p5", title: "SQL JOIN not returning expected rows", tags: ["SQL","Database"],    difficulty: "Medium", solutions: 1, user: { username: "rahul99" } },
-  { _id: "p6", title: "CSS Grid layout breaking on mobile", tags: ["CSS","HTML"],          difficulty: "Easy",   solutions: 0, user: { username: "leena_v" } },
-];
-
-// Problems where the current user is the assigned expert
-const MY_EXPERT_SESSIONS = [
-  {
-    _id: "e1",
-    title: "Async/Await confusion in Node",
-    tags: ["NodeJS"],
-    difficulty: "Medium",
-    user: { username: "priya_dev" },
-    assignedAt: "2h ago",
-    unread: 2,
-  },
-  {
-    _id: "e2",
-    title: "React state not updating on click",
-    tags: ["React"],
-    difficulty: "Easy",
-    user: { username: "sam_codes" },
-    assignedAt: "5h ago",
-    unread: 0,
-  },
-];
 
 const COST_MAP = { Easy: 20, Medium: 40, Hard: 60 };
 
@@ -115,78 +72,68 @@ function Badge({ label, bg, color, border }) {
   );
 }
 
-/* ─── AI Chat via Anthropic API ─────────────────────────────────────── */
-async function callClaude(messages, systemPrompt) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1000,
-      system: systemPrompt,
-      messages,
-    }),
-  });
-  const data = await res.json();
-  return data.content?.map(b => b.text || "").join("") || "Sorry, I couldn't respond right now.";
-}
-
 /* ─── Chat Drawer ───────────────────────────────────────────────────── */
-function ChatDrawer({ open, problem, expert, role, onClose }) {
+function ChatDrawer({ open, problem, expert, role, sessionId, onClose }) {
   const [messages, setMessages] = useState([]);
   const [input, setInput]       = useState("");
-  const [loading, setLoading]   = useState(false);
+  const [socket, setSocket]     = useState(null);
   const bottomRef               = useRef();
+  
+  const { user } = useAuth();
+  const myId = user?.id || '';
 
   useEffect(() => {
-    if (open && problem) {
-      const isExpert = role === "expert";
-      setMessages([{
-        id: 1, from: "assistant",
-        text: isExpert
-          ? `Hi! You're connected as the assigned expert for this problem. The user needs help with: "${problem.title}". They will message you shortly.`
-          : `Hi! I'm ${expert?.name ?? "your expert"} — I hold the ${expert?.badge ?? "Expert"} badge. I've been matched to your problem. What have you tried so far?`,
-        time: "now",
-      }]);
+    if (open && sessionId) {
+      const newSocket = io("http://localhost:3000");
+      setSocket(newSocket);
+
+      newSocket.on("connect", () => {
+        newSocket.emit("join_session", sessionId);
+      });
+
+      newSocket.on("receive_message", (msg) => {
+        setMessages(prev => [...prev, {
+          id: msg._id || Date.now() + Math.random(),
+          from: msg.sender === myId ? "me" : "other",
+          text: msg.text,
+          time: new Date(msg.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+        }]);
+      });
+
+      return () => newSocket.disconnect();
     }
-  }, [open, problem?._id, role]);
+  }, [open, sessionId, myId]);
+
+  useEffect(() => {
+    if (open && sessionId) {
+      api.get(`/expert-connect/session/${sessionId}`)
+        .then(res => {
+          const history = res.data.messages.map(m => ({
+            id: m._id,
+            from: (m.sender._id || m.sender) === myId ? "me" : "other",
+            text: m.text,
+            time: new Date(m.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+          }));
+          setMessages(history);
+        })
+        .catch(err => console.error("Failed to fetch history", err));
+    } else {
+      setMessages([]);
+    }
+  }, [open, sessionId, myId]);
 
   useEffect(() => {
     if (open) bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, open]);
 
-  const send = async () => {
-    if (!input.trim() || loading) return;
-    const userText = input.trim();
-    const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  const send = () => {
+    if (!input.trim() || !socket || !sessionId) return;
+    socket.emit("send_message", {
+      sessionId,
+      senderId: myId,
+      text: input.trim()
+    });
     setInput("");
-    const nextMessages = [...messages, { id: Date.now(), from: "user", text: userText, time }];
-    setMessages(nextMessages);
-    setLoading(true);
-
-    try {
-      const systemPrompt = role === "expert"
-        ? `You are a community expert helping a user with: "${problem?.title}". Tags: ${problem?.tags?.join(", ")}. Be concise, helpful, and technical.`
-        : `You are ${expert?.name ?? "a community expert"} with the badge "${expert?.badge ?? "Expert"}. Specialty: ${expert?.specialty}". Help the user with: "${problem?.title}". Tags: ${problem?.tags?.join(", ")}. Be concise, friendly, and technical.`;
-
-      const apiMessages = nextMessages
-        .filter(m => m.from !== "assistant" || m.id !== 1)
-        .map(m => ({ role: m.from === "user" ? "user" : "assistant", content: m.text }));
-
-      const reply = await callClaude(apiMessages, systemPrompt);
-      setMessages(prev => [...prev, {
-        id: Date.now() + 1, from: "assistant", text: reply,
-        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-      }]);
-    } catch {
-      setMessages(prev => [...prev, {
-        id: Date.now() + 1, from: "assistant",
-        text: "Connection error. Please try again.",
-        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-      }]);
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleKey = e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } };
@@ -245,7 +192,7 @@ function ChatDrawer({ open, problem, expert, role, onClose }) {
             padding: "14px 18px", borderBottom: `1px solid ${T.border}`,
             background: T.surface, flexShrink: 0, position: "relative",
           }}>
-            <Avatar initials={isExpert ? "ME" : expert?.initial} size={42} />
+            <Avatar initials={isExpert ? "ME" : expert?.name?.charAt(0).toUpperCase() || "E"} size={42} />
             <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 3 }}>
               <div style={{ fontSize: 13.5, fontWeight: 700, color: T.text }}>
                 {isExpert ? "You (Expert)" : expert?.name}
@@ -256,10 +203,10 @@ function ChatDrawer({ open, problem, expert, role, onClose }) {
                 background: T.surface, border: `1.5px solid ${T.border}`,
                 padding: "2px 10px", borderRadius: 20, width: "fit-content",
               }}>
-                🏅 {isExpert ? "Your Badge" : expert?.badge}
+                🏅 {isExpert ? "Your Badge" : expert?.badge || "Expert"}
               </span>
               <div style={{ fontSize: 11.5, color: T.textMute }}>
-                {isExpert ? `Helping: ${problem?.user?.username}` : expert?.specialty}
+                {isExpert ? `Helping: ${problem?.user?.username || 'User'}` : "AI-Matched Expert"}
               </div>
             </div>
             <span style={{
@@ -280,7 +227,7 @@ function ChatDrawer({ open, problem, expert, role, onClose }) {
           background: "#f8f9fb",
         }}>
           {messages.map(msg => {
-            const isUser = msg.from === "user";
+            const isUser = msg.from === "me";
             return (
               <div key={msg.id} style={{
                 display: "flex", gap: 8,
@@ -295,7 +242,7 @@ function ChatDrawer({ open, problem, expert, role, onClose }) {
                     : "linear-gradient(135deg,#5c6bc0,#3f51b5)",
                   alignSelf: "flex-start", marginTop: 2,
                 }}>
-                  {isUser ? "Me" : (isExpert ? "U" : expert?.initial)}
+                  {isUser ? "Me" : (isExpert ? "U" : expert?.name?.charAt(0).toUpperCase() || "E")}
                 </div>
                 <div style={{
                   display: "flex", flexDirection: "column",
@@ -316,15 +263,6 @@ function ChatDrawer({ open, problem, expert, role, onClose }) {
               </div>
             );
           })}
-          {loading && (
-            <div style={{ display: "flex", gap: 8 }}>
-              <Avatar initials={isExpert ? "U" : expert?.initial} size={32} />
-              <div style={{
-                padding: "11px 16px", borderRadius: 16, borderBottomLeftRadius: 4,
-                background: "#eeeff4", color: T.textMid, fontSize: 13,
-              }}>Typing…</div>
-            </div>
-          )}
           <div ref={bottomRef} />
         </div>
 
@@ -349,13 +287,13 @@ function ChatDrawer({ open, problem, expert, role, onClose }) {
           />
           <button
             onClick={send}
-            disabled={!input.trim() || loading}
+            disabled={!input.trim() || !socket || !sessionId}
             style={{
               background: T.indigo, color: "#fff", border: "none",
               borderRadius: 12, width: 40, height: 40,
               display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: input.trim() && !loading ? "pointer" : "not-allowed",
-              fontSize: 14, opacity: input.trim() && !loading ? 1 : 0.4,
+              cursor: input.trim() && socket && sessionId ? "pointer" : "not-allowed",
+              fontSize: 14, opacity: input.trim() && socket && sessionId ? 1 : 0.4,
               transition: "all 0.15s",
             }}
           >➤</button>
@@ -456,18 +394,19 @@ function ConfirmModal({ problem, cost, onClose, onConfirm }) {
 }
 
 /* ─── Toast ─────────────────────────────────────────────────────────── */
-function Toast({ message, sub, onDone }) {
+function Toast({ message, sub, error, onDone }) {
   const [hiding, setHiding] = useState(false);
   useEffect(() => {
     const t1 = setTimeout(() => setHiding(true), 3000);
     const t2 = setTimeout(onDone, 3300);
     return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, []);
+  }, [onDone]);
   return (
     <div style={{
       position: "fixed", top: 76, right: 20, zIndex: 500,
-      background: T.surface, border: `1px solid ${T.indigoBd}`,
-      borderLeft: `4px solid ${T.indigo}`,
+      background: T.surface, 
+      border: `1px solid ${error ? T.redBd : T.indigoBd}`,
+      borderLeft: `4px solid ${error ? T.red : T.indigo}`,
       borderRadius: 10, padding: "12px 14px",
       display: "flex", alignItems: "flex-start", gap: 10,
       minWidth: 270, maxWidth: 330,
@@ -477,10 +416,11 @@ function Toast({ message, sub, onDone }) {
     }}>
       <div style={{
         width: 32, height: 32, borderRadius: "50%",
-        background: T.indigoLt, border: `1px solid ${T.indigoBd}`,
+        background: error ? T.redLt : T.indigoLt, 
+        border: `1px solid ${error ? T.redBd : T.indigoBd}`,
         display: "flex", alignItems: "center", justifyContent: "center",
         fontSize: 15, flexShrink: 0,
-      }}>🤖</div>
+      }}>{error ? "⚠️" : "🤖"}</div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontWeight: 600, fontSize: 13, color: T.text, lineHeight: 1.4 }}>{message}</div>
         {sub && <div style={{ fontSize: 11.5, color: T.textMid, marginTop: 2 }}>{sub}</div>}
@@ -521,7 +461,7 @@ function ProblemCard({ problem, status, onConnect, onOpenChat, isExpertView }) {
             )}
             {isExpertView && (
               <span style={{ fontSize: 11, color: T.textMute, marginLeft: "auto" }}>
-                {problem.assignedAt}
+                {new Date(problem.assignedAt).toLocaleDateString()}
               </span>
             )}
           </div>
@@ -544,7 +484,7 @@ function ProblemCard({ problem, status, onConnect, onOpenChat, isExpertView }) {
             </div>
             {!isExpertView && (
               <span style={{ fontSize: 11.5, color: T.indigo, fontWeight: 600 }}>
-                {problem.solutions ?? 0} {problem.solutions === 1 ? "Solution" : "Solutions"}
+                {problem.views ?? 0} {problem.views === 1 ? "View" : "Views"}
               </span>
             )}
           </div>
@@ -600,33 +540,99 @@ function ProblemCard({ problem, status, onConnect, onOpenChat, isExpertView }) {
 
 /* ─── Main Page ─────────────────────────────────────────────────────── */
 export default function ExpertConnectPage() {
-  const problems = MOCK_PROBLEMS;
-  const myExpertSessions = MY_EXPERT_SESSIONS;
-
+  const [problems, setProblems] = useState([]);
+  const [myExpertSessions, setMyExpertSessions] = useState([]);
   const [tab, setTab]           = useState("need-help"); // "need-help" | "my-sessions"
   const [statuses, setStatuses] = useState({});
   const [expertMap, setExpertMap] = useState({});
+  const [sessionMap, setSessionMap] = useState({});
   const [confirmData, setConfirmData] = useState(null);
   const [toast, setToast]         = useState(null);
-  const [drawer, setDrawer]       = useState({ open: false, problem: null, expert: null, role: "user" });
+  const [drawer, setDrawer]       = useState({ open: false, problem: null, expert: null, role: "user", sessionId: null });
+
+  // Fetch data on mount
+  useEffect(() => {
+    const fetchProblems = async () => {
+      try {
+        const res = await api.get("/expert-connect/my-problems");
+        if (res.status === 200) {
+          const data = res.data;
+          setProblems(data);
+          
+          const newStatuses = {};
+          const newExpertMap = {};
+          const newSessionMap = {};
+          
+          data.forEach(p => {
+            if (p.sessionStatus) newStatuses[p._id] = p.sessionStatus;
+            if (p.expert) newExpertMap[p._id] = p.expert;
+            if (p.sessionId) newSessionMap[p._id] = p.sessionId;
+          });
+          
+          setStatuses(newStatuses);
+          setExpertMap(newExpertMap);
+          setSessionMap(newSessionMap);
+        }
+      } catch (error) {
+        console.error("Error fetching problems:", error);
+      }
+    };
+
+    const fetchMySessions = async () => {
+      try {
+        const res = await api.get("/expert-connect/my-sessions");
+        if (res.status === 200) {
+          const data = res.data;
+          setMyExpertSessions(data);
+        }
+      } catch (error) {
+        console.error("Error fetching sessions:", error);
+      }
+    };
+
+    fetchProblems();
+    fetchMySessions();
+  }, []);
 
   const activeSessions = problems.filter(p => statuses[p._id] === "active");
 
   const handleConnect = (problem, cost) => setConfirmData({ problem, cost });
 
-  const handleConfirm = (problem, cost) => {
+  const handleConfirm = async (problem, cost) => {
     setConfirmData(null);
     setStatuses(s => ({ ...s, [problem._id]: "pending" }));
-    setTimeout(() => {
-      const expert = EXPERT_POOL[problem._id.charCodeAt(problem._id.length - 1) % EXPERT_POOL.length];
-      setExpertMap(m => ({ ...m, [problem._id]: expert }));
+    
+    try {
+      const res = await api.post("/expert-connect/request", { problemId: problem._id });
+      const data = res.data;
+      
+      setExpertMap(m => ({ ...m, [problem._id]: data.expert }));
+      setSessionMap(m => ({ ...m, [problem._id]: data.session._id }));
       setStatuses(s => ({ ...s, [problem._id]: "active" }));
-      setToast({ message: `Expert assigned for "${problem.title}"`, sub: `${expert.name} · ${expert.badge}` });
-    }, 1800);
+      setToast({ message: `Expert assigned for "${problem.title}"`, sub: `${data.expert.name} · ${data.expert.badge}` });
+      
+    } catch (error) {
+      // Revert status on failure
+      setStatuses(s => {
+        const next = { ...s };
+        delete next[problem._id];
+        return next;
+      });
+      setToast({ message: "Assignment failed", sub: error.response?.data?.message || error.message, error: true });
+    }
   };
 
   const handleOpenChat = (problem, role = "user") => {
-    setDrawer({ open: true, problem, expert: expertMap[problem._id] ?? null, role });
+    // If expert view, sessionId is in the problem itself (from formatted response)
+    // If user view, sessionId is in sessionMap
+    const sessionId = role === "expert" ? problem.sessionId : sessionMap[problem._id];
+    setDrawer({ 
+      open: true, 
+      problem, 
+      expert: expertMap[problem._id] ?? null, 
+      role,
+      sessionId 
+    });
   };
 
   const TABS = [
@@ -759,12 +765,13 @@ export default function ExpertConnectPage() {
           onConfirm={handleConfirm}
         />
       )}
-      {toast && <Toast message={toast.message} sub={toast.sub} onDone={() => setToast(null)} />}
+      {toast && <Toast message={toast.message} sub={toast.sub} error={toast.error} onDone={() => setToast(null)} />}
       <ChatDrawer
         open={drawer.open}
         problem={drawer.problem}
         expert={drawer.expert}
         role={drawer.role}
+        sessionId={drawer.sessionId}
         onClose={() => setDrawer(d => ({ ...d, open: false }))}
       />
     </>
