@@ -1,6 +1,6 @@
 import Answer from "../models/answer.model.js";
 import Problem from "../models/problem.model.js";
-import { awardPoints, checkAndAssignBadges } from "../utils/rewards.js";
+import { awardPoints, checkAndAssignBadges, incrementTagAcceptedCount } from "../utils/rewards.js";
 import { createNotificationService } from "./notification.service.js";
 
 // ─────────────────────────────────────────────
@@ -99,6 +99,7 @@ export const acceptAnswerService = async (answerId, userId) => {
     if (prevAnswer) {
       await awardPoints(prevAnswer.user, -15, problem?.tags || []);
       await checkAndAssignBadges(prevAnswer.user);
+      await incrementTagAcceptedCount(prevAnswer.user, problem?.tags || [], -1);
     }
   }
 
@@ -107,6 +108,7 @@ export const acceptAnswerService = async (answerId, userId) => {
 
   await awardPoints(answer.user, 15, problem?.tags || []);
   await checkAndAssignBadges(answer.user);
+  await incrementTagAcceptedCount(answer.user, problem?.tags || [], 1);
 
   problem.acceptedAnswer = answer._id;
   await problem.save();

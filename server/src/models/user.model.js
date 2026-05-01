@@ -42,6 +42,12 @@ const userSchema = new mongoose.Schema(
         points: { type: Number, default: 0 }
       }
     ],
+    tagAcceptedCount: [
+      {
+        tag: { type: String, lowercase: true, trim: true },
+        count: { type: Number, default: 0 }
+      }
+    ],
     points: {
       type: Number,
       default: 0

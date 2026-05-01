@@ -67,7 +67,8 @@ const runSeed = async () => {
         isVerified: true,
         isProfileCompleted: true,
         points: 500, // lots of points
-        tagReputation: data.expertTags.map(tag => ({ tag, points: 150 }))
+        tagReputation: data.expertTags.map(tag => ({ tag, points: 150 })),
+        tagAcceptedCount: data.expertTags.map(tag => ({ tag, count: 25 }))
       });
       
       await Profile.create({
