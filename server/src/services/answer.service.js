@@ -15,7 +15,7 @@ export const createAnswerService = async (questionId, body, userId) => {
 
   const problem = await Problem.findById(questionId).select("user title tags");
   
-  await awardPoints(userId, 10, problem?.tags || []);
+  await awardPoints(userId, 2, problem?.tags || []);
   await checkAndAssignBadges(userId);
 
   if (problem) {
@@ -48,20 +48,20 @@ export const voteAnswerService = async (answerId, userId, value) => {
     if (existingVote.value === value) {
       answer.votes -= value;
       answer.voters = answer.voters.filter((v) => v.user.toString() !== userId);
-      const correction = value === 1 ? -2 : 1;
+      const correction = value === 1 ? -10 : 2;
       await awardPoints(answer.user, correction, problem?.tags || []);
       await checkAndAssignBadges(answer.user);
     } else {
       answer.votes += value * 2;
       existingVote.value = value;
-      const change = value === 1 ? 3 : -3;
+      const change = value === 1 ? 12 : -12;
       await awardPoints(answer.user, change, problem?.tags || []);
       await checkAndAssignBadges(answer.user);
     }
   } else {
     answer.votes += value;
     answer.voters.push({ user: userId, value });
-    const addition = value === 1 ? 2 : -1;
+    const addition = value === 1 ? 10 : -2;
     await awardPoints(answer.user, addition, problem?.tags || []);
     await checkAndAssignBadges(answer.user);
 

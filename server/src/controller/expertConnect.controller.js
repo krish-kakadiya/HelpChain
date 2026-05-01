@@ -176,34 +176,3 @@ export const getSessionHistory = async (req, res) => {
   }
 };
 
-export const makeMeExpert = async (req, res) => {
-  try {
-    const { tags } = req.body;
-    if (!tags || !Array.isArray(tags)) return res.status(400).json({ message: 'Tags array is required' });
-
-    const lowerTags = tags.map(t => t.toLowerCase().trim());
-    
-    // Update user's tag reputation
-    const user = await User.findById(req.user.userId);
-    lowerTags.forEach(tag => {
-      const existing = user.tagReputation.find(t => t.tag === tag);
-      if (existing) existing.points = Math.max(existing.points, 50);
-      else user.tagReputation.push({ tag, points: 50 });
-    });
-    await user.save();
-
-    // Update profile
-    const profile = await Profile.findOne({ user: req.user.userId });
-    if (profile) {
-      const expertTagsSet = new Set(profile.expertTags.map(t => t.toLowerCase()));
-      lowerTags.forEach(tag => {
-        if (!expertTagsSet.has(tag)) profile.expertTags.push(tag);
-      });
-      await profile.save();
-    }
-
-    res.json({ message: 'Expert status granted', tags: lowerTags });
-  } catch (error) {
-    res.status(500).json({ message: 'Server error', error: error.message });
-  }
-};

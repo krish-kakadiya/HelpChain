@@ -21,7 +21,7 @@ export const awardPoints = async (userId, value, tags = []) => {
         user.tagReputation.push({ tag: lowerTag, points: value });
       }
 
-      if (newTagPoints >= 50 && newTagPoints - value < 50) {
+      if (newTagPoints >= 200 && newTagPoints - value < 200) {
         shouldCheckProfile = true;
       }
     });
@@ -33,7 +33,7 @@ export const awardPoints = async (userId, value, tags = []) => {
           const expertTagsSet = new Set(profile.expertTags.map(t => t.toLowerCase()));
           let updated = false;
           user.tagReputation.forEach(t => {
-            if (t.points >= 50 && !expertTagsSet.has(t.tag)) {
+            if (t.points >= 200 && !expertTagsSet.has(t.tag)) {
               profile.expertTags.push(t.tag);
               updated = true;
             }
